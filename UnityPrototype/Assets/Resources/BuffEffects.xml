@@ -1,0 +1,70 @@
+<effect-settings>
+	<function name="CreateBuff" namespace="buff">
+		<return-type>Any</return-type>
+		<parameter>
+			<name>name</name>
+			<type>string</type>
+			<description>
+				The name of that stat to modify
+			</description>
+		</parameter>
+		<parameter>
+			<name>value</name>
+			<type>float</type>
+			<description>
+				The amount to modify the stat by
+			</description>
+		</parameter>
+		<parameter>
+			<name>mulitply</name>
+			<type>bool</type>
+			<description>
+				If true then the stat is scaled by value otherwise it is summed
+			</description>
+		</parameter>
+		<description>
+			Creates a buff stat to be used with a BuffEffect
+		</description>
+	</function>
+	
+	
+	<input-configuration name="buff-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The object that will recieve the buff
+			</description>
+		</parameter>
+		<parameter>
+			<name>priority</name>
+			<type>int</type>
+			<description>
+				The priority of the buff. Buffs are applied in order of high priority to low priority.
+			</description>
+		</parameter>
+		<parameter>
+			<name>buffs</name>
+			<type>List</type>
+			<description>
+				The list of buffs to apply. Use CreateBuff and BuildList to make a list of buffs to apply
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="buff-out">
+		<parameter>
+			<name>effect</name>
+			<type>IEffect</type>
+			<description>
+				A reference to the buff effect. Use the cancel effect to remove a buff.
+			</description>
+		</parameter>
+	</output-configuration>
+	
+	<effect class="BuffEffect" alias="buff" namespace="buff" input="buff-in" output="buff-out">
+		<description>
+			Applies a buff, or debuff to a target
+		</description>
+	</effect>
+</effect-settings>

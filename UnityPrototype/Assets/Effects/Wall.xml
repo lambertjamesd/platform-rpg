@@ -1,0 +1,38 @@
+<caster id="caster">
+	<animation></animation>
+	<on-fire id="fire">
+		<!--rect-wall>
+			<position>caster.position+{0,1,0}+fire.direction</position>
+			<layer>Int(0)</layer>
+			<up>RotateVector(fire.direction, 90)</up>
+			<prefab>"BasicBarrier"</prefab>
+		</rect-wall-->
+		<laser-area id="laser">
+			<parent>caster.gameObject</parent>
+			<position>caster.position + {0, 1, 0}</position>
+			<direction>fire.direction</direction>
+			
+			<blockRadius>0.1</blockRadius>
+			<blockLayers>Int(1)</blockLayers>
+			
+			<areaRadius>0.25</areaRadius>
+			<areaLayers>caster.enemyLayers</areaLayers>
+			
+			<on-enter id="damaged">
+				<damage>
+					<amount>7</amount>
+					<target>damaged.gameObject</target>
+				</damage>
+			</on-enter>
+		</laser-area>
+
+		<delay>
+			<frames>100i</frames>
+			<on-timeout>
+				<destroy>
+					<target>laser.gameObject</target>
+				</destroy>
+			</on-timeout>
+		</delay>
+	</on-fire>
+</caster>

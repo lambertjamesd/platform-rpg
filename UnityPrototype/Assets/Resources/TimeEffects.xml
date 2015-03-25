@@ -1,0 +1,13 @@
+
+<effect-settings>
+	<input-configuration name="default-time-traveller-in" parent="game-object-in">
+	</input-configuration>
+	<output-configuration name="default-time-traveller-out" parent="game-object-out">
+	</output-configuration>
+	
+	<effect class="DefaultTimeTravelerEffect" alias="default-time-traveller" namespace="time" input="default-time-traveller-in" output="default-time-traveller-out">
+		<description>
+			Creates a rectangular barrier that cannot be passed through
+		</description>
+	</effect>
+</effect-settings>

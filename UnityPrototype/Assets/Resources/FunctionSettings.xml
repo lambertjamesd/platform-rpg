@@ -1,0 +1,380 @@
+<effect-settings>
+	<function name="AllyLayerMask" namespace="collision">
+		<return-type>bitMask</return-type>
+		<parameter>
+			<name>layer</name>
+			<type>int</type>
+			<description>
+				The layer of the character
+			</description>
+		</parameter>
+		<description>
+			Turns a layer number into a bitmask that collides with ally characters
+		</description>
+	</function>
+	
+	<function name="EnemyLayerMask" namespace="collision">
+		<return-type>bitMask</return-type>
+		<parameter>
+			<name>layer</name>
+			<type>int</type>
+			<description>
+				The layer of the character
+			</description>
+		</parameter>
+		<description>
+			Turns a layer number into a bitmask that collides with enemy characters
+		</description>
+	</function>
+	
+	<function name="CharacterLayerMask" namespace="collision">
+		<return-type>bitMask</return-type>
+		<description>
+			Gets a bitmask that collides with all characters
+		</description>
+	</function>
+	
+	<function name="Select" namespace="math">
+		<return-type>Any</return-type>
+		<parameter>
+			<name>condition</name>
+			<type>bool</type>
+			<description>
+				The condition to check
+			</description>
+		</parameter>
+		<parameter>
+			<name>selectionA</name>
+			<type>Any</type>
+			<description>
+				The value to pass if condition is true
+			</description>
+		</parameter>
+		<parameter>
+			<name>selectionB</name>
+			<type>Any</type>
+			<description>
+				The value to pass if condition is false
+			</description>
+		</parameter>
+		<description>
+			Returns one of the two operands based on the condition
+		</description>
+	</function>
+	
+	<function name="RotateVector" namespace="vector">
+		<return-type>Vector3</return-type>
+		<parameter>
+			<name>vector</name>
+			<type>Vector3</type>
+			<description>
+				The vector to rotate
+			</description>
+		</parameter>
+		<parameter>
+			<name>angle</name>
+			<type>float</type>
+			<description>
+				The angle, in degrees, to rotate the vector by
+			</description>
+		</parameter>
+		<description>
+			Rotates a vector counter clockwise
+		</description>
+	</function>
+	
+	<function name="Magnitude" namespace="vector">
+		<return-type>float</return-type>
+		<parameter>
+			<name>vector</name>
+			<type>Vector3</type>
+			<description>
+				The vector to measure
+			</description>
+		</parameter>
+		<description>
+			Calucluates the magnitude, or length, of a vector
+		</description>
+	</function>
+	
+	<function name="Normalize" namespace="vector">
+		<return-type>Vector3</return-type>
+		<parameter>
+			<name>vector</name>
+			<type>Vector3</type>
+			<description>
+				The vector to normalize
+			</description>
+		</parameter>
+		<description>
+			Returns a vector in the same direction with a length of 1
+		</description>
+	</function>
+	
+	<function name="Project" namespace="vector">
+		<return-type>Vector3</return-type>
+		<parameter>
+			<name>vector</name>
+			<type>Vector3</type>
+			<description>
+				The vector project
+			</description>
+		</parameter>
+		<parameter>
+			<name>normal</name>
+			<type>Vector3</type>
+			<description>
+				The normal to project onto
+			</description>
+		</parameter>
+		<description>
+			Returns a vector pointing the same direction as normal in the direction of vector
+		</description>
+	</function>
+	
+	<function name="AngleToDirection" namespace="vector">
+		<return-type>Vector3</return-type>
+		<parameter>
+			<name>angle</name>
+			<type>float</type>
+			<description>
+				the angle to convert in degrees, 0 degrees goes to the right, positive angles go counter clockwise
+			</description>
+		</parameter>
+		<description>
+			Converts an angle to a direction
+		</description>
+	</function>
+	
+	<function name="GetX" namespace="vector">
+		<return-type>float</return-type>
+		<parameter>
+			<name>input</name>
+			<type>Vector3</type>
+			<description>
+				The vector to get a value from
+			</description>
+		</parameter>
+		<description>
+			Gets the x component of a vector
+		</description>
+	</function>
+	
+	<function name="GetY" namespace="vector">
+		<return-type>float</return-type>
+		<parameter>
+			<name>input</name>
+			<type>Vector3</type>
+			<description>
+				The vector to get a value from
+			</description>
+		</parameter>
+		<description>
+			Gets the y component of a vector
+		</description>
+	</function>
+	
+	<function name="RotateTowards" namespace="vector">
+		<return-type>Vector3</return-type>
+		<parameter>
+			<name>vector</name>
+			<type>Vector3</type>
+			<description>
+				The vector to rotate
+			</description>
+		</parameter>
+		<parameter>
+			<name>target</name>
+			<type>Vector3</type>
+			<description>
+				The vector to rotate towards
+			</description>
+		</parameter>
+		<parameter>
+			<name>angle</name>
+			<type>float</type>
+			<description>
+				The maximinum angle, in degress, to rotate by
+			</description>
+		</parameter>
+		<description>
+			Rotates a vector towards another target vector by at most angle degrees
+		</description>
+	</function>
+	
+	<function name="IntToBitmask" namespace="convert">
+		<return-type>bitMask</return-type>
+		<parameter>
+			<name>int</name>
+			<type>int</type>
+			<description>
+				the integer to be reinterpreted
+			</description>
+		</parameter>
+		<description>
+			Casts an integer to a bitmask
+		</description>
+	</function>
+	
+	<function name="String" namespace="convert">
+		<return-type>string</return-type>
+		<parameter>
+			<name>input</name>
+			<type>Any</type>
+			<description>
+				The value to convert to a string
+			</description>
+		</parameter>
+		<description>
+			Converts a value to a string
+		</description>
+	</function>
+	
+	<function name="BuildList" namespace="convert">
+		<return-type>List</return-type>
+		<parameter>
+			<name>list</name>
+			<type>List</type>
+			<description>
+				The list to append to, or nothing if this is the start of the list
+			</description>
+		</parameter>
+		<parameter>
+			<name>element</name>
+			<type>Any</type>
+			<description>
+				The value to append to the list
+			</description>
+		</parameter>
+		<description>
+			Build a list of objects
+		</description>
+	</function>
+	
+	<function name="Int" namespace="convert">
+		<return-type>int</return-type>
+		<parameter>
+			<name>input</name>
+			<type>Any</type>
+			<description>
+				The value to convert to a string
+			</description>
+		</parameter>
+		<description>
+			Converts a value to an int
+		</description>
+	</function>
+	
+	<function name="Float" namespace="convert">
+		<return-type>float</return-type>
+		<parameter>
+			<name>input</name>
+			<type>Any</type>
+			<description>
+				Converts a value to a float
+			</description>
+		</parameter>
+		<description>
+			Converts a value to an int
+		</description>
+	</function>
+	
+	<function name="ConstantNumber" namespace="math">
+		<return-type>float</return-type>
+		<parameter>
+			<name>input</name>
+			<type>float</type>
+			<description>
+				The constant value
+			</description>
+		</parameter>
+		<description>
+			Used to allow constant in the spell system
+		</description>
+	</function>
+	
+	<function name="Bool" namespace="convert">
+		<return-type>bool</return-type>
+		<parameter>
+			<name>input</name>
+			<type>Any</type>
+			<description>
+				Converts a value to a boolean
+			</description>
+		</parameter>
+		<description>
+			Converts a value to a boolean
+		</description>
+	</function>
+	
+	<function name="MapRange" namespace="math">
+		<return-type>float</return-type>
+		<parameter>
+			<name>input</name>
+			<type>float</type>
+			<description>
+				The value to map
+			</description>
+		</parameter>
+		<parameter>
+			<name>minInput</name>
+			<type>float</type>
+			<description>
+				The lower bound for the input
+			</description>
+		</parameter>
+		<parameter>
+			<name>maxInput</name>
+			<type>float</type>
+			<description>
+				The upper bound for the input
+			</description>
+		</parameter>
+		<parameter>
+			<name>minOutput</name>
+			<type>float</type>
+			<description>
+				The lower bound for the output
+			</description>
+		</parameter>
+		<parameter>
+			<name>maxOutput</name>
+			<type>float</type>
+			<description>
+				The upper bound for the output
+			</description>
+		</parameter>
+		<description>
+			Maps a value from one range onto another
+		</description>
+	</function>
+	
+	<function name="CreateVector3" namespace="vector">
+		<return-type>Vector3</return-type>
+		<parameter>
+			<name>x</name>
+			<type>float</type>
+			<description>
+				The first component
+			</description>
+		</parameter>
+		<parameter>
+			<name>y</name>
+			<type>float</type>
+			<description>
+				The second component
+			</description>
+		</parameter>
+		<parameter>
+			<name>z</name>
+			<type>float</type>
+			<description>
+				The third component
+			</description>
+		</parameter>
+		<description>
+			Converts three floats to a vector
+		</description>
+	</function>
+	
+</effect-settings>

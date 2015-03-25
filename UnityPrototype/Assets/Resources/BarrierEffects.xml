@@ -1,0 +1,17 @@
+<effect-settings>
+	<input-configuration name="rect-wall-in" parent="game-object-in">
+		<parameter>
+			<name>size</name>
+			<type>Vector3</type>
+			<description>the size of the barrier</description>
+		</parameter>
+	</input-configuration>
+	<output-configuration name="rect-wall-out" parent="game-object-out">
+	</output-configuration>
+	
+	<effect class="RectangleBarrier" alias="rect-wall" namespace="barrier" input="rect-wall-in" output="rect-wall-out">
+		<description>
+			Creates a rectangular barrier that cannot be passed through
+		</description>
+	</effect>
+</effect-settings>

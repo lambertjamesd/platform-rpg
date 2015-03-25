@@ -1,0 +1,46 @@
+<caster id="caster">
+	<on-fire id="fire">
+		<projectile id="projectile">
+			<direction>fire.direction</direction>
+			<speed>20</speed>
+			<position>caster.position</position>
+			<use-gravity>true</use-gravity>
+			<radius>0.2</radius>
+			<prefab>"ProjectileTest"</prefab>
+			
+			<on-hit id="hit">
+			
+				<circle-area id="areaEffect">
+					<radius>2</radius>
+					<position>projectile.position + {0,1,0}</position>
+					<collideWith>caster.enemyLayers + 1i</collideWith>
+					
+					<on-enter id="damaged">
+						<damage>
+							<amount>10</amount>
+							<target>damaged.gameObject</target>
+						</damage>
+						<knockback>
+							<strength>5.0</strength>
+							<direction>damaged.position-projectile.position</direction>
+							<target>damaged.gameObject</target>
+						</knockback>
+					</on-enter>
+				</circle-area>
+				
+				<delay>
+					<frames>10i</frames>
+					<on-timeout>
+						<destroy>
+							<target>areaEffect.gameObject</target>
+						</destroy>
+					</on-timeout>
+				</delay>
+				
+				<destroy>
+					<target>projectile.gameObject</target>
+				</destroy>
+			</on-hit>
+		</projectile>
+	</on-fire>
+</caster>

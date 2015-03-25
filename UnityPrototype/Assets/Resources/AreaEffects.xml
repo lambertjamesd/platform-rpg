@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<effect-settings>
+	<input-configuration name="area-effect-in" parent="game-object-in">
+	</input-configuration>
+	
+	<output-configuration name="area-effect-event">
+		<parameter>
+			<name>gameObject</name>
+			<type>GameObject</type>
+			<description>
+				The game object that has made contact
+			</description>
+		</parameter>
+		<parameter>
+			<name>position</name>
+			<type>Vector3</type>
+			<description>
+				The position of the contacted game object
+			</description>
+		</parameter>
+		<parameter>
+			<name>layer</name>
+			<type>int</type>
+			<description>
+				The collision layer of the contacted object
+			</description>
+		</parameter>
+	</output-configuration>
+	
+	<output-configuration name="area-effect-out" parent="game-object-out">
+		<event name="on-enter" parent="area-effect-event">
+			<description>
+				Called when another object enters the collision area of this object
+			</description>
+		</event>
+		<event name="on-stay" parent="area-effect-event">
+			<description>
+				Called each update cycle an object in contained in the object area
+			</description>
+		</event>
+		<event name="on-exit" parent="area-effect-event">
+			<description>
+				Called when an object leaves the area
+			</description>
+		</event>
+	</output-configuration>
+	
+	<input-configuration name="circle-area-in" parent="area-effect-in">
+		<parameter>
+			<name>radius</name>
+			<type>float</type>
+			<description>
+				The radius of the ciruclar area
+			</description>
+		</parameter>
+		<parameter>
+			<name>collideWith</name>
+			<type>bitMask</type>
+			<description>
+				A collision mask specifying the layers this object collides with
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="circle-area-out" parent="area-effect-out">
+	</output-configuration>
+	
+	<effect class="CircleAreaEffect" alias="circle-area" namespace="aoe" input="circle-area-in" output="circle-area-out">
+		<description>
+			Creates a circular area that can detect when objects pass through
+		</description>
+	</effect>
+	
+	<output-configuration name="laser-area-out" parent="area-effect-out">
+	</output-configuration>
+	
+	<input-configuration name="laser-area-in" parent="area-effect-in">
+		<parameter>
+			<name>blockRadius</name>
+			<type>float</type>
+			<description>
+				The radius of the laser beam
+			</description>
+		</parameter>
+		<parameter>
+			<name>blockLayers</name>
+			<type>bitMask</type>
+			<description>
+				A collision mask specifying the layers that can block the laser
+			</description>
+		</parameter>
+		<parameter>
+			<name>areaRadius</name>
+			<type>float</type>
+			<description>
+				The radius effected by the laser beam
+			</description>
+		</parameter>
+		<parameter>
+			<name>areaLayers</name>
+			<type>bitMask</type>
+			<description>
+				A collision mask specifying the layers the laser collides with
+			</description>
+		</parameter>
+		<parameter>
+			<name>maxRange</name>
+			<type>float</type>
+			<description>
+				The range of the laser beam
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<effect class="LaserArea" alias="laser-area" namespace="aoe" input="laser-area-in" output="laser-area-out">
+		<description>
+			Fires a laser until it block by something using collision layers then triggers events for any objects in the areaRadius from the laser
+		</description>
+	</effect>
+	
+	<input-configuration name="capsule-area-in" parent="area-effect-in">
+		<parameter>
+			<name>center</name>
+			<type>Vector3</type>
+			<description>
+				The center of the capsule, in local coordinates
+			</description>
+		</parameter>
+		<parameter>
+			<name>capsuleUp</name>
+			<type>Vector3</type>
+			<description>
+				The up direction of the capsule
+			</description>
+		</parameter>
+		<parameter>
+			<name>lockRotation</name>
+			<type>bool</type>
+			<description>
+				If true, the up direction is fixed in world coordinates
+			</description>
+		</parameter>
+		<parameter>
+			<name>radius</name>
+			<type>float</type>
+			<description>
+				The radius of the capsule area
+			</description>
+		</parameter>
+		<parameter>
+			<name>height</name>
+			<type>float</type>
+			<description>
+				The height of the capsule
+			</description>
+		</parameter>
+		<parameter>
+			<name>colliderSource</name>
+			<type>GameObject</type>
+			<description>
+				If set, the area to attempt to match the collider of the game object. If it does, all shape attributes are overriden
+			</description>
+		</parameter>
+		<parameter>
+			<name>collideWith</name>
+			<type>bitMask</type>
+			<description>
+				A collision mask specifying the layers this object collides with
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="capsule-area-out" parent="area-effect-out">
+	</output-configuration>
+	
+	<effect class="CapsuleArea" alias="capsule-area" namespace="aoe" input="capsule-area-in" output="capsule-area-out">
+		<description>
+			Creates an area the shape of a capsule
+		</description>
+	</effect>
+</effect-settings>

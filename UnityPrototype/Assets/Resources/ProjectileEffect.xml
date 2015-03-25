@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<effect-settings>
+	<input-configuration name="projectile-in" parent="game-object-in">
+		<parameter>
+			<name>direction</name>
+			<type>Vector3</type>
+			<description>
+				The direction the projectile will fire
+			</description>
+		</parameter>
+		<parameter>
+			<name>speed</name>
+			<type>float</type>
+			<description>
+				The speed of the projectile
+			</description>
+		</parameter>
+		<parameter>
+			<name>radius</name>
+			<type>float</type>
+			<description>
+				The radius of the projectile
+			</description>
+		</parameter>
+		<parameter>
+			<name>useGravity</name>
+			<type>bool</type>
+			<description>
+				if true, the projectile will be affected by gravity
+			</description>
+		</parameter>
+		<parameter>
+			<name>bounceFactor</name>
+			<type>float</type>
+			<description>
+				a value between 0 and 1 that determines how much the projectile bounces
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="projectile-hit">
+		<parameter>
+			<name>gameObject</name>
+			<type>GameObject</type>
+			<description>
+				The game object the projectile hit
+			</description>
+		</parameter>
+		<parameter>
+			<name>position</name>
+			<type>Vector3</type>
+			<description>
+				The place of contact
+			</description>
+		</parameter>
+		<parameter>
+			<name>normal</name>
+			<type>Vector3</type>
+			<description>
+				The direction pointing away from the surface where contact is made
+			</description>
+		</parameter>
+	</output-configuration>
+	
+	<output-configuration name="projectile-out" parent="game-object-out">
+		<parameter>
+			<name>velocity</name>
+			<type>Vector3</type>
+			<description>
+				The current velocity of the projectile
+			</description>
+		</parameter>
+		<event name="on-hit" parent="projectile-hit">
+			<description>
+				Called whenever the projectile hits another object
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="Projectile" alias="projectile" input="projectile-in" output="projectile-out" namespace="movement">
+		<description>
+			Creates a spherical projectile at the indicated position and fires it in the indicated direction
+		</description>
+	</effect>
+	
+	<input-configuration name="swing-in" parent="game-object-in">
+		<parameter>
+			<name>finalUp</name>
+			<type>Vector3</type>
+			<description>
+				The up direction at the end of the swing
+			</description>
+		</parameter>
+		<parameter>
+			<name>duration</name>
+			<type>float</type>
+			<description>
+				The duration of the swing
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="swing-out" parent="game-object-out">
+		<event name="on-finish">
+			<description>
+				Called at the end of the swing
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="SwingEffect" alias="swing" input="swing-in" output="swing-out" namespace="movement">
+		<description>
+			Rotates an object to a specified orientation
+		</description>
+	</effect>
+</effect-settings>

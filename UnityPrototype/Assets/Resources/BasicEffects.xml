@@ -1,0 +1,380 @@
+<effect-settings>
+	
+	
+
+	<input-configuration name="destroy-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The game object to destroy
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<effect class="DestroyGameObjectEffect" alias="destroy" namespace="game object" input="destroy-in">
+		<description>
+			Destroys a game object
+		</description>
+	</effect>
+	
+	<input-configuration name="cancel-in">
+		<parameter>
+			<name>target</name>
+			<type>IEffect</type>
+			<description>
+				The effect to cancel
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<effect class="CancelEventEffect" alias="cancel" namespace="control" input="cancel-in">
+		<description>
+			Cancels an effect
+		</description>
+	</effect>
+	
+	
+	<input-configuration name="damage-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The game object to damage
+			</description>
+		</parameter>
+		<parameter>
+			<name>amount</name>
+			<type>float</type>
+			<description>
+				The amount of damage to apply
+			</description>
+		</parameter>
+	</input-configuration>
+		
+	<effect class="DamageEffect" alias="damage" namespace="game object" input="damage-in">
+		<description>
+			Sends a damage message to the damager attached to the given game object
+		</description>
+	</effect>
+	
+	<input-configuration name="knockback-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The game object to knockback
+			</description>
+		</parameter>
+		<parameter>
+			<name>direction</name>
+			<type>Vector3</type>
+			<description>
+				The direction of the knockback
+			</description>
+		</parameter>
+		<parameter>
+			<name>strength</name>
+			<type>float</type>
+			<description>
+				The strength of the knockback
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<effect class="Knockback" alias="knockback" namespace="game object" input="knockback-in">
+		<description>
+			Sends a knockback message to any IKnockbackReciever components on the game object
+		</description>
+	</effect>
+	
+	<input-configuration name="delay-in">
+		<parameter>
+			<name>duration</name>
+			<type>float</type>
+			<description>
+				The time in seconds to delay
+			</description>
+		</parameter>
+		<parameter>
+			<name>pauseOnTransition</name>
+			<type>bool</type>
+			<description>
+				If true, the timer only counts when players have control
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="delay-out">
+		<parameter>
+			<name>effect</name>
+			<type>IEffect</type>
+			<description>
+				A reference to the delay effect
+			</description>
+		</parameter>
+		<event name="on-timeout">
+			<description>
+Triggered after both duration and frames have passed,
+if you only need only duration set frames to 0
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="DelayEffect" alias="delay" namespace="control" input="delay-in" output="delay-out">
+		<description>
+			Deleys the firing of another event
+		</description>
+	</effect>
+
+	<input-configuration name="repeat-in">
+		<parameter>
+			<name>count</name>
+			<type>int</type>
+			<description>
+				The number of times to repeat the effect
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="repeat-out">
+		<event name="on-repeat">
+			<parameter>
+				<name>index</name>
+				<type>int</type>
+				<description>
+					The current repetition starting at 0 and going to count - 1
+				</description>
+			</parameter>
+			<parameter>
+				<name>normalizedIndex</name>
+				<type>float</type>
+				<description>
+					A value in the range [0, 1] that indicates the current repetition
+				</description>
+			</parameter>
+			<parameter>
+				<name>signedIndex</name>
+				<type>float</type>
+				<description>
+					A value in the range [-1, 1] that indicates the current repetition
+				</description>
+			</parameter>
+			<description>
+				Triggered for each repeat
+			</description>
+		</event>
+	</output-configuration>
+
+	<effect class="RepeatEffect" alias="repeat" namespace="control" input="repeat-in" output="repeat-out">
+		<description>
+			Repeats an event multiple times
+		</description>
+	</effect>
+	
+	
+	<input-configuration name="if-in">
+		<parameter>
+			<name>condition</name>
+			<type>bool</type>
+			<description>
+				The condition to evaluate
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="if-out">
+		<event name="on-true">
+			<description>
+This event is triggered if the condition is true
+			</description>
+		</event>
+		<event name="on-false">
+			<description>
+This event is triggered if the condition is false
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="IfEffect" alias="if"  namespace="control" input="if-in" output="if-out">
+		<description>
+			Selects between two events based on a condition
+		</description>
+	</effect>
+	
+	<input-configuration name="debug-log-in">
+		<parameter>
+			<name>input</name>
+			<type>Any</type>
+			<description>
+				The value to print to the console
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<effect class="DebugLogEffect" alias="debug-log" namespace="debug" input="debug-log-in">
+		<description>
+			Outputs a value to the console
+		</description>
+	</effect>
+	
+	<input-configuration name="teleport-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The object to move
+			</description>
+		</parameter>
+		<parameter>
+			<name>position</name>
+			<type>Vector3</type>
+			<description>
+				The position to teleport to
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="teleport-out">
+		<event name="on-success">
+			<description>
+Called if the teleport was successful
+			</description>
+		</event>
+		<event name="on-fail">
+			<description>
+Called if the teleport failed
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="TeleportEffect" alias="teleport" namespace="movement" input="teleport-in" output="teleport-out">
+		<description>
+			Teleports an object to a specific location
+		</description>
+	</effect>
+	
+	<input-configuration name="dash-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The object to move
+			</description>
+		</parameter>
+		<parameter>
+			<name>position</name>
+			<type>Vector3</type>
+			<description>
+				The position to teleport to
+			</description>
+		</parameter>
+		<parameter>
+			<name>speed</name>
+			<type>float</type>
+			<description>
+				The speed to dash at
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="dash-out">
+		<event name="on-completed">
+			<description>
+				Called if the dash completed without being interrupted
+			</description>
+		</event>
+		<event name="on-interrupted">
+			<description>
+				Called if the dash was interrupted
+			</description>
+		</event>
+		<event name="on-ended">
+			<description>
+				Called after the dash completes or is interrupted
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="DashEffect" alias="dash" namespace="movement" input="dash-in" output="dash-out">
+		<description>
+			Dashes to a location at a speed
+		</description>
+	</effect>
+
+	<input-configuration name="get-ancestor-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The game object to search
+			</description>
+		</parameter>
+		<parameter>
+			<name>name</name>
+			<type>string</type>
+			<description>
+				The name of the ancestor to retrieve. If no name is specified the immediate parent is used.
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="get-ancestor-out">
+		<parameter>
+			<name>result</name>
+			<type>GameObject</type>
+			<description>
+				The ancestor retreived
+			</description>
+		</parameter>
+	</output-configuration>
+	
+	<effect class="GetAncestorEffect" alias="get-ancestor" namespace="game object" input="get-ancestor-in" output="get-ancestor-out">
+		<description>
+			Gets an ancestor from a game object by name, or the immediate parent of no name is specified
+		</description>
+	</effect>
+	
+	<input-configuration name="capture-value-in">
+		<parameter>
+			<name>input</name>
+			<type>Any</type>
+			<description>
+				The value to capture
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="capture-value-out">
+		<parameter>
+			<name>result</name>
+			<type>Any</type>
+			<description>
+				The value of the captured input
+			</description>
+		</parameter>
+	</output-configuration>
+	
+	<effect class="CaptureValueEffect" alias="capture-value"  namespace="control" input="capture-value-in" output="capture-value-out">
+		<description>
+			Grabs and saves the current value for any property
+		</description>
+	</effect>
+	
+	<input-configuration name="debug-log-in">
+		<parameter>
+			<name>input</name>
+			<type>Any</type>
+			<description>
+				The value to print to the console
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<effect class="DebugLogEffect" alias="debug-log" namespace="debug" input="debug-log-in">
+		<description>
+			Outputs a value to the console
+		</description>
+	</effect>
+
+</effect-settings>

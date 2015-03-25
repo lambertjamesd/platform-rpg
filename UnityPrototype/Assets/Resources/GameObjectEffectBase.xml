@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<effect-settings>
+	<input-configuration name="game-object-in">
+		<parameter>
+			<name>prefab</name>
+			<type>Prefab</type>
+			<description>
+				A game object prefab used to initialize the game object
+			</description>
+		</parameter>
+		<parameter>
+			<name>gameObject</name>
+			<type>GameObject</type>
+			<description>
+				An existing game object to attach to
+			</description>
+		</parameter>
+		<parameter>
+			<name>layer</name>
+			<type>int</type>
+			<description>
+				The collision layer
+			</description>
+		</parameter>
+		<parameter>
+			<name>parent</name>
+			<type>GameObject</type>
+			<description>
+				The parent of this game object
+			</description>
+		</parameter>
+		<parameter>
+			<name>position</name>
+			<type>Vector3</type>
+			<description>
+				The center of the game object
+			</description>
+		</parameter>
+		<parameter>
+			<name>up</name>
+			<type>Vector3</type>
+			<description>
+				The direction the top of the game object faces
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="game-object-out">
+		<parameter>
+			<name>gameObject</name>
+			<type>GameObject</type>
+			<description>
+				The game object this effect is attached to
+			</description>
+		</parameter>
+		<parameter>
+			<name>position</name>
+			<type>Vector3</type>
+			<description>
+				The position of the game object
+			</description>
+		</parameter>
+		<parameter>
+			<name>up</name>
+			<type>Vector3</type>
+			<description>
+				The direction the top of the game object faces
+			</description>
+		</parameter>
+		<parameter>
+			<name>layer</name>
+			<type>int</type>
+			<description>
+				The collision layer this game object is on
+			</description>
+		</parameter>
+	</output-configuration>
+</effect-settings>

@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<caster id="caster1" editor:position="50,50" xmlns:editor="text://editor">
+	<on-fire id="onfire1" />
+</caster>

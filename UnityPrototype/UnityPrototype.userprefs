@@ -1,0 +1,25 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Spells\SpellCaster.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Player\PlayerHUD.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Player\States\FreeFallState.cs" Line="20" Column="51" />
+      <File FileName="Assets\Scripts\Player\PlayerBuff.cs" Line="54" Column="30" />
+      <File FileName="Assets\Scripts\Effect\EffectFunctionProperty.cs" Line="153" Column="30" />
+      <File FileName="Assets\Resources\BuffEffects.xml" Line="48" Column="21" />
+      <File FileName="Assets\Scripts\Player\Player.cs" Line="442" Column="42" />
+      <File FileName="Assets\Scripts\Player\PlayerSettings.cs" Line="27" Column="3" />
+      <File FileName="Assets\Scripts\Player\States\JumpState.cs" Line="53" Column="3" />
+      <File FileName="Assets\Scripts\Player\States\DashState.cs" Line="23" Column="3" />
+      <File FileName="Assets\Scripts\Spells\SpellCaster.cs" Line="47" Column="4" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="C:\Users\James\Documents\PRPG\UnityPrototype\Assets\Scripts\AreaEffect.cs" line="27" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="Assets\Scripts\TilemapOverlapCorrecter.cs" line="278" offsetX="1054" offsetY="4432" expression="convexSection" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
+</Properties>

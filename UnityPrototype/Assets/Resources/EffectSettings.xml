@@ -1,0 +1,112 @@
+<effect-settings>
+	<include>BasicEffects</include>
+	
+	<include>GameObjectEffectBase</include>
+	<include>AreaEffects</include>
+	<include>BarrierEffects</include>
+	<include>ProjectileEffect</include>
+	<include>TimeEffects</include>
+	<include>BuffEffects</include>
+
+	<include>FunctionSettings</include>
+		
+	<output-configuration name="caster-spell-event">
+		<parameter>
+			<name>position</name>
+			<type>Vector3</type>
+			<description>The position the spell is cast at</description>
+		</parameter>
+		<parameter>
+			<name>direction</name>
+			<type>Vector3</type>
+			<description>the direction the caster is aiming</description>
+		</parameter>
+		<parameter>
+			<name>index</name>
+			<type>int</type>
+			<description>
+				The index of the spell being cast
+			</description>
+		</parameter>
+	</output-configuration>
+		
+	<output-configuration name="caster-fire" parent="caster-spell-event">
+		<parameter>
+			<name>position</name>
+			<type>Vector3</type>
+			<description>The position the spell is cast at</description>
+		</parameter>
+		<parameter>
+			<name>direction</name>
+			<type>Vector3</type>
+			<description>the direction the caster is aiming</description>
+		</parameter>
+		<parameter>
+			<name>holdTime</name>
+			<type>float</type>
+			<description>The length of time the fire button was held</description>
+		</parameter>
+		<parameter>
+			<name>holdTimeNormalized</name>
+			<type>float</type>
+			<description>A value between 0-1 representing how long the the spell was charged</description>
+		</parameter>
+	</output-configuration>
+	
+	<output-configuration name="caster-out" parent="game-object-out">
+		<event name="on-fire" parent="caster-fire">
+			<description>
+				Called whenever the player releases the cast button
+			</description>
+		</event>
+		<event name="on-begin" parent="caster-spell-event">
+			<description>
+				Called whenever the player presses the cast button
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect alias="caster" is-root="true" output="caster-out">
+		<description>
+			Casts spells in a specific direction
+		</description>
+	</effect>
+	
+	<input-configuration name="caster-fire-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The caster event to watch for
+			</description>
+		</parameter>
+		<parameter>
+			<name>spellIndex</name>
+			<type>int</type>
+			<description>
+				The spell to watch
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="caster-fire-out">
+		<parameter>
+			<name>effect</name>
+			<type>IEffect</type>
+			<description>
+				A reference to the fire listener used to cancel the listener
+			</description>
+		</parameter>
+		<event name="on-fire" parent="caster-fire">
+			<description>
+				Called whenever the player releases the cast button
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="SpellCasterFireEvent" alias="caster-fire" namespace="effect" output="caster-fire-out" input="caster-fire-in">
+		<description>
+			Listens for the fire event on a caster
+		</description>
+	</effect>
+</effect-settings>

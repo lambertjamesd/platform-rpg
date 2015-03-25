@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>10.0.20506</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{F80DCA04-0CA5-F82F-7123-422C953250D1}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace></RootNamespace>
+	<AssemblyName>Assembly-CSharp-Editor</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
+	<BaseDirectory>Assets</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_0;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+	<Reference Include="System" />
+    <Reference Include="System.XML" />
+	<Reference Include="System.Core" />
+	<Reference Include="System.Xml.Linq" />
+	<Reference Include="UnityEngine">
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	</Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\Editor\OverlapCorrectorEditor.cs" />
+     <Compile Include="Assets\Editor\SpellDescriptionEditor.cs" />
+     <Compile Include="Assets\Editor\SpellEditor\SpellAttributeBuilder.cs" />
+     <Compile Include="Assets\Editor\SpellEditor\SpellBuiltInNodes.cs" />
+     <Compile Include="Assets\Editor\SpellEditor\SpellConnection.cs" />
+     <Compile Include="Assets\Editor\SpellEditor\SpellEditor.cs" />
+     <Compile Include="Assets\Editor\SpellEditor\SpellInpectorEditor.cs" />
+     <Compile Include="Assets\Editor\SpellEditor\SpellNode.cs" />
+     <Compile Include="Assets\Editor\SpellEditor\SpellNodeIterator.cs" />
+     <Compile Include="Assets\Editor\SpellEditor\SpellNodeType.cs" />
+     <Compile Include="Assets\Editor\SpellEditor\SpellTypeParser.cs" />
+     <Compile Include="Assets\Editor\SpellEditor\SpellXmlGenerator.cs" />
+     <Compile Include="Assets\Editor\SpellEditor\SpellXmlLoader.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\GUI\SpriterEntityInspector.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\BoneRef.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\BoneTimelineKey.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\Entity.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\File.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\Folder.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\Key.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\KeyElem.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\MainlineKey.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\ObjectRef.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\ObjectType.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\Ref.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\ScmlObject.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\SpatialInfo.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\SpatialTimelineKey.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\SpriteTimelineKey.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\SpriterAnimation.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\Timeline.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Spriter\TimelineKey.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Unity\AnimationBuilder.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Unity\AnimationCurveBuilder.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Unity\PrefabBuilder.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Unity\ScmlPostProcessor.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Utils\AnimationCurveUtils.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Utils\AssetUtils.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Utils\PrefabUtils.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Editor\Utils\XmlUtils.cs" />
+     <Compile Include="Assets\ThirdParty\Spriter2Unity\Example\Editor\AnimationTestScriptInspector.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\CornerMappingTool.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\DrawTilesTool.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\LargeEdgeSplitterEditor.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\LargeTileSplitterEditor.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\MeshSimplifyTestEditor.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\PlaceObjectsTool.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\PlaceableObjectEditor.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\RaiseTool.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\RoomEditor.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\SceneTour.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\ShapeTilesTool.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\TileCornerEditor.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\TileEdgeEditor.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\TileEditor.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\TileSelector.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\TilesetEditor.cs" />
+     <Compile Include="Assets\newMapEditor\Editor\VoxelMapEditor.cs" />
+     <None Include="Assets\Resources\TimeEffects.xml" />
+     <None Include="Assets\Resources\EffectSettings.xml" />
+     <None Include="Assets\Resources\BarrierEffects.xml" />
+     <None Include="Assets\Effects\Wall.xml" />
+     <None Include="Assets\Resources\GameObjectEffectBase.xml" />
+     <None Include="Assets\ThirdParty\Spriter2Unity\Example\Spriter Project\GreyGuy\Copyright_Information_Please_Read.txt" />
+     <None Include="Assets\Resources\FunctionSettings.xml" />
+     <None Include="Assets\Resources\AreaEffects.xml" />
+     <None Include="Assets\Resources\ProjectileEffect.xml" />
+     <None Include="Assets\Effects\Grenade.xml" />
+     <None Include="Assets\Resources\BuffEffects.xml" />
+     <None Include="Assets\JSON Tests\TroubleShoot.txt" />
+     <None Include="Assets\Resources\BasicEffects.xml" />
+ <Reference Include="Assembly-UnityScript">
+ <HintPath>Library\ScriptAssemblies\Assembly-UnityScript.dll</HintPath>
+ </Reference>
+ <Reference Include="ICSharpCode.SharpZipLib">
+ <HintPath>Assets\plugins\ICSharpCode.SharpZipLib.dll</HintPath>
+ </Reference>
+ <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
+ <HintPath>Assets\UnityVS\Editor\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+ </Reference>
+ <Reference Include="SyntaxTree.VisualStudio.Unity.Messaging">
+ <HintPath>Assets\UnityVS\Editor\SyntaxTree.VisualStudio.Unity.Messaging.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityVS.VersionSpecific">
+ <HintPath>Assets\UnityVS\Editor\UnityVS.VersionSpecific.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.Graphs">
+ <HintPath>C:\Program Files (x86)\Unity\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.iOS.Extensions">
+ <HintPath>C:\Program Files (x86)\Unity\Editor\Data\PlaybackEngines\iPhonePlayer\EditorExtensions\UnityEditor.iOS.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.WP8.Extensions">
+ <HintPath>C:\Program Files (x86)\Unity\Editor\Data\PlaybackEngines\WP8Support\EditorExtensions\UnityEditor.WP8.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.Metro.Extensions">
+ <HintPath>C:\Program Files (x86)\Unity\Editor\Data\PlaybackEngines\MetroSupport\EditorExtensions\UnityEditor.Metro.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.BB10.Extensions">
+ <HintPath>C:\Program Files (x86)\Unity\Editor\Data\PlaybackEngines\BB10Player\EditorExtensions\UnityEditor.BB10.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.Android.Extensions">
+ <HintPath>C:\Program Files (x86)\Unity\Editor\Data\PlaybackEngines\AndroidPlayer\EditorExtensions\UnityEditor.Android.Extensions.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
+      <Project>{44AF0924-3C79-4E8F-AE52-FBD53549D31F}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
+    <ProjectReference Include="Assembly-CSharp-vs.csproj">
+      <Project>{FB85BFE7-7583-106D-4538-9F2A689B0C52}</Project>      <Name>Assembly-CSharp-vs</Name>    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	   Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>
