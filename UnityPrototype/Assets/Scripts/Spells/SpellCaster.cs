@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public interface SpellcastFireListener
 {
@@ -66,7 +67,7 @@ public class SpellCasterFireEvent : EffectObject, SpellcastFireListener
 	}
 }
 
-public class SpellCaster : MonoBehaviour {
+public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 	public SpellDescription[] spells;
 	
@@ -77,6 +78,19 @@ public class SpellCaster : MonoBehaviour {
 		public bool isFiring;
 		public List<SpellcastFireListener> fireListeners;
 		public int loopIndex;
+
+		public SpellState Copy()
+		{
+			SpellState result = new SpellState();
+
+			result.cooldownTime = cooldownTime;
+			result.startTime = startTime;
+			result.isFiring = isFiring;
+			result.fireListeners = fireListeners.GetRange(0, fireListeners.Count);
+			result.loopIndex = loopIndex;
+
+			return result;
+		}
 
 		public void SpellStart(float timestamp, float cooldown)
 		{
@@ -127,6 +141,7 @@ public class SpellCaster : MonoBehaviour {
 	private EffectInstance[] rootInstances;
 	private SpellState[] spellStates;
 	private GameObjectPropertySource propertySource;
+	private TimeManager timeManager;
 
 	// Use this for initialization
 	void Start () {
@@ -138,10 +153,14 @@ public class SpellCaster : MonoBehaviour {
 
 		Dictionary<string, object> context = new Dictionary<string, object>();
 
+		timeManager = gameObject.GetComponentWithAncestors<TimeManager>();
+
 		context["parentGameObject"] = gameObject.GetParent();
 		context["updateManager"] = gameObject.GetComponentWithAncestors<UpdateManager>();
-		context["timeManager"] = gameObject.GetComponentWithAncestors<TimeManager>();
+		context["timeManager"] = timeManager;
 		context["playerManager"] = gameObject.GetComponentWithAncestors<PlayerManager>();
+
+		timeManager.AddTimeTraveler(this);
 
 		for (int i = 0; i < spells.Length; ++i)
 		{
@@ -283,5 +302,20 @@ public class SpellCaster : MonoBehaviour {
 	public float GetSpellCooldown(int index)
 	{
 		return spellStates[index].cooldownTime;
+	}
+	
+	public object GetCurrentState()
+	{
+		return spellStates.Select(spellState => spellState.Copy());
+	}
+
+	public void RewindToState(object state)
+	{
+		spellStates = ((IEnumerable<SpellState>)state).ToArray();
+	}
+	
+	public TimeManager GetTimeManager()
+	{
+		return timeManager;
 	}
 }

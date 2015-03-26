@@ -32,16 +32,6 @@
 		
 	<output-configuration name="caster-fire" parent="caster-spell-event">
 		<parameter>
-			<name>position</name>
-			<type>Vector3</type>
-			<description>The position the spell is cast at</description>
-		</parameter>
-		<parameter>
-			<name>direction</name>
-			<type>Vector3</type>
-			<description>the direction the caster is aiming</description>
-		</parameter>
-		<parameter>
 			<name>holdTime</name>
 			<type>float</type>
 			<description>The length of time the fire button was held</description>
