@@ -67,4 +67,24 @@ public class DashState : MonoBehaviour, IState {
 			dashDelegate.DashInterrupted();
 		}
 	}
+	
+	public object GetCurrentState()
+	{
+		return new object[]{
+			velocity,
+			remainingTime,
+			dashDelegate,
+			completedNomrally
+		};
+	}
+	
+	public void RewindToState(object state)
+	{
+		object[] values = (object[])state;
+		
+		velocity = (Vector3)values[0];
+		remainingTime = (float)values[1];
+		dashDelegate = (IDashStateDelegate)values[2];
+		completedNomrally = (bool)values[3];
+	}
 }

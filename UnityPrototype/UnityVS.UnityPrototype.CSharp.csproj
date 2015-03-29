@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\GizmoHelper.cs" />
     <Compile Include="Assets\Scripts\Knockback.cs" />
     <Compile Include="Assets\Scripts\NumericalHealthBar.cs" />
+    <Compile Include="Assets\Scripts\Player\AnimatorStateSaver.cs" />
     <Compile Include="Assets\Scripts\Player\CharacterControllerHelper.cs" />
     <Compile Include="Assets\Scripts\Player\ControllerInputSource.cs" />
     <Compile Include="Assets\Scripts\Player\IInputSource.cs" />
@@ -102,8 +103,8 @@
     <Compile Include="Assets\Scripts\Player\States\JumpState.cs" />
     <Compile Include="Assets\Scripts\Player\States\MoveState.cs" />
     <Compile Include="Assets\Scripts\Player\States\StateMachine.cs" />
+    <Compile Include="Assets\Scripts\Player\States\WallSlideState.cs" />
     <Compile Include="Assets\Scripts\Player\TeleportDebugger.cs" />
-    <Compile Include="Assets\Scripts\Player\WallSlideState.cs" />
     <Compile Include="Assets\Scripts\RectangleBarrier.cs" />
     <Compile Include="Assets\Scripts\Spells\AreaEffect.cs" />
     <Compile Include="Assets\Scripts\Spells\BasicEffects.cs" />
@@ -137,6 +138,8 @@
     <Compile Include="Assets\newMapEditor\Runtime\Tileset.cs" />
     <Compile Include="Assets\newMapEditor\Runtime\Voxel.cs" />
     <Compile Include="Assets\newMapEditor\Runtime\VoxelMap.cs" />
+    <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\Credits.txt" />
+    <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\HOW TO USE THE SKINS.txt" />
     <None Include="Assets\Effects\Grenade.xml" />
     <None Include="Assets\Effects\Wall.xml" />
     <None Include="Assets\JSON Tests\TroubleShoot.txt" />

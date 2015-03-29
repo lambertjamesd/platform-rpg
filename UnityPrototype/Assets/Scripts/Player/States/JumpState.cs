@@ -82,4 +82,24 @@ public class JumpState : MonoBehaviour, IState {
 	{
 		
 	}
+	
+	public object GetCurrentState()
+	{
+		return new float[]{
+			jumpControlTime,
+			initialJumpImpulse,
+			jumpAcceration,
+			jumpHeightControlWindow
+		};
+	}
+	
+	public void RewindToState(object state)
+	{
+		float[] values = (float[])state;
+
+		jumpControlTime = values[0];
+		initialJumpImpulse = values[1];
+		jumpAcceration = values[2];
+		jumpHeightControlWindow = values[3];
+	}
 }

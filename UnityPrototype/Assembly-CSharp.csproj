@@ -71,6 +71,7 @@
      <Compile Include="Assets\Scripts\GizmoHelper.cs" />
      <Compile Include="Assets\Scripts\Knockback.cs" />
      <Compile Include="Assets\Scripts\NumericalHealthBar.cs" />
+     <Compile Include="Assets\Scripts\Player\AnimatorStateSaver.cs" />
      <Compile Include="Assets\Scripts\Player\CharacterControllerHelper.cs" />
      <Compile Include="Assets\Scripts\Player\ControllerInputSource.cs" />
      <Compile Include="Assets\Scripts\Player\IInputSource.cs" />
@@ -91,8 +92,8 @@
      <Compile Include="Assets\Scripts\Player\States\JumpState.cs" />
      <Compile Include="Assets\Scripts\Player\States\MoveState.cs" />
      <Compile Include="Assets\Scripts\Player\States\StateMachine.cs" />
+     <Compile Include="Assets\Scripts\Player\States\WallSlideState.cs" />
      <Compile Include="Assets\Scripts\Player\TeleportDebugger.cs" />
-     <Compile Include="Assets\Scripts\Player\WallSlideState.cs" />
      <Compile Include="Assets\Scripts\RectangleBarrier.cs" />
      <Compile Include="Assets\Scripts\Spells\AreaEffect.cs" />
      <Compile Include="Assets\Scripts\Spells\BasicEffects.cs" />
@@ -132,11 +133,13 @@
      <None Include="Assets\Effects\Wall.xml" />
      <None Include="Assets\Resources\GameObjectEffectBase.xml" />
      <None Include="Assets\ThirdParty\Spriter2Unity\Example\Spriter Project\GreyGuy\Copyright_Information_Please_Read.txt" />
+     <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\HOW TO USE THE SKINS.txt" />
      <None Include="Assets\Resources\FunctionSettings.xml" />
      <None Include="Assets\Resources\AreaEffects.xml" />
      <None Include="Assets\Resources\ProjectileEffect.xml" />
      <None Include="Assets\Effects\Grenade.xml" />
      <None Include="Assets\Resources\BuffEffects.xml" />
+     <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\Credits.txt" />
      <None Include="Assets\JSON Tests\TroubleShoot.txt" />
      <None Include="Assets\Resources\BasicEffects.xml" />
  <Reference Include="ICSharpCode.SharpZipLib">

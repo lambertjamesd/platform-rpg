@@ -31,23 +31,14 @@ public class DelayEffect : EffectObject, IFixedUpdate
 {
 	private float targetTime;
 	private int startSnapshotIndex;
-	private bool pauseOnTransition;
 	private UpdateManager updateManager;
 	private TimeManager timeManager;
-	private PlayerManager playerManager;
 
 	private float CurrentTime
 	{
 		get
 		{
-			if (pauseOnTransition)
-			{
-				return playerManager.GameTime;
-			}
-			else
-			{
-				return timeManager.CurrentTime;
-			}
+			return timeManager.CurrentTime;
 		}
 	}
 
@@ -55,9 +46,6 @@ public class DelayEffect : EffectObject, IFixedUpdate
 		base.StartEffect(instance);
 		updateManager = instance.GetContextValue<UpdateManager>("updateManager", null);
 		timeManager = instance.GetContextValue<TimeManager>("timeManager", null);
-		playerManager = instance.GetContextValue<PlayerManager>("playerManager", null);
-
-		pauseOnTransition = instance.GetValue<bool>("pauseOnTransition", false);
 		
 		targetTime = CurrentTime + instance.GetValue<float>("duration", 0.0f);
 		startSnapshotIndex = timeManager.SnapshotIndex;

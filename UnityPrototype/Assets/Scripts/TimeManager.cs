@@ -12,12 +12,12 @@ public interface ITimeTravelable
 
 public class TimeSnapshot
 {
-	private Dictionary<ITimeTravelable, object> objectData;
+	private List<object> objectData;
 	private int frame;
 	private float time;
 	private int currentID;
 
-	private TimeSnapshot(Dictionary<ITimeTravelable, object> objectData, int frame, float time, int currentID)
+	private TimeSnapshot(List<object> objectData, int frame, float time, int currentID)
 	{
 		this.objectData = objectData;
 		this.frame = frame;
@@ -27,11 +27,11 @@ public class TimeSnapshot
 
 	public static TimeSnapshot Generate(IList<ITimeTravelable> timeObjects, int frame, float time, int currentID)
 	{
-		Dictionary<ITimeTravelable, object> objectData = new Dictionary<ITimeTravelable, object>();
+		List<object> objectData = new List<object>();
 
 		foreach (ITimeTravelable timeTravelable in timeObjects)
 		{
-			objectData[timeTravelable] = timeTravelable.GetCurrentState();
+			objectData.Add(timeTravelable.GetCurrentState());
 		}
 
 		return new TimeSnapshot(objectData, frame, time, currentID);
@@ -61,19 +61,23 @@ public class TimeSnapshot
 		}
 	}
 
-	public void Apply(IList<ITimeTravelable> timeObjects)
+	public void Apply(List<ITimeTravelable> timeObjects)
 	{
-		foreach (ITimeTravelable timeTraveler in timeObjects)
+		for (int i = 0; i < timeObjects.Count; ++i)
 		{
-			if (objectData.ContainsKey(timeTraveler))
+			ITimeTravelable timeTraveler = timeObjects[i];
+
+			if (i < objectData.Count)
 			{
-				timeTraveler.RewindToState(objectData[timeTraveler]);
+				timeTraveler.RewindToState(objectData[i]);
 			}
 			else
 			{
 				timeTraveler.RewindToState(null);
 			}
 		}
+
+		timeObjects.RemoveRange(objectData.Count, timeObjects.Count - objectData.Count);
 	}
 }
 
@@ -90,7 +94,7 @@ public class TimeManager : MonoBehaviour, IFixedUpdate {
 	public void Start()
 	{
 		updateManager = GetComponent<UpdateManager>();
-		updateManager.AddPriorityReciever(this);
+		updateManager.AddLateReciever(this);
 	}
 
 	public void AddTimeTraveler(ITimeTravelable traveler)
@@ -99,15 +103,6 @@ public class TimeManager : MonoBehaviour, IFixedUpdate {
 		if (!timeObjects.Contains(traveler))
 		{
 			timeObjects.Add(traveler);
-		}
-	}
-
-	public void RemoveTimeTraveler(ITimeTravelable traveler)
-	{
-		// once an object has been added to a snapshot it cannot be removed
-		if (!savedObjects.Contains(traveler))
-		{
-			timeObjects.Remove(traveler);
 		}
 	}
 
@@ -205,10 +200,16 @@ public class TimeManager : MonoBehaviour, IFixedUpdate {
 		
 		foreach (ITimeTravelable travelable in timeTravelableObjects)
 		{
-			if (travelable.GetTimeManager().savedObjects.Contains(travelable))
+			TimeManager timeManager = travelable.GetTimeManager();
+
+			if (timeManager.savedObjects.Contains(travelable))
 			{
 				shouldDestroy = false;
 				break;
+			}
+			else if (timeManager.timeObjects.Contains(travelable))
+			{
+				timeManager.timeObjects.Remove(travelable);
 			}
 		}
 		

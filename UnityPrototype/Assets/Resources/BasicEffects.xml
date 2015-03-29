@@ -96,13 +96,6 @@
 				The time in seconds to delay
 			</description>
 		</parameter>
-		<parameter>
-			<name>pauseOnTransition</name>
-			<type>bool</type>
-			<description>
-				If true, the timer only counts when players have control
-			</description>
-		</parameter>
 	</input-configuration>
 	
 	<output-configuration name="delay-out">

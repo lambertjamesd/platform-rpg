@@ -102,4 +102,42 @@ public class StateMachine {
 			return defaultValue;
 		}
 	}
+
+	private class StateMachineState
+	{
+		public IState currentState;
+		public object currentStateSavedState;
+		
+		public string nextStateName;
+		public IState nextState;
+		
+		public Dictionary<string, System.Object> parameters;
+
+		public StateMachineState(IState currentState, string nextStateName, IState nextState, Dictionary<string, object> parameters)
+		{
+			this.currentState = currentState;
+			this.nextStateName = nextStateName;
+			this.nextState = nextState;
+			this.parameters = parameters;
+
+			currentStateSavedState = currentState.GetCurrentState();
+		}
+	}
+	
+	public object GetCurrentState()
+	{
+		return new StateMachineState(currentState, nextStateName, nextState, parameters);
+	}
+	
+	public void RewindToState(object state)
+	{
+		StateMachineState stateMachineState = (StateMachineState)state;
+
+		currentState = stateMachineState.currentState;
+		nextStateName = stateMachineState.nextStateName;
+		nextState = stateMachineState.nextState;
+		parameters = stateMachineState.parameters;
+
+		currentState.RewindToState(stateMachineState.currentStateSavedState);
+	}
 }

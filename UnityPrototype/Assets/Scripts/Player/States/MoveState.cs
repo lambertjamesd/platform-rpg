@@ -62,4 +62,14 @@ public class MoveState : MonoBehaviour, IState {
 	{
 
 	}
+	
+	public object GetCurrentState()
+	{
+		return null;
+	}
+	
+	public void RewindToState(object state)
+	{
+
+	}
 }

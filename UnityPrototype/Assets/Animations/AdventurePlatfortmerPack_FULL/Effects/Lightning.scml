@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="b6.1">
+    <folder id="0" name="electricity">
+        <file id="0" name="electricity/Lightning_anchor_a.png" width="165" height="101" pivot_x="0.520958" pivot_y="0.330097"/>
+        <file id="1" name="electricity/Lightning_anchor_b.png" width="193" height="126" pivot_x="0.507692" pivot_y="0.414062"/>
+        <file id="2" name="electricity/Lightning_glowband.png" width="91" height="640" pivot_x="0.483871" pivot_y="0.001558"/>
+        <file id="3" name="electricity/Lightning_1.png" width="100" height="640" pivot_x="0.490196" pivot_y="0.003115"/>
+        <file id="4" name="electricity/Lightning_0.png" width="93" height="640" pivot_x="0.526316" pivot_y="0.001558"/>
+        <file id="5" name="electricity/Lighting_0_a.png" width="109" height="640" pivot_x="0.477477" pivot_y="0.0046729"/>
+    </folder>
+    <folder id="1" name="impacts">
+        <file id="0" name="impacts/charge_flash.png" width="210" height="210" pivot_x="0" pivot_y="1"/>
+    </folder>
+    <folder id="2" name="magic_0">
+        <file id="0" name="magic_0/ball_dot_0.png" width="69" height="70" pivot_x="0" pivot_y="1"/>
+    </folder>
+    <entity id="0" name="LightningMagic">
+        <obj_info name="Lightning_anchor_a" type="sprite">
+            <frames>
+                <i folder="0" file="0"/>
+                <i folder="0" file="1"/>
+            </frames>
+        </obj_info>
+        <obj_info name="Lightning_glowband" type="sprite">
+            <frames>
+                <i folder="0" file="2"/>
+            </frames>
+        </obj_info>
+        <obj_info name="Lightning_glowband_000" type="sprite">
+            <frames>
+                <i folder="0" file="2"/>
+            </frames>
+        </obj_info>
+        <obj_info name="Lightning_0" type="sprite">
+            <frames>
+                <i folder="0" file="4"/>
+                <i folder="0" file="3"/>
+            </frames>
+        </obj_info>
+        <obj_info name="Lighting_0_a" type="sprite">
+            <frames>
+                <i folder="0" file="5"/>
+            </frames>
+        </obj_info>
+        <animation id="0" name="LightningBeam" length="1500" looping="false">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" name="Lightning_glowband" folder="0" file="2" abs_x="-8.669347" abs_y="-3.529412" abs_pivot_x="0.483871" abs_pivot_y="0.001558" abs_angle="0" abs_scale_x="2.5" abs_scale_y="1" abs_a="1" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" name="Lightning_glowband_000" folder="0" file="2" abs_x="0" abs_y="0" abs_pivot_x="0.483871" abs_pivot_y="0.001558" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="2" key="0" z_index="1"/>
+                    <object_ref id="2" name="Lighting_0_a" folder="0" file="5" abs_x="5.714286" abs_y="8.571429" abs_pivot_x="0.477477" abs_pivot_y="0.004673" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="4" key="0" z_index="2"/>
+                    <object_ref id="3" name="Lightning_0" folder="0" file="4" abs_x="0.754479" abs_y="-2.773402" abs_pivot_x="0.526316" abs_pivot_y="0.001558" abs_angle="0" abs_scale_x="1.329787" abs_scale_y="1.055935" abs_a="1" timeline="3" key="0" z_index="3"/>
+                    <object_ref id="4" name="Lightning_anchor_a" folder="0" file="0" abs_x="1.327323" abs_y="4.640203" abs_pivot_x="0.510454" abs_pivot_y="0.369954" abs_angle="0" abs_scale_x="1.460135" abs_scale_y="2.235294" abs_a="1" timeline="0" key="0" z_index="4"/>
+                </key>
+                <key id="1" time="54">
+                    <object_ref id="0" timeline="1" key="1" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="1" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="1" z_index="2"/>
+                    <object_ref id="3" timeline="3" key="2" z_index="3"/>
+                    <object_ref id="4" timeline="0" key="2" z_index="4"/>
+                </key>
+                <key id="2" time="146">
+                    <object_ref id="0" timeline="1" key="2" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="2" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="2" z_index="2"/>
+                    <object_ref id="3" timeline="3" key="4" z_index="3"/>
+                    <object_ref id="4" timeline="0" key="4" z_index="4"/>
+                </key>
+                <key id="3" time="245">
+                    <object_ref id="0" timeline="1" key="3" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="3" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="3" z_index="2"/>
+                    <object_ref id="3" timeline="3" key="6" z_index="3"/>
+                    <object_ref id="4" timeline="0" key="6" z_index="4"/>
+                </key>
+                <key id="4" time="344">
+                    <object_ref id="0" timeline="1" key="4" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="4" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="4" z_index="2"/>
+                    <object_ref id="3" timeline="3" key="8" z_index="3"/>
+                    <object_ref id="4" timeline="0" key="8" z_index="4"/>
+                </key>
+                <key id="5" time="441">
+                    <object_ref id="0" timeline="1" key="5" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="5" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="5" z_index="2"/>
+                    <object_ref id="3" timeline="3" key="10" z_index="3"/>
+                    <object_ref id="4" timeline="0" key="10" z_index="4"/>
+                </key>
+                <key id="6" time="538">
+                    <object_ref id="0" timeline="1" key="6" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="6" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="6" z_index="2"/>
+                    <object_ref id="3" timeline="3" key="12" z_index="3"/>
+                    <object_ref id="4" timeline="0" key="12" z_index="4"/>
+                </key>
+                <key id="7" time="637">
+                    <object_ref id="0" timeline="1" key="7" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="7" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="7" z_index="2"/>
+                    <object_ref id="3" timeline="3" key="14" z_index="3"/>
+                    <object_ref id="4" timeline="0" key="14" z_index="4"/>
+                </key>
+                <key id="8" time="735">
+                    <object_ref id="0" timeline="1" key="8" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="8" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="8" z_index="2"/>
+                    <object_ref id="3" timeline="3" key="16" z_index="3"/>
+                    <object_ref id="4" timeline="0" key="16" z_index="4"/>
+                </key>
+                <key id="9" time="833">
+                    <object_ref id="0" timeline="1" key="9" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="9" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="9" z_index="2"/>
+                    <object_ref id="3" timeline="3" key="18" z_index="3"/>
+                    <object_ref id="4" timeline="0" key="18" z_index="4"/>
+                </key>
+                <key id="10" time="1055">
+                    <object_ref id="0" timeline="1" key="9" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="9" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="9" z_index="2"/>
+                    <object_ref id="3" timeline="3" key="20" z_index="3"/>
+                    <object_ref id="4" timeline="0" key="18" z_index="4"/>
+                </key>
+                <key id="11" time="1208">
+                    <object_ref id="0" timeline="1" key="9" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="9" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="9" z_index="2"/>
+                    <object_ref id="3" timeline="3" key="22" z_index="3"/>
+                    <object_ref id="4" timeline="0" key="18" z_index="4"/>
+                </key>
+                <key id="12" time="1377">
+                    <object_ref id="0" timeline="1" key="10" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="10" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="10" z_index="2"/>
+                    <object_ref id="3" timeline="3" key="23" z_index="3"/>
+                    <object_ref id="4" timeline="0" key="19" z_index="4"/>
+                </key>
+            </mainline>
+            <timeline id="0" obj="0" name="Lightning_anchor_a">
+                <key id="0" spin="0">
+                    <object folder="0" file="0" x="1.327323" y="4.640203" pivot_x="0.510454" pivot_y="0.369954" angle="0" scale_x="1.460135" scale_y="2.235294"/>
+                </key>
+                <key id="1" time="54" spin="0">
+                    <object folder="0" file="0" x="1.301075" y="0.633366" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="2" time="54" curve_type="instant">
+                    <object folder="0" file="1" x="0.636661" y="7.560374" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="3" time="146" spin="0">
+                    <object folder="0" file="1" x="-2.091574" y="18.130434" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="4" time="146" curve_type="instant">
+                    <object folder="0" file="0" x="0.636661" y="7.560374" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="5" time="245" spin="0">
+                    <object folder="0" file="0" x="3.827869" y="-5.626038" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="6" time="245" curve_type="instant">
+                    <object folder="0" file="1" x="0.636661" y="7.560374" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="7" time="344" spin="0">
+                    <object folder="0" file="1" x="-2.091574" y="18.130434" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="8" time="344" curve_type="instant">
+                    <object folder="0" file="0" x="0.636661" y="7.560374" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="9" time="441" spin="0">
+                    <object folder="0" file="0" x="3.827869" y="-5.626038" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="10" time="441" curve_type="instant">
+                    <object folder="0" file="1" x="0.636661" y="7.560374" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="11" time="538" spin="0">
+                    <object folder="0" file="1" x="-2.091574" y="18.130434" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="12" time="538" curve_type="instant">
+                    <object folder="0" file="0" x="0.636661" y="7.560374" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="13" time="637" spin="0">
+                    <object folder="0" file="0" x="3.827869" y="-5.626038" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="14" time="637" curve_type="instant">
+                    <object folder="0" file="1" x="0.636661" y="7.560374" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="15" time="735" spin="0">
+                    <object folder="0" file="1" x="-2.091574" y="18.130434" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="16" time="735" curve_type="instant">
+                    <object folder="0" file="0" x="0.636661" y="7.560374" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="17" time="833" spin="0">
+                    <object folder="0" file="0" x="3.827869" y="-5.626038" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="18" time="833" spin="0">
+                    <object folder="0" file="1" x="0.636661" y="7.560374" angle="0" scale_x="1.246401" scale_y="1.246401"/>
+                </key>
+                <key id="19" time="1377" spin="0">
+                    <object folder="0" file="1" x="0.636661" y="-0.841843" angle="0" scale_x="1.246401" scale_y="0.885827" a="0"/>
+                </key>
+            </timeline>
+            <timeline id="1" obj="1" name="Lightning_glowband">
+                <key id="0" spin="0">
+                    <object folder="0" file="2" x="-8.669347" y="-3.529412" angle="0" scale_x="2.5"/>
+                </key>
+                <key id="1" time="54" spin="0">
+                    <object folder="0" file="2" x="-4.845717" y="-3.529412" angle="0" scale_x="1.78744"/>
+                </key>
+                <key id="2" time="146" spin="0">
+                    <object folder="0" file="2" x="-4.845717" y="-3.529412" angle="0" scale_x="1.78744"/>
+                </key>
+                <key id="3" time="245" spin="0">
+                    <object folder="0" file="2" x="-4.845717" y="-3.529412" angle="0" scale_x="1.78744"/>
+                </key>
+                <key id="4" time="344" spin="0">
+                    <object folder="0" file="2" x="-4.845717" y="-3.529412" angle="0" scale_x="1.78744"/>
+                </key>
+                <key id="5" time="441" spin="0">
+                    <object folder="0" file="2" x="-4.845717" y="-3.529412" angle="0" scale_x="1.78744"/>
+                </key>
+                <key id="6" time="538" spin="0">
+                    <object folder="0" file="2" x="-4.845717" y="-3.529412" angle="0" scale_x="1.78744"/>
+                </key>
+                <key id="7" time="637" spin="0">
+                    <object folder="0" file="2" x="-4.845717" y="-3.529412" angle="0" scale_x="1.78744"/>
+                </key>
+                <key id="8" time="735" spin="0">
+                    <object folder="0" file="2" x="-4.845717" y="-3.529412" angle="0" scale_x="1.78744"/>
+                </key>
+                <key id="9" time="833" spin="0">
+                    <object folder="0" file="2" x="-4.845717" y="-3.529412" angle="0" scale_x="1.78744"/>
+                </key>
+                <key id="10" time="1377" spin="0">
+                    <object folder="0" file="2" x="-4.845717" y="-3.529412" angle="0" scale_x="1.78744" a="0"/>
+                </key>
+            </timeline>
+            <timeline id="2" obj="2" name="Lightning_glowband_000">
+                <key id="0" spin="0">
+                    <object folder="0" file="2" angle="0"/>
+                </key>
+                <key id="1" time="54" spin="0">
+                    <object folder="0" file="2" angle="0"/>
+                </key>
+                <key id="2" time="146" spin="0">
+                    <object folder="0" file="2" x="0.252895" y="-9.582483" angle="0" scale_x="0.679348"/>
+                </key>
+                <key id="3" time="245" spin="0">
+                    <object folder="0" file="2" angle="0"/>
+                </key>
+                <key id="4" time="344" spin="0">
+                    <object folder="0" file="2" x="0.252895" y="-9.582483" angle="0" scale_x="0.679348"/>
+                </key>
+                <key id="5" time="441" spin="0">
+                    <object folder="0" file="2" angle="0"/>
+                </key>
+                <key id="6" time="538" spin="0">
+                    <object folder="0" file="2" x="0.252895" y="-9.582483" angle="0" scale_x="0.679348"/>
+                </key>
+                <key id="7" time="637" spin="0">
+                    <object folder="0" file="2" angle="0"/>
+                </key>
+                <key id="8" time="735" spin="0">
+                    <object folder="0" file="2" x="0.252895" y="-9.582483" angle="0" scale_x="0.679348"/>
+                </key>
+                <key id="9" time="833" spin="0">
+                    <object folder="0" file="2" angle="0"/>
+                </key>
+                <key id="10" time="1377" spin="0">
+                    <object folder="0" file="2" x="-3.085656" y="-8.571429" angle="0" scale_x="0.486344" a="0"/>
+                </key>
+            </timeline>
+            <timeline id="3" obj="3" name="Lightning_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="4" x="0.754479" y="-2.773402" angle="0" scale_x="1.329787" scale_y="1.055935"/>
+                </key>
+                <key id="1" time="54" spin="0">
+                    <object folder="0" file="4" x="6.469143" y="-3.853623" angle="0"/>
+                </key>
+                <key id="2" time="54" curve_type="instant">
+                    <object folder="0" file="3" x="2.857143" y="-2.857143" angle="0"/>
+                </key>
+                <key id="3" time="146" spin="0">
+                    <object folder="0" file="3" x="-0.502017" y="-1.860663" angle="0"/>
+                </key>
+                <key id="4" time="146" curve_type="instant">
+                    <object folder="0" file="4" x="2.857143" y="-2.857143" angle="0"/>
+                </key>
+                <key id="5" time="245" spin="0">
+                    <object folder="0" file="4" x="6.469143" y="-3.853623" angle="0"/>
+                </key>
+                <key id="6" time="245" curve_type="instant">
+                    <object folder="0" file="3" x="2.857143" y="-2.857143" angle="0"/>
+                </key>
+                <key id="7" time="344" spin="0">
+                    <object folder="0" file="3" x="-0.502017" y="-1.860663" angle="0"/>
+                </key>
+                <key id="8" time="344" curve_type="instant">
+                    <object folder="0" file="4" x="2.857143" y="-2.857143" angle="0"/>
+                </key>
+                <key id="9" time="441" spin="0">
+                    <object folder="0" file="4" x="6.469143" y="-3.853623" angle="0"/>
+                </key>
+                <key id="10" time="441" curve_type="instant">
+                    <object folder="0" file="3" x="2.857143" y="-2.857143" angle="0"/>
+                </key>
+                <key id="11" time="538" spin="0">
+                    <object folder="0" file="3" x="-0.502017" y="-1.860663" angle="0"/>
+                </key>
+                <key id="12" time="538" curve_type="instant">
+                    <object folder="0" file="4" x="2.857143" y="-2.857143" angle="0"/>
+                </key>
+                <key id="13" time="637" spin="0">
+                    <object folder="0" file="4" x="6.469143" y="-3.853623" angle="0"/>
+                </key>
+                <key id="14" time="637" curve_type="instant">
+                    <object folder="0" file="3" x="2.857143" y="-2.857143" angle="0"/>
+                </key>
+                <key id="15" time="735" spin="0">
+                    <object folder="0" file="3" x="-0.502017" y="-1.860663" angle="0"/>
+                </key>
+                <key id="16" time="735" curve_type="instant">
+                    <object folder="0" file="4" x="2.857143" y="-2.857143" angle="0"/>
+                </key>
+                <key id="17" time="833" spin="0">
+                    <object folder="0" file="4" x="6.469143" y="-3.853623" angle="0"/>
+                </key>
+                <key id="18" time="833" spin="0">
+                    <object folder="0" file="3" x="2.857143" y="-2.857143" angle="0"/>
+                </key>
+                <key id="19" time="1055" spin="0">
+                    <object folder="0" file="3" x="0.325903" y="-1.860663" angle="0" scale_x="0.676851" a="0.58333"/>
+                </key>
+                <key id="20" time="1055" spin="0">
+                    <object folder="0" file="4" x="2.599554" y="-2.857143" angle="0" scale_x="0.676851" a="0.58333"/>
+                </key>
+                <key id="21" time="1208" spin="0">
+                    <object folder="0" file="4" x="4.144893" y="-3.853623" angle="0" scale_x="0.472854" a="0.306158"/>
+                </key>
+                <key id="22" time="1208" spin="0">
+                    <object folder="0" file="3" x="2.436944" y="-2.857143" angle="0" scale_x="0.472854" a="0.306158"/>
+                </key>
+                <key id="23" time="1377" spin="0">
+                    <object folder="0" file="3" x="2.257329" y="-2.857143" angle="0" scale_x="0.247525" a="0"/>
+                </key>
+            </timeline>
+            <timeline id="4" obj="4" name="Lighting_0_a">
+                <key id="0" curve_type="instant">
+                    <object folder="0" file="5" x="5.714286" y="8.571429" angle="0"/>
+                </key>
+                <key id="1" time="54" curve_type="instant">
+                    <object folder="0" file="5" x="5.714286" y="8.571429" angle="0" scale_x="-1"/>
+                </key>
+                <key id="2" time="146" curve_type="instant">
+                    <object folder="0" file="5" x="10.79191" y="9.582483" angle="0"/>
+                </key>
+                <key id="3" time="245" curve_type="instant">
+                    <object folder="0" file="5" x="5.714286" y="8.571429" angle="0" scale_x="-1"/>
+                </key>
+                <key id="4" time="344" curve_type="instant">
+                    <object folder="0" file="5" x="10.79191" y="9.582483" angle="0"/>
+                </key>
+                <key id="5" time="441" curve_type="instant">
+                    <object folder="0" file="5" x="5.714286" y="8.571429" angle="0" scale_x="-1"/>
+                </key>
+                <key id="6" time="538" curve_type="instant">
+                    <object folder="0" file="5" x="10.79191" y="9.582483" angle="0"/>
+                </key>
+                <key id="7" time="637" curve_type="instant">
+                    <object folder="0" file="5" x="5.714286" y="8.571429" angle="0" scale_x="-1"/>
+                </key>
+                <key id="8" time="735" curve_type="instant">
+                    <object folder="0" file="5" x="10.79191" y="9.582483" angle="0"/>
+                </key>
+                <key id="9" time="833" spin="0">
+                    <object folder="0" file="5" x="5.714286" y="8.571429" angle="0" scale_x="-1"/>
+                </key>
+                <key id="10" time="1377" spin="0">
+                    <object folder="0" file="5" x="-0.325433" y="8.571429" angle="0" scale_x="-0.249356" a="0"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>

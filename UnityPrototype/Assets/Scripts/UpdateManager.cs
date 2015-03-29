@@ -32,11 +32,13 @@ public class UpdateManager : MonoBehaviour {
 	private float fixedTimestep = 1.0f / 120.0f;
 
 	private List<IFixedUpdate> updateList = new List<IFixedUpdate>();
+	private List<IFixedUpdate> lateUpdateList = new List<IFixedUpdate>();
 	private float accumulatedTime;
 
 	private int loopIndex = -1;
+	private int lateLoopIndex = -1;
 
-	private bool paused = false;
+	private bool paused = true;
 
 	// Use this for initialization
 	public void Start() {
@@ -50,6 +52,11 @@ public class UpdateManager : MonoBehaviour {
 		for (loopIndex = 0; loopIndex < updateList.Count; ++loopIndex)
 		{
 			updateList[loopIndex].FixedUpdateTick(timestep);
+		}
+
+		for (lateLoopIndex = 0; lateLoopIndex < lateUpdateList.Count; ++lateLoopIndex)
+		{
+			lateUpdateList[lateLoopIndex].FixedUpdateTick(timestep);
 		}
 		
 		loopIndex = -1;
@@ -69,7 +76,7 @@ public class UpdateManager : MonoBehaviour {
 		{
 			accumulatedTime += Time.deltaTime;
 
-			while (accumulatedTime >= fixedTimestep)
+			while (!paused && accumulatedTime >= fixedTimestep)
 			{
 				FixedUpdateInternal(fixedTimestep);
 				accumulatedTime -= fixedTimestep;
@@ -114,6 +121,30 @@ public class UpdateManager : MonoBehaviour {
 			}
 
 			updateList.RemoveAt(index);
+		}
+	}
+	
+	public void AddLateReciever(IFixedUpdate reciever)
+	{
+		if (!lateUpdateList.Contains(reciever))
+		{
+			lateUpdateList.Add(reciever);
+		}
+	}
+	
+	public void RemoveLateReciever(IFixedUpdate reciever)
+	{
+		int index = lateUpdateList.IndexOf(reciever);
+		
+		if (index != -1)
+		{
+			// allows the update list to be modified while being iterated over
+			if (lateLoopIndex >= index)
+			{
+				--lateLoopIndex;
+			}
+			
+			lateUpdateList.RemoveAt(index);
 		}
 	}
 

@@ -1,17 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Player\States\MoveState.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\TimeManager.cs">
     <Files>
-      <File FileName="Assets\Resources\EffectSettings.xml" Line="27" Column="17" />
-      <File FileName="Assets\Scripts\Spells\SpellCaster.cs" Line="310" Column="3" />
-      <File FileName="Assets\Scripts\TimeManager.cs" Line="6" Column="2" />
-      <File FileName="Assets\Scripts\Player\States\MoveState.cs" Line="24" Column="3" />
+      <File FileName="Assets\Scripts\UpdateManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\TimeManager.cs" Line="204" Column="4" />
+      <File FileName="Assets\Scripts\BreakableBarrier.cs" Line="61" Column="47" />
+      <File FileName="Assets\Scripts\TimeGameObject.cs" Line="8" Column="21" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="C:\Users\James\Documents\PRPG\UnityPrototype\Assets\Scripts\AreaEffect.cs" line="27" />
-      <Breakpoint file="C:\Users\James\Documents\PRPG\UnityPrototype\Assets\Scripts\Spells\SpellCaster.cs" line="309" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

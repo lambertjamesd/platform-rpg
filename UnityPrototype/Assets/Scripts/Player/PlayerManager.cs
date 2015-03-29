@@ -8,17 +8,12 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 	public GUIText countdownTimer;
 
 	public float turnLength = 10.0f;
-	public float stableWaitTime = 1.0f;
-	public float stoppedTolerance = 0.1f;
-
 	private PlayerHUD playerHUD;
 
 	private TimeManager timeManager;
 	private UpdateManager updateManager;
 
 	private float remainingTime;
-	private float stableTimer;
-	private float gameTime;
 
 	private List<Player> players = new List<Player>();
 
@@ -125,7 +120,6 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		}
 		else
 		{
-			gameTime -= turnLength;
 			timeManager.Rewind();
 		}
 		
@@ -191,26 +185,10 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 				{
 					players[currentSelection].BecomeIdle();
 				}
-				
-				gameTime += dt;
 			}
 			else
 			{
-				foreach (Player player in players)
-				{
-					if (player.Velocity.sqrMagnitude > stoppedTolerance * stoppedTolerance)
-					{
-						stableTimer = stableWaitTime;
-						break;
-					}
-				}
-				
-				stableTimer -= dt;
-				
-				if (stableTimer < 0.0f)
-				{
-					StartTurn();
-				}
+				StartTurn();
 			}
 		}
 	}
@@ -218,13 +196,5 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 	public void AddPlayer(Player player)
 	{
 		players.Add(player);
-	}
-
-	public float GameTime
-	{
-		get
-		{
-			return gameTime;
-		}
 	}
 }

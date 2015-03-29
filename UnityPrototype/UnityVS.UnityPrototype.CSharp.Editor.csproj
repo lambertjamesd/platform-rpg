@@ -149,6 +149,8 @@
     <Compile Include="Assets\newMapEditor\Editor\TileSelector.cs" />
     <Compile Include="Assets\newMapEditor\Editor\TilesetEditor.cs" />
     <Compile Include="Assets\newMapEditor\Editor\VoxelMapEditor.cs" />
+    <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\Credits.txt" />
+    <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\HOW TO USE THE SKINS.txt" />
     <None Include="Assets\Effects\Grenade.xml" />
     <None Include="Assets\Effects\Wall.xml" />
     <None Include="Assets\JSON Tests\TroubleShoot.txt" />

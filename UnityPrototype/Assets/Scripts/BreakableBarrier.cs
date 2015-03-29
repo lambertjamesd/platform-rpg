@@ -59,7 +59,6 @@ public class BreakableBarrier : MonoBehaviour, IFixedUpdate, ITimeTravelable
 	void OnDisable()
 	{
 		this.RemoveFromUpdateManager(updateManager);
-		timeManager.RemoveTimeTraveler(this);
 	}
 
 	public void FixedUpdateTick (float dt)

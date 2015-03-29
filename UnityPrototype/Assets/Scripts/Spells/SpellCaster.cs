@@ -144,23 +144,22 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 	private TimeManager timeManager;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		propertySource = new GameObjectPropertySource(gameObject);
 
 		effectDefinitions = new EffectDefinition[spells.Length];
 		rootInstances = new EffectInstance[spells.Length];
 		spellStates = new SpellState[spells.Length];
 
-		Dictionary<string, object> context = new Dictionary<string, object>();
-
 		timeManager = gameObject.GetComponentWithAncestors<TimeManager>();
+		timeManager.AddTimeTraveler(this);
+
+		Dictionary<string, object> context = new Dictionary<string, object>();
 
 		context["parentGameObject"] = gameObject.GetParent();
 		context["updateManager"] = gameObject.GetComponentWithAncestors<UpdateManager>();
 		context["timeManager"] = timeManager;
 		context["playerManager"] = gameObject.GetComponentWithAncestors<PlayerManager>();
-
-		timeManager.AddTimeTraveler(this);
 
 		for (int i = 0; i < spells.Length; ++i)
 		{
@@ -306,12 +305,19 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 	
 	public object GetCurrentState()
 	{
-		return spellStates.Select(spellState => spellState.Copy());
+		List<SpellState> result = new List<SpellState>();
+
+		foreach (SpellState state in spellStates)
+		{
+			result.Add(state.Copy());
+		}
+
+		return result;
 	}
 
 	public void RewindToState(object state)
 	{
-		spellStates = ((IEnumerable<SpellState>)state).ToArray();
+		spellStates = ((List<SpellState>)state).ToArray();
 	}
 	
 	public TimeManager GetTimeManager()

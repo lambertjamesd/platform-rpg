@@ -8,13 +8,17 @@ public class PlayerState
 	private Vector3 velocity;
 	private float health;
 	private InputRecording input;
+	private object animationState;
+	private object stateMachineState;
 
-	public PlayerState(Vector3 position, Vector3 velocity, float health, InputRecording input)
+	public PlayerState(Vector3 position, Vector3 velocity, float health, InputRecording input, object animationState, object stateMachineState)
 	{
 		this.position = position;
 		this.velocity = velocity;
 		this.health = health;
 		this.input = input;
+		this.animationState = animationState;
+		this.stateMachineState = stateMachineState;
 	}
 
 	public Vector3 Position
@@ -53,6 +57,22 @@ public class PlayerState
 			input = value;
 		}
 	}
+
+	public object AnimationState
+	{
+		get
+		{
+			return animationState;
+		}
+	}
+
+	public object StateMachineState
+	{
+		get
+		{
+			return stateMachineState;
+		}
+	}
 }
 
 public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportable, IDashable {
@@ -72,11 +92,11 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 
 	public GameObject visual;
 	private Animator visualAnimator;
+	private AnimatorStateSaver animatorStateSaver;
 
 	private TilemapOverlapCorrecter overlapCorrecter;
 	private UpdateManager updateManager;
 	private TimeManager timeManager;
-	private PlayerManager playerManager;
 
 	private IInputSource inputSource;
 
@@ -249,7 +269,22 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 
 			if (visual != null)
 			{
+				if (!visual.transform.IsChildOf(transform))
+				{
+					visual = (GameObject)Instantiate(visual);
+					visual.transform.parent = transform;
+					visual.transform.localPosition = Vector3.zero;
+					visual.transform.localRotation = Quaternion.identity;
+				}
+
 				visualAnimator = visual.GetComponent<Animator>();
+				animatorStateSaver = new AnimatorStateSaver(visualAnimator, new string[]{
+
+				}, new string[]{
+
+				}, new string[]{
+
+				});
 			}
 			
 			inputSource = new IdleInputSource();
@@ -307,14 +342,13 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 
 	public float GetSpellCooldown(int index)
 	{
-		return Mathf.Max(0.0f, spellCaster.GetSpellCooldown(index) - playerManager.GameTime);
+		return Mathf.Max(0.0f, spellCaster.GetSpellCooldown(index) - timeManager.CurrentTime);
 	}
 
 	public void OnEnable()
 	{	
 		updateManager = updateManager ?? gameObject.GetComponentWithAncestors<UpdateManager>();
 		timeManager = timeManager ?? gameObject.GetComponentWithAncestors<TimeManager>();
-		playerManager = gameObject.GetComponentWithAncestors<PlayerManager>();
 
 		this.AddToUpdateManager(updateManager);
 		timeManager.AddTimeTraveler(this);
@@ -354,16 +388,16 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		{
 			if (InputSource.State.FireButtonDown(i))
 			{
-				Caster.CastSpellBegin(i, InputSource.State.AimDirection, playerManager.GameTime);
+				Caster.CastSpellBegin(i, InputSource.State.AimDirection, timeManager.CurrentTime);
 			}
 
 			if (InputSource.State.FireButtonUp(i))
 			{
-				Caster.CastSpellFire(i, InputSource.State.AimDirection, playerManager.GameTime);
+				Caster.CastSpellFire(i, InputSource.State.AimDirection, timeManager.CurrentTime);
 			}
 		}
 
-		Caster.SpellUpdate(InputSource.State.AimDirection, playerManager.GameTime);
+		Caster.SpellUpdate(InputSource.State.AimDirection, timeManager.CurrentTime);
 
 		if (damageable.IsDead && gameObject.activeSelf)
 		{
@@ -396,7 +430,8 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	public object GetCurrentState()
 	{
 		EnsureInitialized();
-		lastState = new PlayerState(transform.position, velocity, damageable.CurrentHealth, null);
+		object animationState = animatorStateSaver == null ? null : animatorStateSaver.GetCurrentState();
+		lastState = new PlayerState(transform.position, velocity, damageable.CurrentHealth, null, animationState, stateMachine.GetCurrentState());
 		return lastState;
 	}
 
@@ -430,6 +465,13 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 			{
 				inputSource = new ReplayInputSource(lastState.InputRecord);
 			}
+
+			if (animatorStateSaver != null)
+			{
+				animatorStateSaver.RewindToState(lastState.AnimationState);
+			}
+
+			stateMachine.RewindToState(lastState.StateMachineState);
 		}
 	}
 

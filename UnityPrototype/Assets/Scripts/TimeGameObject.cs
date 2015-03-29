@@ -17,7 +17,7 @@ public class TimeGameObject : MonoBehaviour, ITimeTravelable {
 
 	public void OnDisable()
 	{
-		timeManager.RemoveTimeTraveler(this);
+
 	}
 	
 	public object GetCurrentState()

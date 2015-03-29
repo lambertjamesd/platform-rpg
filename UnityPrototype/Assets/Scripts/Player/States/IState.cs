@@ -5,4 +5,7 @@ public interface IState {
 	void BeginState(StateMachine stateMachine);
 	void Update(StateMachine stateMachine, float timestep);
 	void EndState(StateMachine stateMachine);
+
+	object GetCurrentState();
+	void RewindToState(object state);
 }
