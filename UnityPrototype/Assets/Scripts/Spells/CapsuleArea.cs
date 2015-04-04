@@ -167,4 +167,26 @@ public class CapsuleArea : AreaEffect, IFixedUpdate {
 		GizmoHelper.DrawThickLine(a - moveAmount, b - moveAmount, radius, Color.red);
 		GizmoHelper.DrawThickLine(a, b, radius, Color.green);
 	}
+	
+	public override object GetCurrentState()
+	{
+		return new object[]{
+			base.GetCurrentState(),
+			lastPosition
+		};
+	}
+	
+	public override void RewindToState(object state)
+	{
+		if (state == null)
+		{
+			base.RewindToState(null);
+		}
+		else
+		{
+			object[] stateArray = (object[])state;
+			base.RewindToState(stateArray[0]);
+			lastPosition = (Vector3)stateArray[1];
+		}
+	}
 }

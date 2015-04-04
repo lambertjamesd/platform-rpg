@@ -24,6 +24,9 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
 	private bool isSelectingPlayer;
 	private int currentSelection;
+	private float lastHorizontal;
+
+	private FollowCamera cameraAI;
 
 	private void UpdateHUD()
 	{
@@ -100,6 +103,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
 		isSelectingPlayer = false;
 		remainingTime = turnLength;
+		playerHUD.showSpellDescriptions = false;
 	}
 
 	private void StartTurn()
@@ -117,6 +121,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 			}
 
 			timeManager.TakeSnapshot();
+			playerHUD.showSpellDescriptions = true;
 		}
 		else
 		{
@@ -131,8 +136,9 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		updateManager = GetComponent<UpdateManager>();
 		timeManager = GetComponent<TimeManager>();
 		playerHUD = GetComponent<PlayerHUD>();
+		cameraAI = Camera.main.GetComponent<FollowCamera>();
 
-		updateManager.AddPriorityReciever(this);
+		updateManager.AddLateReciever(this);
 
 		hasPlayerGone = new bool[players.Count];
 		
@@ -149,25 +155,31 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
 	public void Update()
 	{
+		cameraAI.FollowTarget = CurrentPlayer.transform;
+
 		if (isSelectingPlayer)
 		{
-			if (Input.GetButtonDown("Prev"))
+			float horizontal = Input.GetAxis("Horizontal");
+
+			if (Input.GetButtonDown("Prev") || lastHorizontal > -0.5f && horizontal <= -0.5f)
 			{
 				SelectPrevPlayer();
 			}
 			
-			if (Input.GetButtonDown("Next"))
+			if (Input.GetButtonDown("Next") || lastHorizontal < 0.5f && horizontal >= 0.5f)
 			{
 				SelectNextPlayer();
 			}
 			
 			selectionCursor.position = players[currentSelection].transform.position;
 			
-			if (Input.GetButtonDown("Select"))
+			if (Input.GetButtonDown("Select") || Input.GetButtonDown("Jump"))
 			{
 				selectionCursor.transform.position = new Vector3(10000.0f, 0.0f, 0.0f);
 				StartSelectedPlayer();
 			}
+
+			lastHorizontal = horizontal;
 		}
 	}
 

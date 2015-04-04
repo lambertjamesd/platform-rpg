@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <effect-settings>
 	<input-configuration name="area-effect-in" parent="game-object-in">
+		<parameter>
+			<name>firstColliderOnly</name>
+			<type>bool</type>
+			<description>
+				Only triggers events for the first object to overlap the area
+			</description>
+		</parameter>
+		<parameter>
+			<name>noCollideRepeat</name>
+			<type>bool</type>
+			<description>
+				If true, events are ignored for objects after they stop making contact
+			</description>
+		</parameter>
 	</input-configuration>
 	
 	<output-configuration name="area-effect-event">

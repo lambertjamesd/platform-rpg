@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\Effect\IEffect.cs" />
     <Compile Include="Assets\Scripts\Extentions.cs" />
     <Compile Include="Assets\Scripts\FollowCamera.cs" />
+    <Compile Include="Assets\Scripts\FormatWith.cs" />
     <Compile Include="Assets\Scripts\GizmoHelper.cs" />
     <Compile Include="Assets\Scripts\Knockback.cs" />
     <Compile Include="Assets\Scripts\NumericalHealthBar.cs" />
@@ -102,10 +103,12 @@
     <Compile Include="Assets\Scripts\Player\States\IState.cs" />
     <Compile Include="Assets\Scripts\Player\States\JumpState.cs" />
     <Compile Include="Assets\Scripts\Player\States\MoveState.cs" />
+    <Compile Include="Assets\Scripts\Player\States\RootedState.cs" />
     <Compile Include="Assets\Scripts\Player\States\StateMachine.cs" />
     <Compile Include="Assets\Scripts\Player\States\WallSlideState.cs" />
     <Compile Include="Assets\Scripts\Player\TeleportDebugger.cs" />
     <Compile Include="Assets\Scripts\RectangleBarrier.cs" />
+    <Compile Include="Assets\Scripts\Shield.cs" />
     <Compile Include="Assets\Scripts\Spells\AreaEffect.cs" />
     <Compile Include="Assets\Scripts\Spells\BasicEffects.cs" />
     <Compile Include="Assets\Scripts\Spells\CapsuleArea.cs" />
@@ -115,6 +118,8 @@
     <Compile Include="Assets\Scripts\Spells\DefaultTimeTravelerEffect.cs" />
     <Compile Include="Assets\Scripts\Spells\LaserArea.cs" />
     <Compile Include="Assets\Scripts\Spells\Projectile.cs" />
+    <Compile Include="Assets\Scripts\Spells\RootEffect.cs" />
+    <Compile Include="Assets\Scripts\Spells\ShieldEffect.cs" />
     <Compile Include="Assets\Scripts\Spells\SpellCaster.cs" />
     <Compile Include="Assets\Scripts\Spells\SpellDescription.cs" />
     <Compile Include="Assets\Scripts\Spells\SwingEffect.cs" />
@@ -151,6 +156,7 @@
     <None Include="Assets\Resources\FunctionSettings.xml" />
     <None Include="Assets\Resources\GameObjectEffectBase.xml" />
     <None Include="Assets\Resources\ProjectileEffect.xml" />
+    <None Include="Assets\Resources\ShieldEffects.xml" />
     <None Include="Assets\Resources\TimeEffects.xml" />
     <None Include="Assets\ThirdParty\Spriter2Unity\Example\Spriter Project\GreyGuy\Copyright_Information_Please_Read.txt" />
   </ItemGroup>

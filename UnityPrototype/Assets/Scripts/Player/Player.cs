@@ -75,13 +75,29 @@ public class PlayerState
 	}
 }
 
-public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportable, IDashable {
+public class PlayerStatus
+{
+	public bool isRooted;
+
+	public bool CanCastSpell(SpellDescription description)
+	{
+		if (isRooted && description.blockedWhenRooted)
+		{
+			return false;
+		}
+
+		return true;
+	}
+}
+
+public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportable, IDashable, IRootable {
 
 	public MoveState moveState;
 	public JumpState jumpState;
 	public FreeFallState freefallState;
 	public WallSlideState wallSlideState;
 	public DashState dashState;
+	public RootedState rootedState;
 
 	public int team;
 
@@ -91,6 +107,9 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	public KnockbackHandler knockback;
 
 	public GameObject visual;
+
+	private PlayerStatus status = new PlayerStatus();
+
 	private Animator visualAnimator;
 	private AnimatorStateSaver animatorStateSaver;
 
@@ -159,6 +178,15 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		get
 		{
 			return floorNormal;
+		}
+	}
+
+
+	public PlayerStatus Status
+	{
+		get
+		{
+			return status;
 		}
 	}
 
@@ -306,6 +334,8 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 					return wallSlideState;
 				case "Dash":
 					return dashState;
+				case "Rooted":
+					return rootedState;
 				}
 				
 				return null;
@@ -386,7 +416,9 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 
 		for (int i = 0; i < SPELL_COUNT; ++i)
 		{
-			if (InputSource.State.FireButtonDown(i))
+			SpellDescription description = Caster.GetSpell(i);
+
+			if (InputSource.State.FireButtonDown(i) && Status.CanCastSpell(description))
 			{
 				Caster.CastSpellBegin(i, InputSource.State.AimDirection, timeManager.CurrentTime);
 			}
@@ -496,6 +528,15 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		parameters["speed"] = speed;
 		parameters["delegate"] = stateDelegate;
 
-		stateMachine.SetNextState("Dash", parameters);
+		stateMachine.SetNextState("Dash", parameters, 1);
+	}
+
+	public void Root(IRootedStateDelegate rootDeletate)
+	{
+		Dictionary<string, System.Object> parameters = new Dictionary<string, System.Object>();
+
+		parameters["delegate"] = rootDeletate;
+		
+		stateMachine.SetNextState("Rooted", parameters, 2);
 	}
 }

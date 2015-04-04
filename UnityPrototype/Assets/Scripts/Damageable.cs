@@ -1,14 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
-public class Damageable : MonoBehaviour {
+public class Damageable : MonoBehaviour, ITimeTravelable {
 
+	public List<Shield> shields = new List<Shield>();
 	public float maxHealth = 100.0f;
 	private float currentHealth;
+	private TimeManager timeManager;
 
 	// Use this for initialization
 	void Awake () {
 		currentHealth = maxHealth;
+		timeManager = gameObject.GetComponentWithAncestors<TimeManager>();
+		timeManager.AddTimeTraveler(this);
 	}
 
 	public float CurrentHealth
@@ -36,6 +42,17 @@ public class Damageable : MonoBehaviour {
 	{
 		if (currentHealth > 0.0f)
 		{
+			while (shields.Count > 0 && amount > 0.0f)
+			{
+				amount = shields[0].Damage(amount);
+
+				if (!shields[0].IsActive())
+				{
+					shields[0].ShieldDestroyed();
+					shields.RemoveAt(0);
+				}
+			}
+
 			currentHealth -= amount;
 
 			return IsDead;
@@ -63,5 +80,44 @@ public class Damageable : MonoBehaviour {
 		{
 			return currentHealth <= 0.0f;
 		}
+	}
+
+	public void AddShield(Shield shield)
+	{
+		shields.Add(shield);
+	}
+
+	public void RemoveShield(Shield shield)
+	{
+		if (shields.Contains(shield))
+		{
+			shields.Remove(shield);
+			shield.Destroy();
+			shield.ShieldDestroyed();
+		}
+	}
+	
+	public object GetCurrentState()
+	{
+		return new object[]{
+			maxHealth,
+			currentHealth,
+			shields.Select(shield => shield.GetCurrentState()).ToArray()
+		};
+	}
+	
+	public void RewindToState(object state)
+	{
+		object[] objectArray = (object[])state;
+		maxHealth = (float)objectArray[0];
+		maxHealth = (float)objectArray[1];
+
+		object[] shieldStates = (object[])objectArray[2];
+		shields = shieldStates.Select(shieldState => Shield.RewindToState(shieldState)).ToList();
+	}
+	
+	public TimeManager GetTimeManager()
+	{
+		return timeManager;
 	}
 }

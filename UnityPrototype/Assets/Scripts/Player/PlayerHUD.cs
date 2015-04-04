@@ -17,10 +17,15 @@ public class PlayerHUD : MonoBehaviour {
 	public float hoverTitleHeight;
 	public float lineHeight;
 
-	private SpellDescription currentSpell;
-	private Vector2 spellHoverPoint;
+	public Rect[] spellLocations = new Rect[3];
+	public float spellDescriptionMargin = 20.0f;
+	public bool showSpellDescriptions;
 
 	private Player currentPlayer;
+
+	private Vector2 spellDescriptionPosition;
+
+	private IInputSource controllerInputSource = new ControllerInputSource();
 
 	GUIStyle centeredStyle;
 
@@ -85,11 +90,23 @@ public class PlayerHUD : MonoBehaviour {
 
 		GUI.EndGroup();
 
+		int hoverSpellIndex = 0;
+		
 		GUI.BeginGroup(SpellHUDLocation);
 		GUI.DrawTexture(new Rect(0.0f, 0.0f, spellIconHUD.width, spellIconHUD.height), spellIconHUD);
 
 		if (currentPlayer != null)
 		{
+			controllerInputSource.FrameStart();
+			
+			for (hoverSpellIndex = 0; hoverSpellIndex < Player.SPELL_COUNT; ++hoverSpellIndex)
+			{
+				if (controllerInputSource.State.FireButton(hoverSpellIndex))
+				{
+					break;
+				}
+			}
+
 			Rect currentSpellIconRect = firstIconPosition;
 
 			for (int i = 0; i < currentPlayer.GetSpellCount(); ++i)
@@ -105,6 +122,11 @@ public class PlayerHUD : MonoBehaviour {
 					string cooldownString = cooldown < 1.0f ? cooldown.ToString("0.0") : cooldown.ToString("0");
 					GUI.Label(currentSpellIconRect, cooldownString, centeredStyle);
 				}
+
+				if (hoverSpellIndex < Player.SPELL_COUNT && hoverSpellIndex != i)
+				{
+					SolidRect(currentSpellIconRect, new Color(0.0f, 0.0f, 0.0f,0.5f));
+				}
 				
 				currentSpellIconRect.x += iconOffset.x;
 				currentSpellIconRect.y += iconOffset.y;
@@ -112,5 +134,26 @@ public class PlayerHUD : MonoBehaviour {
 		}
 
 		GUI.EndGroup();
+
+		if (currentPlayer !=null && showSpellDescriptions)
+		{
+			if (hoverSpellIndex < Player.SPELL_COUNT && hoverSpellIndex < spellLocations.Length)
+			{
+				Rect describePosition = spellLocations[hoverSpellIndex];
+				describePosition.x += (Screen.width - spellIconHUD.width) * 0.5f;
+				describePosition.y += Screen.height;
+
+				GUI.BeginGroup(describePosition);
+				Rect drawRect = new Rect(0.0f, 0.0f, describePosition.width, describePosition.height);
+				SolidRect(drawRect, Color.white);
+				GUI.color = Color.black;
+				drawRect.x += spellDescriptionMargin;
+				drawRect.y += spellDescriptionMargin;
+				drawRect.width -= spellDescriptionMargin * 2.0f;
+				drawRect.height -= spellDescriptionMargin * 2.0f;
+				GUI.Label(drawRect, currentPlayer.GetSpell(hoverSpellIndex).FormattedDescription);
+				GUI.EndGroup();
+			}
+		}
 	}
 }

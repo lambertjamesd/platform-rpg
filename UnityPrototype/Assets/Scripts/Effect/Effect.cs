@@ -54,7 +54,7 @@ public abstract class EffectGameObject : MonoBehaviour, IEffect {
 
 	public virtual void Cancel()
 	{
-		instance.Cancel();
+		Debug.LogError("Cancel not implimented for " + this.GetType().ToString());
 	}
 }
 
@@ -93,6 +93,6 @@ public abstract class EffectObject : IEffect {
 	
 	public virtual void Cancel()
 	{
-		instance.Cancel();
+		Debug.LogError("Cancel not implimented for " + this.GetType().ToString());
 	}
 }

@@ -1,0 +1,39 @@
+<effect-settings>	
+	<input-configuration name="shield-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The object that will recieve the shield
+			</description>
+		</parameter>
+		<parameter>
+			<name>health</name>
+			<type>float</type>
+			<description>
+				The amount of damage the shield can take before it breaks
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="shield-out">
+		<parameter>
+			<name>effect</name>
+			<type>IEffect</type>
+			<description>
+				A reference to the shield. Use it to remove the shield early.
+			</description>
+		</parameter>
+		<event name="on-destroyed">
+			<description>
+				Called when the shield is destroyed or cancelled
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="ShieldEffect" alias="shield" namespace="buff" input="shield-in" output="shield-out">
+		<description>
+			Applies a sheild to the target
+		</description>
+	</effect>
+</effect-settings>

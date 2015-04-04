@@ -14,6 +14,7 @@ public class DestroyGameObjectEffect : EffectObject
 		}
 	}
 }
+
 public class CancelEventEffect : EffectObject
 {
 	public override void StartEffect(EffectInstance instance) {
@@ -23,6 +24,45 @@ public class CancelEventEffect : EffectObject
 		if (target != null)
 		{
 			target.Cancel();
+		}
+	}
+}
+
+
+public class NumberParameterEffect : EffectObject
+{
+	string name;
+	float defaultValue = 0.0f;
+
+	public override void StartEffect(EffectInstance instance) {
+		base.StartEffect(instance);
+		name = instance.GetValue<string>("name", null);
+		defaultValue = instance.GetValue<float>("default", 0.0f);
+	}
+
+	public override IEffectPropertySource PropertySource
+	{
+		get
+		{
+			return new LambdaPropertySource(propertyName => {
+				if (propertyName == "result")
+				{
+					Dictionary<string, SpellDescriptionParameter> parameters = instance.GetContextValue<Dictionary<string, SpellDescriptionParameter>>("parameters", null);
+
+					if (parameters != null && parameters.ContainsKey(name))
+					{
+						return parameters[name].value;
+					}
+					else
+					{
+						return defaultValue;
+					}
+				}
+				else
+				{
+					return null;
+				}
+			});
 		}
 	}
 }
@@ -84,7 +124,14 @@ public class DamageEffect : EffectObject
 
 		if (target != null)
 		{
-			target.ApplyDamage(damageAmount);
+			if (damageAmount >= 0.0f)
+			{
+				target.ApplyDamage(damageAmount);
+			}
+			else
+			{
+				target.Heal(-damageAmount);
+			}
 		}
 	}
 }
@@ -192,5 +239,81 @@ public class CaptureValueEffect : EffectObject {
 				return null;
 			});
 		}
+	}
+}
+
+public class CountEffect : EffectObject {
+	public override void StartEffect(EffectInstance instance) {
+		base.StartEffect(instance);
+		instance.GetContextValue<CounterEffect>("target", null).Increment();
+	}
+
+}
+
+public class CounterEffect : EffectObject, ITimeTravelable {
+	private int currentValue = 0;
+	private int countTo = 0;
+	private bool cancelled = false;
+	private TimeManager timeManager;
+
+	public override void StartEffect(EffectInstance instance) {
+		base.StartEffect(instance);
+		countTo = instance.GetValue<int>("countTo", 0);
+		timeManager = instance.GetContextValue<TimeManager>("timeManager", null);
+		timeManager.AddTimeTraveler(this);
+	}
+
+	public override IEffectPropertySource PropertySource
+	{
+		get
+		{
+			return new LambdaPropertySource(parameterName => {
+				switch (parameterName)
+				{
+				case "currentValue":
+					return currentValue;
+				case "normalizedValue":
+					return (float)currentValue / countTo;
+				case "counterCompleted":
+					return currentValue >= countTo;
+				case "effect":
+					return this;
+				}
+				
+				return null;
+			});
+		}
+	}
+
+	public void Increment()
+	{
+		++currentValue;
+
+		instance.TriggerEvent("count", null);
+
+		if (currentValue == countTo)
+		{
+			instance.TriggerEvent("completed", null);
+		}
+	}
+	
+	public object GetCurrentState()
+	{
+		return new object[]{
+			currentValue,
+			cancelled
+		};
+	}
+
+	public void RewindToState(object state)
+	{
+		object[] objectArray = (object[])state;
+		currentValue = (int)objectArray[0];
+		cancelled = (bool)objectArray[1];
+	}
+	
+	public TimeManager GetTimeManager()
+	{
+		return timeManager;
 	}
 }

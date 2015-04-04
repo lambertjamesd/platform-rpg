@@ -58,8 +58,6 @@ public class SpellCasterFireEvent : EffectObject, SpellcastFireListener
 
 	public override void Cancel()
 	{
-		base.Cancel();
-		
 		if (spellCaster != null)
 		{
 			spellCaster.RemoveFireListener(this, spellIndex);
@@ -163,10 +161,13 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 		for (int i = 0; i < spells.Length; ++i)
 		{
+			Dictionary<string, object> spellContext = new Dictionary<string, object>(context);
+			spellContext["parameters"] = spells[i].ParameterMapping;
+
 			EffectParser parser = new EffectParser(spells[i].effect);
 			effectDefinitions[i] = parser.Parse();
 
-			rootInstances[i] = new EffectInstance(effectDefinitions[i], propertySource, context);
+			rootInstances[i] = new EffectInstance(effectDefinitions[i], propertySource, spellContext);
 			spellStates[i].fireListeners = new List<SpellcastFireListener>();
 		}
 	}

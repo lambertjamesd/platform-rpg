@@ -16,7 +16,6 @@ public class EffectInstance
 	private EffectPropertyChain propertyChain;
 	private EffectDefinition effectDefinition;
 	private Dictionary<string, object> context;
-	private bool isCancelled = false;
 
 	private EffectInstance (EffectDefinition definition, EffectPropertyChain propertyChain, Dictionary<string, object> context)
 	{
@@ -42,7 +41,7 @@ public class EffectInstance
 
 	public void TriggerEvent(string name, IEffectPropertySource eventPropertySource)
 	{
-		if (effectDefinition.HasEvent(name) && !isCancelled)
+		if (effectDefinition.HasEvent(name))
 		{
 			EffectPropertyChain eventPropertyChain = new EffectPropertyChain(propertyChain, eventPropertySource);
 			
@@ -132,11 +131,6 @@ public class EffectInstance
 	public EffectInstance ExtendChain(IEffectPropertySource propertySource)
 	{
 		return new EffectInstance(effectDefinition, new EffectPropertyChain(propertyChain, propertySource), context);
-	}
-
-	public void Cancel()
-	{
-		isCancelled = true;
 	}
 }
 

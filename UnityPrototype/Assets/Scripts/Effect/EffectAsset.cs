@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class EffectAsset : ScriptableObject
 {
 	public List<GameObject> prefabList = new List<GameObject>();
+	[SerializeField]
 	private List<int> prefabReferenceCount = new List<int>();
 
 	public string xmlText;
@@ -70,6 +71,11 @@ public class EffectAsset : ScriptableObject
 
 	public void AddReference(int index)
 	{
+		while (index >= prefabReferenceCount.Count && index < prefabList.Count)
+		{
+			prefabReferenceCount.Add(0);
+		}
+
 		if (index != -1)
 		{
 			++prefabReferenceCount[index];
@@ -78,7 +84,12 @@ public class EffectAsset : ScriptableObject
 
 	public void RemoveReference(int index)
 	{
-		if (index != -1)
+		while (index >= prefabReferenceCount.Count && index < prefabList.Count)
+		{
+			prefabReferenceCount.Add(1);
+		}
+
+		if (index != -1 && index < prefabReferenceCount.Count)
 		{
 			--prefabReferenceCount[index];
 

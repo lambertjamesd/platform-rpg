@@ -53,11 +53,12 @@ public class CollisionPropertySource : IEffectPropertySource
 	}
 }
 
-public class Projectile : EffectGameObject, IFixedUpdate {
+public class Projectile : EffectGameObject, IFixedUpdate, ITimeTravelable {
 
 	private Vector3 velocity = Vector3.zero;
 	private CharacterController characterController;
 	private UpdateManager updateManager;
+	private TimeManager timeManager;
 
 	private float radius = 0.25f;
 	private float bounceFactor = 1.0f;
@@ -78,6 +79,9 @@ public class Projectile : EffectGameObject, IFixedUpdate {
 
 		updateManager = instance.GetContextValue<UpdateManager>("updateManager", null);
 		this.AddToUpdateManager(updateManager);
+
+		timeManager = instance.GetContextValue<TimeManager>("timeManager", null);
+		timeManager.AddTimeTraveler(this);
 	}
 
 	public override IEffectPropertySource PropertySource
@@ -127,5 +131,32 @@ public class Projectile : EffectGameObject, IFixedUpdate {
 		{
 			velocity = Vector3.Reflect(velocity, hit.normal) * bounceFactor;
 		}
+	}
+	
+	public object GetCurrentState()
+	{
+		return new object[]{
+			TimeGameObject.GetCurrentState(gameObject),
+			velocity
+		};
+	}
+	
+	public void RewindToState(object state)
+	{
+		if (state == null)
+		{
+			Destroy(gameObject);
+		}
+		else
+		{
+			object[] stateArray = (object[])state;
+			TimeGameObject.RewindToState(gameObject, stateArray[0]);
+			velocity = (Vector3)stateArray[1];
+		}
+	}
+	
+	public TimeManager GetTimeManager()
+	{
+		return timeManager;
 	}
 }

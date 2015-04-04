@@ -11,6 +11,7 @@ public class StateMachine {
 
 	private string nextStateName;
 	private IState nextState;
+	private int nextStatePriority = int.MinValue;
 
 	private Dictionary<string, System.Object> parameters;
 
@@ -36,6 +37,7 @@ public class StateMachine {
 
 		nextState = null;
 		nextStateName = null;
+		nextStatePriority = int.MinValue;
 
 		return result;
 	}
@@ -67,14 +69,18 @@ public class StateMachine {
 
 	public void SetNextState(string name)
 	{
-		SetNextState(name, null);
+		SetNextState(name, null, 0);
 	}
 
-	public void SetNextState(string name, Dictionary<string, System.Object> parameters)
+	public void SetNextState(string name, Dictionary<string, System.Object> parameters, int priority)
 	{
-		nextState = null;
-		nextStateName = name;
-		this.parameters = parameters;
+		if (priority >= nextStatePriority)
+		{
+			nextState = null;
+			nextStateName = name;
+			this.parameters = parameters;
+			nextStatePriority = priority;
+		}
 	}
 
 	public System.Object GetParameter(string key)
@@ -110,15 +116,17 @@ public class StateMachine {
 		
 		public string nextStateName;
 		public IState nextState;
+		public int nextStatePriority;
 		
 		public Dictionary<string, System.Object> parameters;
 
-		public StateMachineState(IState currentState, string nextStateName, IState nextState, Dictionary<string, object> parameters)
+		public StateMachineState(IState currentState, string nextStateName, IState nextState, Dictionary<string, object> parameters, int nextStatePriority)
 		{
 			this.currentState = currentState;
 			this.nextStateName = nextStateName;
 			this.nextState = nextState;
 			this.parameters = parameters;
+			this.nextStatePriority = nextStatePriority;
 
 			currentStateSavedState = currentState.GetCurrentState();
 		}
@@ -126,7 +134,7 @@ public class StateMachine {
 	
 	public object GetCurrentState()
 	{
-		return new StateMachineState(currentState, nextStateName, nextState, parameters);
+		return new StateMachineState(currentState, nextStateName, nextState, parameters, nextStatePriority);
 	}
 	
 	public void RewindToState(object state)
@@ -137,6 +145,7 @@ public class StateMachine {
 		nextStateName = stateMachineState.nextStateName;
 		nextState = stateMachineState.nextState;
 		parameters = stateMachineState.parameters;
+		nextStatePriority = stateMachineState.nextStatePriority;
 
 		currentState.RewindToState(stateMachineState.currentStateSavedState);
 	}

@@ -34,6 +34,39 @@
 		</description>
 	</effect>
 	
+	<input-configuration name="number-parameter-in">
+		<parameter>
+			<name>name</name>
+			<type>string</type>
+			<description>
+				The name of the property to get
+			</description>
+		</parameter>
+		<parameter>
+			<name>default</name>
+			<type>float</type>
+			<description>
+				The value to use if the property doesn't exist
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="number-parameter-out">
+		<parameter>
+			<name>result</name>
+			<type>float</type>
+			<description>
+				The value of the property
+			</description>
+		</parameter>
+	</output-configuration>
+	
+	<effect class="NumberParameterEffect" alias="number-parameter" namespace="stats" input="number-parameter-in" output="number-parameter-out">
+		<description>
+			Gets a parameter from the spell description
+		</description>
+	</effect>
+	
 	
 	<input-configuration name="damage-in">
 		<parameter>
@@ -294,6 +327,32 @@ Called if the teleport failed
 			Dashes to a location at a speed
 		</description>
 	</effect>
+	
+	<input-configuration name="root-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The object to move
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="root-out">
+		<parameter>
+			<name>effect</name>
+			<type>IEffect</type>
+			<description>
+				Pass this to a cancel effect to end the root
+			</description>
+		</parameter>
+	</output-configuration>
+	
+	<effect class="RootEffect" alias="root" namespace="movement" input="root-in" output="root-out">
+		<description>
+			Holds down a player in place
+		</description>
+	</effect>
 
 	<input-configuration name="get-ancestor-in">
 		<parameter>
@@ -367,6 +426,79 @@ Called if the teleport failed
 	<effect class="DebugLogEffect" alias="debug-log" namespace="debug" input="debug-log-in">
 		<description>
 			Outputs a value to the console
+		</description>
+	</effect>
+	
+	<input-configuration name="count-in">
+		<parameter>
+			<name>target</name>
+			<type>IEffect</type>
+			<description>
+				The counter to increment
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<effect class="CountEffect" alias="count" namespace="count" input="count-in">
+		<description>
+			Increments a counter
+		</description>
+	</effect>
+	
+	<input-configuration name="counter-in">
+		<parameter>
+			<name>countTo</name>
+			<type>int</type>
+			<description>
+				The value to count to
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="counter-out">
+		<parameter>
+			<name>currentValue</name>
+			<type>int</type>
+			<description>
+				The current value of the counter
+			</description>
+		</parameter>
+		<parameter>
+			<name>normalizedValue</name>
+			<type>float</type>
+			<description>
+				Maps 0 to countTo onto the range 0 to 1
+			</description>
+		</parameter>
+		<parameter>
+			<name>counterCompleted</name>
+			<type>bool</type>
+			<description>
+				Returns true if currentValue >= countTo
+			</description>
+		</parameter>
+		<parameter>
+			<name>effect</name>
+			<type>IEffect</type>
+			<description>
+				Reference to the counter
+			</description>
+		</parameter>
+		<event name="on-count">
+			<description>
+				Called if the counter changes value
+			</description>
+		</event>
+		<event name="on-completed">
+			<description>
+				Called when the counter reaches countTo
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="CounterEffect" alias="counter" namespace="count" input="counter-in" output="counter-out">
+		<description>
+			Counts up to a specified value
 		</description>
 	</effect>
 

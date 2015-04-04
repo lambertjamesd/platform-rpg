@@ -51,12 +51,12 @@ public class DashState : MonoBehaviour, IState {
 		{
 			completedNomrally = true;
 			
+			stateMachine.SetNextState(stateMachine.GetParameter<string>("nextState", "Default"));
+			
 			if (dashDelegate != null)
 			{
 				dashDelegate.DashComplete();
 			}
-
-			stateMachine.SetNextState(stateMachine.GetParameter<string>("nextState", "Default"));
 		}
 	}
 	

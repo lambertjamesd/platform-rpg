@@ -70,8 +70,6 @@ public class BuffEffect : EffectObject {
 
 	public override void Cancel()
 	{
-		base.Cancel();
-
 		if (target != null)
 		{
 			target.RemoveBuff(buff);
