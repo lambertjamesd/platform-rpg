@@ -66,6 +66,7 @@
     <None Include="Assets\Resources\GameObjectEffectBase.xml" />
     <None Include="Assets\Resources\ProjectileEffect.xml" />
     <None Include="Assets\Resources\ShieldEffects.xml" />
+    <None Include="Assets\Resources\StatEffects.xml" />
     <None Include="Assets\Resources\TimeEffects.xml" />
     <None Include="Assets\ThirdParty\Spriter2Unity\Example\Spriter Project\GreyGuy\Copyright_Information_Please_Read.txt" />
     <None Include="Assets\plugins\ICSharpCode.SharpZipLib.dll" />

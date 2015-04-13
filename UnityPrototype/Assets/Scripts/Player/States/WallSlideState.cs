@@ -26,12 +26,12 @@ public class WallSlideState : MonoBehaviour, IState {
 	public void Update(StateMachine stateMachine, float timestep)
 	{
 		float horizontalMovement = player.InputSource.State.HorizontalControl;
-		
+
+		player.DefaultMovement(timestep);
 		player.ApplyGravity(timestep);
 		player.HandleKnockback();
 		player.Velocity *= Mathf.Pow(player.Settings.wallSlideDamping, timestep);
 		player.Velocity -= player.WallNormal * player.settings.airAcceleration * timestep;
-		player.Move(player.Velocity * timestep);
 
 		if (player.WallNormal.x * horizontalMovement >= 0.0f)
 		{

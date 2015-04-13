@@ -28,10 +28,10 @@ public class FreeFallState : MonoBehaviour, IState {
 		float horizontalMovement = player.InputSource.State.HorizontalControl;
 		float targetRightSpeed = Mathf.Clamp(player.Velocity.x + horizontalMovement * maxMoveSpeed, -maxMoveSpeed, maxMoveSpeed);
 
+		player.DefaultMovement(timestep);
 		player.ApplyGravity(timestep);
 		player.HandleKnockback();
 		player.Velocity += Vector3.right * (targetRightSpeed - player.Velocity.x) * player.settings.airAcceleration * timestep;
-		player.Move(player.Velocity * timestep);
 
 		if (player.IsGrounded)
 		{

@@ -173,7 +173,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 			
 			selectionCursor.position = players[currentSelection].transform.position;
 			
-			if (Input.GetButtonDown("Select") || Input.GetButtonDown("Jump"))
+			if (Input.GetButtonDown("Select"))
 			{
 				selectionCursor.transform.position = new Vector3(10000.0f, 0.0f, 0.0f);
 				StartSelectedPlayer();

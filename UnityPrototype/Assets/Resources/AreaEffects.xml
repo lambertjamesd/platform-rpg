@@ -39,6 +39,13 @@
 				The collision layer of the contacted object
 			</description>
 		</parameter>
+		<parameter>
+			<name>deltaTime</name>
+			<type>float</type>
+			<description>
+				The change in time between updates
+			</description>
+		</parameter>
 	</output-configuration>
 	
 	<output-configuration name="area-effect-out" parent="game-object-out">

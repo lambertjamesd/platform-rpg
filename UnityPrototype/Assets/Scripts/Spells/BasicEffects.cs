@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -24,45 +24,6 @@ public class CancelEventEffect : EffectObject
 		if (target != null)
 		{
 			target.Cancel();
-		}
-	}
-}
-
-
-public class NumberParameterEffect : EffectObject
-{
-	string name;
-	float defaultValue = 0.0f;
-
-	public override void StartEffect(EffectInstance instance) {
-		base.StartEffect(instance);
-		name = instance.GetValue<string>("name", null);
-		defaultValue = instance.GetValue<float>("default", 0.0f);
-	}
-
-	public override IEffectPropertySource PropertySource
-	{
-		get
-		{
-			return new LambdaPropertySource(propertyName => {
-				if (propertyName == "result")
-				{
-					Dictionary<string, SpellDescriptionParameter> parameters = instance.GetContextValue<Dictionary<string, SpellDescriptionParameter>>("parameters", null);
-
-					if (parameters != null && parameters.ContainsKey(name))
-					{
-						return parameters[name].value;
-					}
-					else
-					{
-						return defaultValue;
-					}
-				}
-				else
-				{
-					return null;
-				}
-			});
 		}
 	}
 }
@@ -128,9 +89,28 @@ public class DamageEffect : EffectObject
 			{
 				target.ApplyDamage(damageAmount);
 			}
-			else
+		}
+	}
+}
+
+public class HealEffect : EffectObject
+{
+	public override void StartEffect(EffectInstance instance) {
+		base.StartEffect(instance);
+		float healAmount = instance.GetValue<float>("amount", 0.0f);
+		GameObject gameObject = instance.GetValue<GameObject>("target", null);
+		Damageable target = null;
+		
+		if (gameObject != null)
+		{
+			target = gameObject.GetComponent<Damageable>();
+		}
+		
+		if (target != null)
+		{
+			if (healAmount >= 0.0f)
 			{
-				target.Heal(-damageAmount);
+				target.Heal(healAmount);
 			}
 		}
 	}
@@ -177,7 +157,17 @@ public class DebugLogEffect : EffectObject
 {
 	public override void StartEffect(EffectInstance instance) {
 		base.StartEffect(instance);
-		Debug.Log(instance.GetValue<object>("input"), instance.Definition.Source);
+
+		object input = instance.GetValue<object>("input");
+
+		if (input == null)
+		{
+			Debug.Log(instance.GetValue<string>("label", "unlabelled") + ": null", instance.Definition.Source);
+		}
+		else
+		{
+			Debug.Log(instance.GetValue<string>("label", "unlabelled") + ": " + input.ToString(), instance.Definition.Source);
+		}
 	}
 }
 

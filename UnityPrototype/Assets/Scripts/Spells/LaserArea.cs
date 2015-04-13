@@ -62,7 +62,7 @@ public class LaserArea : AreaEffect, IFixedUpdate {
 			colliderList[i] = hits[i].collider;
 		}
 
-		UpdateContainedColliders(colliderList);
+		UpdateContainedColliders(colliderList, dt);
 	}
 
 	public void OnDrawGizmos()

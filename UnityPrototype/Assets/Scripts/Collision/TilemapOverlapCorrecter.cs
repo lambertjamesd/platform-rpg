@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class MeshOutlineGenerator
 {
@@ -14,6 +15,17 @@ public class MeshOutlineGenerator
 		private static readonly float POINT_COLLIDE_TOLERANCE = 0.05f;
 
 		private bool isClosed = false;
+
+		public Loop()
+		{
+
+		}
+
+		public Loop(IEnumerable<Vector2> points)
+		{
+			this.points = points.ToList();
+			this.isClosed = true;
+		}
 
 		public void JoinSegment(Vector2 a, Vector2 b, int endpoint)
 		{
@@ -88,22 +100,17 @@ public class MeshOutlineGenerator
 				}
 			}
 		}
-
-		private float Cross2D(Vector2 a, Vector2 b)
-		{
-			return a.x * b.y - a.y * b.x;
-		}
 		
 		private bool IsConvexJoint(int prevIndex, int jointIndex, int nextIndex)
 		{
 			Vector2 lastPoint = GetPoint(prevIndex);
 			Vector2 point = GetPoint(jointIndex);
 			Vector2 nextPoint = GetPoint(nextIndex);
-			
+
 			Vector2 nextEdge = nextPoint - point;
 			Vector2 previousEdge = point - lastPoint;
 			
-			return Cross2D(previousEdge, nextEdge) < EQUALITY_TOLERANCE;
+			return ColliderMath.Cross2D(previousEdge, nextEdge) < EQUALITY_TOLERANCE;
 		}
 
 		private bool IsConvexJoint(int jointIndex)
@@ -181,32 +188,6 @@ public class MeshOutlineGenerator
 			}
 
 			return true;
-		}
-
-		private readonly float EDGE_MOVE_AMOUNT = 20.0f;
-
-		public void ExtendEdges(Vector2 min, Vector2 max)
-		{
-			for (int i = 0; i < points.Count; ++i)
-			{
-				Vector2 point = points[i];
-
-				if (Mathf.Abs(point.x - min.x) < 0.1f)
-				{
-					point.x -= EDGE_MOVE_AMOUNT;
-				}
-				else if (Mathf.Abs(point.x - max.x) < 0.1f)
-				{
-					point.x += EDGE_MOVE_AMOUNT;
-				}
-
-				if (Mathf.Abs(point.y - min.y) < 0.1f)
-				{
-					point.y -= EDGE_MOVE_AMOUNT;
-				}
-
-				points[i] = point;
-			}
 		}
 
 		public void BoundingBox(out Vector2 min, out Vector2 max)
@@ -452,30 +433,6 @@ public class MeshOutlineGenerator
 		}
 	}
 
-	public void ExtendEdges()
-	{
-		Vector2 min;
-		Vector2 max;
-
-		loops[0].BoundingBox(out min, out max);
-
-		foreach (Loop loop in loops)
-		{
-			Vector2 loopMin;
-			Vector2 loopMax;
-
-			loop.BoundingBox(out loopMin, out loopMax);
-
-			min = Vector2.Min(min, loopMin);
-			max = Vector2.Max(max, loopMax);
-		}
-
-		foreach (Loop loop in loops)
-		{
-			loop.ExtendEdges(min, max);
-		}
-	}
-
 	public void BuildCollider()
 	{
 		List<ConcaveCollider> colliders = new List<ConcaveCollider>();
@@ -488,13 +445,21 @@ public class MeshOutlineGenerator
 		result = new ConcaveColliderGroup(colliders.ToArray());
 	}
 
-
-	
 	public MeshOutlineGenerator(Mesh mesh, Plane plane, Vector3 right)
 	{
 		GenerateSegments(mesh, plane, right);
 		SimplifyLoops();
-		ExtendEdges();
+		BuildCollider();
+	}
+
+	public MeshOutlineGenerator(List<ShapeOutline> outlines)
+	{
+		foreach (ShapeOutline shape in outlines)
+		{
+			loops.Add(new Loop(shape.Points));
+		}
+
+		SimplifyLoops();
 		BuildCollider();
 	}
 
@@ -513,7 +478,7 @@ public class MeshOutlineGenerator
 
 	public void DebugDraw(Transform transform, bool showInternalEdges)
 	{
-		result.DebugDraw(transform, showInternalEdges);
+		result.DebugDraw(transform, showInternalEdges, new Color(0.0f, 0.0f, 1.0f, 0.5f));
 	}
 }
 
@@ -524,10 +489,17 @@ public class TilemapOverlapCorrecter : MonoBehaviour {
 	[SerializeField]
 	private ConcaveColliderGroup colliderGroup;
 
+	public List<CharacterSize> pathingNetworkSizes = new List<CharacterSize>();
+
+	[SerializeField]
+	private List<PathingNetwork> pathingNetworks = new List<PathingNetwork>();
+
+	public bool debugDrawPathing = false;
+
 	void Start () {
 		if (colliderGroup != null)
 		{
-			colliderGroup.Initialize();
+			colliderGroup.EnsureInitialized();
 		}
 	}
 
@@ -536,6 +508,14 @@ public class TilemapOverlapCorrecter : MonoBehaviour {
 		if (meshToOutline != null)
 		{
 			colliderGroup = new MeshOutlineGenerator(meshToOutline, new Plane(Vector3.forward, Vector3.forward * 0.5f), Vector3.right).Result;
+
+			pathingNetworks = new List<PathingNetwork>();
+			List<ShapeOutline> outlines = colliderGroup.GetOutline();
+
+			for (int i = 0; i < pathingNetworkSizes.Count; ++i)
+			{
+				pathingNetworks.Add(new PathingNetwork(outlines, pathingNetworkSizes[i]));
+			}
 		}
 	}
 
@@ -564,7 +544,15 @@ public class TilemapOverlapCorrecter : MonoBehaviour {
 	{
 		if (colliderGroup != null)
 		{
-			colliderGroup.DebugDraw(transform, debugDrawInternalEdges);
+			colliderGroup.DebugDraw(transform, debugDrawInternalEdges, new Color(0.0f, 0.0f, 1.0f, 0.5f));
+		}
+
+		if (debugDrawPathing && pathingNetworks != null)
+		{
+			foreach (PathingNetwork network in pathingNetworks)
+			{
+				network.DebugDraw(transform);
+			}
 		}
 	}
 

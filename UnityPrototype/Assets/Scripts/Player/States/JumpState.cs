@@ -28,6 +28,8 @@ public class JumpState : MonoBehaviour, IState {
 		float minJumpHeight = Mathf.Min(player.Stats.GetNumberStat("minJumpHeight"), maxJumpHeight);
 
 		jumpHeightControlWindow = player.Stats.GetNumberStat("jumpHeightControlWindow");
+		jumpHeightControlWindow = Mathf.Ceil(jumpHeightControlWindow / Time.fixedDeltaTime) * jumpHeightControlWindow;
+
 		initialJumpImpulse = Mathf.Sqrt(2.0f * minJumpHeight * -Physics.gravity.y);
 		
 		float g = Physics.gravity.y;
@@ -63,12 +65,12 @@ public class JumpState : MonoBehaviour, IState {
 	public void Update(StateMachine stateMachine, float timestep)
 	{
 		float horizontalMovement = player.InputSource.State.HorizontalControl;
-
+		
+		player.Move(player.Velocity * timestep + 0.5f * timestep * timestep * (Physics.gravity + Vector3.up * jumpAcceration));
 		player.ApplyGravity(timestep);
 		player.HandleKnockback();
 		player.Velocity += Vector3.up * jumpAcceration * timestep 
 			+ horizontalMovement * Vector3.right * player.settings.airAcceleration * timestep;
-		player.Move(player.Velocity * timestep);
 
 		if (jumpControlTime <= 0.0 || !player.InputSource.State.JumpButton)
 		{

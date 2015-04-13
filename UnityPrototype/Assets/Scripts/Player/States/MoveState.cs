@@ -41,11 +41,11 @@ public class MoveState : MonoBehaviour, IState {
 		{
 			player.Velocity += velocityDirection.normalized * accelerationAmount;
 		}
-
+		
+		player.DefaultMovement(timestep);
 		player.ApplyGravity(timestep);
 		player.HandleKnockback();
 
-		player.Move(player.Velocity * timestep);
 
 		if (!player.IsGrounded)
 		{

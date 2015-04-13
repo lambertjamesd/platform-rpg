@@ -232,6 +232,11 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		Velocity += Physics.gravity * timestep;
 	}
 
+	public void DefaultMovement(float timestep)
+	{
+		Move (Velocity * timestep + 0.5f * timestep * timestep * Physics.gravity);
+	}
+
 	public Vector3 KnockbackImpulse
 	{
 		get

@@ -60,7 +60,11 @@
     <Compile Include="Assets\JSON Tests\CSharp\Test_CSharp.cs" />
     <Compile Include="Assets\Scripts\BreakableBarrier.cs" />
     <Compile Include="Assets\Scripts\CharacterSpawner.cs" />
+    <Compile Include="Assets\Scripts\Collision\BoundingBox.cs" />
+    <Compile Include="Assets\Scripts\Collision\ColliderMath.cs" />
     <Compile Include="Assets\Scripts\Collision\ConcaveCollider.cs" />
+    <Compile Include="Assets\Scripts\Collision\ConcaveColliderGroup.cs" />
+    <Compile Include="Assets\Scripts\Collision\ConvexSection.cs" />
     <Compile Include="Assets\Scripts\Collision\OverlapShape.cs" />
     <Compile Include="Assets\Scripts\Collision\TilemapOverlapCorrecter.cs" />
     <Compile Include="Assets\Scripts\Damageable.cs" />
@@ -83,6 +87,12 @@
     <Compile Include="Assets\Scripts\GizmoHelper.cs" />
     <Compile Include="Assets\Scripts\Knockback.cs" />
     <Compile Include="Assets\Scripts\NumericalHealthBar.cs" />
+    <Compile Include="Assets\Scripts\Pathfinding\NodeEdgeFinder.cs" />
+    <Compile Include="Assets\Scripts\Pathfinding\PathingEdgeFactory.cs" />
+    <Compile Include="Assets\Scripts\Pathfinding\PathingMath.cs" />
+    <Compile Include="Assets\Scripts\Pathfinding\PathingNetwork.cs" />
+    <Compile Include="Assets\Scripts\Pathfinding\PathingNodeFactory.cs" />
+    <Compile Include="Assets\Scripts\Pathfinding\ShapeOutline.cs" />
     <Compile Include="Assets\Scripts\Player\AnimatorStateSaver.cs" />
     <Compile Include="Assets\Scripts\Player\CharacterControllerHelper.cs" />
     <Compile Include="Assets\Scripts\Player\ControllerInputSource.cs" />
@@ -122,6 +132,7 @@
     <Compile Include="Assets\Scripts\Spells\ShieldEffect.cs" />
     <Compile Include="Assets\Scripts\Spells\SpellCaster.cs" />
     <Compile Include="Assets\Scripts\Spells\SpellDescription.cs" />
+    <Compile Include="Assets\Scripts\Spells\StatFunctions.cs" />
     <Compile Include="Assets\Scripts\Spells\SwingEffect.cs" />
     <Compile Include="Assets\Scripts\Spells\TeleportEffect.cs" />
     <Compile Include="Assets\Scripts\TimeGameObject.cs" />
@@ -157,6 +168,7 @@
     <None Include="Assets\Resources\GameObjectEffectBase.xml" />
     <None Include="Assets\Resources\ProjectileEffect.xml" />
     <None Include="Assets\Resources\ShieldEffects.xml" />
+    <None Include="Assets\Resources\StatEffects.xml" />
     <None Include="Assets\Resources\TimeEffects.xml" />
     <None Include="Assets\ThirdParty\Spriter2Unity\Example\Spriter Project\GreyGuy\Copyright_Information_Please_Read.txt" />
   </ItemGroup>

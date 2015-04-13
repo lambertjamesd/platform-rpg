@@ -8,6 +8,7 @@
 	<include>TimeEffects</include>
 	<include>BuffEffects</include>
 	<include>ShieldEffects</include>
+	<include>StatEffects</include>
 
 	<include>FunctionSettings</include>
 		

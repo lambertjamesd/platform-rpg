@@ -18,6 +18,7 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 		noCollideRepeat = instance.GetValue<bool>("noCollideRepeat", false);
 
 		timeManager = instance.GetContextValue<TimeManager>("timeManager", null);
+		timeManager.AddTimeTraveler(this);
 	}
 	
 	public void OnDisable()
@@ -29,8 +30,24 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 		
 		enclosedObjects.Clear();
 	}
+
+	private static IEffectPropertySource EventPropertySource(GameObject gameObject, float deltaTime)
+	{
+		GameObjectPropertySource gameObjectSource = new GameObjectPropertySource(gameObject);
+		return new LambdaPropertySource(propertyName => {
+			switch(propertyName)
+			{
+			case "deltaTime":
+				return deltaTime;
+			}
+			
+			return gameObjectSource.GetObject(propertyName);
+		});
+	}
 	
-	protected void UpdateContainedColliders(Collider[] colliders) {
+	protected void UpdateContainedColliders(Collider[] colliders, float deltaTime) {
+
+
 		foreach (Collider collider in colliders)
 		{
 			bool notFirstCollider = firstColliderOnly && alreadyCollided.Count > 0 && !alreadyCollided.Contains(collider.gameObject);
@@ -45,11 +62,11 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 			{
 				enclosedObjects.Add(collider.gameObject);
 				alreadyCollided.Add(collider.gameObject);
-				Instance.TriggerEvent("enter", new GameObjectPropertySource(collider.gameObject));
+				Instance.TriggerEvent("enter", EventPropertySource(collider.gameObject, deltaTime));
 			}
 			else
 			{
-				Instance.TriggerEvent("stay", new GameObjectPropertySource(collider.gameObject));
+				Instance.TriggerEvent("stay", EventPropertySource(collider.gameObject, deltaTime));
 			}
 
 			if (firstColliderOnly)
@@ -61,7 +78,7 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 		enclosedObjects.RemoveWhere(delegate(GameObject gameObject) { 
 			if (Array.Find<Collider>(colliders, collider => collider.gameObject == gameObject) == null)
 			{
-				Instance.TriggerEvent("exit", new GameObjectPropertySource(gameObject));
+				Instance.TriggerEvent("exit", EventPropertySource(gameObject, deltaTime));
 				return true;
 			}
 			else

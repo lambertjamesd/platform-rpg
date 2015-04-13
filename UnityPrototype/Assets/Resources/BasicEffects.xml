@@ -34,39 +34,6 @@
 		</description>
 	</effect>
 	
-	<input-configuration name="number-parameter-in">
-		<parameter>
-			<name>name</name>
-			<type>string</type>
-			<description>
-				The name of the property to get
-			</description>
-		</parameter>
-		<parameter>
-			<name>default</name>
-			<type>float</type>
-			<description>
-				The value to use if the property doesn't exist
-			</description>
-		</parameter>
-	</input-configuration>
-	
-	<output-configuration name="number-parameter-out">
-		<parameter>
-			<name>result</name>
-			<type>float</type>
-			<description>
-				The value of the property
-			</description>
-		</parameter>
-	</output-configuration>
-	
-	<effect class="NumberParameterEffect" alias="number-parameter" namespace="stats" input="number-parameter-in" output="number-parameter-out">
-		<description>
-			Gets a parameter from the spell description
-		</description>
-	</effect>
-	
 	
 	<input-configuration name="damage-in">
 		<parameter>
@@ -87,7 +54,31 @@
 		
 	<effect class="DamageEffect" alias="damage" namespace="game object" input="damage-in">
 		<description>
-			Sends a damage message to the damager attached to the given game object
+			Sends a damage message to the damageable attached to the given game object
+		</description>
+	</effect>
+	
+	
+	<input-configuration name="heal-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The game object to heal
+			</description>
+		</parameter>
+		<parameter>
+			<name>amount</name>
+			<type>float</type>
+			<description>
+				The amount of damage to heal
+			</description>
+		</parameter>
+	</input-configuration>
+		
+	<effect class="HealEffect" alias="heal" namespace="game object" input="heal-in">
+		<description>
+			Sends a heal message to the damageable attached to the given game object
 		</description>
 	</effect>
 	
@@ -229,6 +220,13 @@ This event is triggered if the condition is false
 	</effect>
 	
 	<input-configuration name="debug-log-in">
+		<parameter>
+			<name>label</name>
+			<type>string</type>
+			<description>
+				The label to add to the debug log
+			</description>
+		</parameter>
 		<parameter>
 			<name>input</name>
 			<type>Any</type>
@@ -410,22 +408,6 @@ Called if the teleport failed
 	<effect class="CaptureValueEffect" alias="capture-value"  namespace="control" input="capture-value-in" output="capture-value-out">
 		<description>
 			Grabs and saves the current value for any property
-		</description>
-	</effect>
-	
-	<input-configuration name="debug-log-in">
-		<parameter>
-			<name>input</name>
-			<type>Any</type>
-			<description>
-				The value to print to the console
-			</description>
-		</parameter>
-	</input-configuration>
-	
-	<effect class="DebugLogEffect" alias="debug-log" namespace="debug" input="debug-log-in">
-		<description>
-			Outputs a value to the console
 		</description>
 	</effect>
 	

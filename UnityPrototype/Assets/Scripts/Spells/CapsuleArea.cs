@@ -148,7 +148,7 @@ public class CapsuleArea : AreaEffect, IFixedUpdate {
 			overlappingColliders.UnionWith(castHits.Select(castHit => castHit.collider).ToArray());
 		}
 		
-		UpdateContainedColliders(overlappingColliders.ToArray());
+		UpdateContainedColliders(overlappingColliders.ToArray(), dt);
 
 		lastPosition = worldCenter;
 	}

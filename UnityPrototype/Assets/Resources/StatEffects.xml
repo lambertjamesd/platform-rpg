@@ -1,0 +1,36 @@
+<effect-settings>
+	<function name="NumberParameter" namespace="stats">
+		<return-type>float</return-type>
+		<parameter>
+			<name>caster</name>
+			<type>GameObject</type>
+			<description>
+				The caster to get a parameter from
+			</description>
+		</parameter>
+		<parameter>
+			<name>spellIndex</name>
+			<type>int</type>
+			<description>
+				The index of the spell to get the parameter from
+			</description>
+		</parameter>
+		<parameter>
+			<name>name</name>
+			<type>string</type>
+			<description>
+				The name of the paramter to get
+			</description>
+		</parameter>
+		<parameter>
+			<name>default</name>
+			<type>float</type>
+			<description>
+				The default value of the parameter cannot be retrieved
+			</description>
+		</parameter>
+		<description>
+			Gets a parameter from a spell description
+		</description>
+	</function>
+</effect-settings>

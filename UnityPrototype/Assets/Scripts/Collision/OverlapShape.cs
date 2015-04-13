@@ -9,12 +9,28 @@ public abstract class OverlapShape {
 	}
 	
 	protected Vector2 position;
+	protected BoundingBox boundingBox;
+	private bool boundingBoxDirty = true;
 
 	public Vector2 Position
 	{
 		get
 		{
 			return position;
+		}
+	}
+
+	public BoundingBox BB
+	{
+		get
+		{
+			if (boundingBoxDirty)
+			{
+				boundingBox = CalcBoundingBox();
+				boundingBoxDirty = false;
+			}
+
+			return boundingBox;
 		}
 	}
 
@@ -32,7 +48,7 @@ public abstract class OverlapShape {
 		public float distance;
 	}
 	
-	public abstract bool BoundingBoxOverlap(Vector2 min, Vector2 max);
+	protected abstract BoundingBox CalcBoundingBox();
 	public abstract Overlap LineOverlap(Vector2 lineA, Vector2 lineB, Vector2 lineNormal);
 	public abstract Overlap PointOverlap(Vector2 point);
 	public void MoveShape(Vector2 amount)
@@ -49,10 +65,9 @@ public class PointOverlapShape : OverlapShape {
 
 	}
 
-	public override bool BoundingBoxOverlap(Vector2 min, Vector2 max)
+	protected override BoundingBox CalcBoundingBox()
 	{
-		return min.x <= position.x && min.y <= position.y &&
-			max.x >= position.x && max.y >= position.x;
+		return new BoundingBox(position, position);
 	}
 	
 	public override OverlapShape.Overlap LineOverlap(Vector2 lineA, Vector2 lineB, Vector2 lineNormal)
@@ -96,10 +111,9 @@ public class SphereOverlapShape : OverlapShape {
 		}
 	}
 	
-	public override bool BoundingBoxOverlap(Vector2 min, Vector2 max)
+	protected override BoundingBox CalcBoundingBox()
 	{
-		return min.x - radius <= position.x && min.y - radius <= position.y &&
-			max.x + radius >= position.x && max.y + radius >= position.y;
+		return new BoundingBox(position - Vector2.one * radius, position + Vector2.one * radius);
 	}
 
 	public static OverlapShape.Overlap SphereLineOverlap(Vector2 spherePos, float sphereRadius, Vector2 lineA, Vector2 lineB, Vector2 lineNormal)
@@ -144,10 +158,10 @@ public class CapsuleOverlapShape : OverlapShape {
 	private float radius;
 	private float maxExtent;
 	
-	public override bool BoundingBoxOverlap(Vector2 min, Vector2 max)
+	
+	protected override BoundingBox CalcBoundingBox()
 	{
-		return min.x - maxExtent <= position.x && min.y - maxExtent <= position.y &&
-			max.x + maxExtent >= position.x && max.y + maxExtent >= position.y;
+		return new BoundingBox(position - Vector2.one * maxExtent, position + Vector2.one * maxExtent);
 	}
 	
 	public override OverlapShape.Overlap LineOverlap(Vector2 lineA, Vector2 lineB, Vector2 lineNormal)
