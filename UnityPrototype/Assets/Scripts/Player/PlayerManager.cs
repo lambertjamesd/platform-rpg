@@ -117,7 +117,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
 			for (int i = 0; i < hasPlayerGone.Length; ++i)
 			{
-				hasPlayerGone[i] = players[i].team != currentTurn;
+				hasPlayerGone[i] = players[i].Team != currentTurn;
 			}
 
 			timeManager.TakeSnapshot();
@@ -145,7 +145,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		for (int i = 0; i < hasPlayerGone.Length; ++i)
 		{
 			hasPlayerGone[i] = true;
-			teamCount = Mathf.Max(players[i].team + 1, teamCount);
+			teamCount = Mathf.Max(players[i].Team + 1, teamCount);
 		}
 
 		updateManager.Paused = true;

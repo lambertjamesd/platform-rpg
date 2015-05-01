@@ -143,7 +143,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 	// Use this for initialization
 	void Awake () {
-		propertySource = new GameObjectPropertySource(gameObject);
+		propertySource = new GameObjectPropertySource(gameObject, null);
 
 		effectDefinitions = new EffectDefinition[spells.Length];
 		rootInstances = new EffectInstance[spells.Length];
@@ -158,6 +158,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 		context["updateManager"] = gameObject.GetComponentWithAncestors<UpdateManager>();
 		context["timeManager"] = timeManager;
 		context["playerManager"] = gameObject.GetComponentWithAncestors<PlayerManager>();
+		context["casterTeam"] = Player.LayerToTeam(gameObject.layer);
 
 		for (int i = 0; i < spells.Length; ++i)
 		{

@@ -6,8 +6,8 @@ using UnityEditor;
 #endif
 
 public class CharacterSpawner : MonoBehaviour {
-
 	public Player playerInstance;
+	public int team;
 
 	public void Awake () {
 		if (playerInstance != null)
@@ -20,6 +20,7 @@ public class CharacterSpawner : MonoBehaviour {
 			playerInstance.gameObject.SetActive(false);
 
 			Player newPlayer = (Player)Instantiate(playerInstance, transform.position, transform.rotation);
+			newPlayer.Team = team;
 			newPlayer.transform.parent = transform.parent;
 			manager.AddPlayer(newPlayer);
 
@@ -48,7 +49,7 @@ public class CharacterSpawner : MonoBehaviour {
 			up = Vector3.up;
 			height = controller.height;
 			radius = controller.radius;
-			color = Color.green;
+			color = TeamColors.GetColor(team);
 #if UNITY_EDITOR
 			Handles.Label(transform.TransformPoint(center), playerInstance.name);
 #endif

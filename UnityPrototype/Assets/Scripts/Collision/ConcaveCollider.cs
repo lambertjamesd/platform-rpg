@@ -150,7 +150,7 @@ public class ConcaveCollider {
 			int nextIndex = section.GetAdjacentSectionIndex(index);
 			section = section.GetAdjacentSection(index);
 
-			nextIndex = (nextIndex + 1) % section.PointCount;
+			index = (nextIndex + 1) % section.PointCount;
 		}
 	}
 

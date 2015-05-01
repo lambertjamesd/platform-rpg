@@ -66,6 +66,38 @@
 		</event>
 	</output-configuration>
 	
+	
+	<input-configuration name="area-exit-listener-in">
+		<parameter>
+			<name>areaEffect</name>
+			<type>IEffect</type>
+			<description>
+				The area to listen on
+			</description>
+		</parameter>
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The game object to watch for
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="area-exit-listener-out">
+		<event name="on-exit" parent="area-effect-event">
+			<description>
+				Called when an object leaves the area
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="AreaEffectExitListener" alias="area-exit-listener" namespace="aoe" input="area-exit-listener-in" output="area-exit-listener-out">
+		<description>
+			Wait until a game object no longer collides with an effect area
+		</description>
+	</effect>
+	
 	<input-configuration name="circle-area-in" parent="area-effect-in">
 		<parameter>
 			<name>radius</name>

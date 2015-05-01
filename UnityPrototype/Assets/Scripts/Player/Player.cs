@@ -99,7 +99,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	public DashState dashState;
 	public RootedState rootedState;
 
-	public int team;
+	private int team;
 
 	public PlayerSettings settings;
 	private PlayerStats stats;
@@ -135,6 +135,18 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	private PlayerState lastState;
 
 	public static readonly int SPELL_COUNT = 3;
+	private static int firstTeamLayer = 8;
+	private static int layerOffsetPerTeam = 3;
+
+	public static int TeamToLayer(int team)
+	{
+		return team * layerOffsetPerTeam + firstTeamLayer;
+	}
+
+	public static int LayerToTeam(int layer)
+	{
+		return (layer - firstTeamLayer) / layerOffsetPerTeam;
+	}
 
 	public SpellCaster Caster
 	{
@@ -216,6 +228,26 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		set
 		{
 			velocity = value;
+		}
+	}
+
+	public int Team
+	{
+		get
+		{
+			return team;
+		}
+
+		set
+		{
+			team = value;
+			gameObject.layer = firstTeamLayer + team * layerOffsetPerTeam;
+
+			SpriteRenderer[] renderers = gameObject.GetComponentsInChildren<SpriteRenderer>(renderer);
+			foreach (Renderer childRenderer in renderers)
+			{
+				childRenderer.material.color = TeamColors.GetColor(team);
+			}
 		}
 	}
 

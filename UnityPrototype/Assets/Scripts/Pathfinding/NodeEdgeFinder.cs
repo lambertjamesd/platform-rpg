@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 public class NodeEdgeFinder {
 
-	private List<ShapeOutline> colliders;
-	private float characterRadius;
+	private ConcaveColliderGroup colliders;
+	private CharacterSize characterSize;
 	private Vector2 lowerCastOffset;
 	private Vector2 upperCastOffset;
 
-	public NodeEdgeFinder(List<ShapeOutline> colliders, CharacterSize characterSize)
+	public NodeEdgeFinder(ConcaveColliderGroup colliders, CharacterSize characterSize)
 	{
 		this.colliders = colliders;
-		this.characterRadius = characterSize.radius;
+		this.characterSize = characterSize;
 		lowerCastOffset = Vector2.up * characterSize.radius;
 		upperCastOffset = Vector2.up * (characterSize.height - characterSize.radius);
 	}
@@ -21,10 +21,118 @@ public class NodeEdgeFinder {
 	{
 		float offset = (testPoint - nodePoint).sqrMagnitude;
 
-		return offset < characterRadius * characterRadius * 2.0f;
+		return offset < characterSize.radius * characterSize.radius * 2.0f;
+	}
+
+	private Range BlockedHorizontalVelocities(ConvexSection section, Vector2 startPoint, Vector2 direction, Vector2 platformA, Vector2 platformB)
+	{
+		float upperJumpSpeed = float.MinValue;
+		float lowerJumpSpeed = float.MaxValue;
+		float xDirection = Mathf.Sign(direction.x);
+
+		Vector2 normal = direction.x > 0.0f ? ColliderMath.RotateCCW(direction) : ColliderMath.RotateCW(direction);
+		
+		Vector2 lowerOrigin = startPoint + characterSize.radius * normal;
+		Vector2 upperOrigin = lowerOrigin + Vector2.up * (characterSize.height - 2.0f * characterSize.radius);
+
+		float edgeSlope = direction.y / direction.x;
+
+		Vector2 platformNormal = ColliderMath.RotateCW(platformB - platformA);
+
+		if (platformNormal.y < 0.0f)
+		{
+			platformNormal *= -1.0f;
+		}
+
+		for (int i = 0; i < section.PointCount; ++i)
+		{
+			Vector2 currentPoint = section.GetPoint(i);
+			Vector2 nextPoint = section.GetPoint(i + 1);
+
+			if (!IsSourcePoint(currentPoint, platformA) && !IsSourcePoint(nextPoint, platformB))
+			{
+				float speed;
+
+				if ((currentPoint.x - lowerOrigin.x) * xDirection > 0.0f && 
+				    ColliderMath.InFrontOf(currentPoint, platformNormal, platformA) &&
+				    !IsSourcePoint(currentPoint, startPoint))
+				{
+					if (PathingMath.FreefallSpeedToPoint(edgeSlope, currentPoint - lowerOrigin, Physics.gravity.y, out speed))
+					{
+						upperJumpSpeed = Mathf.Max(speed, upperJumpSpeed);
+					}
+
+					if (PathingMath.FreefallSpeedToPoint(edgeSlope, currentPoint - upperOrigin, Physics.gravity.y, out speed))
+					{
+						lowerJumpSpeed = Mathf.Min(speed, lowerJumpSpeed);
+					}
+				}
+
+				if (((currentPoint.x - lowerOrigin.x) * xDirection > 0.0f || (nextPoint.x - lowerOrigin.x) * xDirection > 0.0f) &&
+				    Mathf.Abs(currentPoint.x - nextPoint.x) > ColliderMath.ZERO_TOLERANCE)
+				{
+					float xPosition;
+					if (PathingMath.FreefallSpeedToLine(edgeSlope, currentPoint - upperOrigin, nextPoint - upperOrigin, Physics.gravity.y, out speed, out xPosition))
+					{
+						float worldX = xPosition + lowerOrigin.x;
+						float lerpX = (worldX - currentPoint.x) / (nextPoint.x - currentPoint.x);
+
+						if ((xPosition - lowerOrigin.x) * xDirection > 0.0f && lerpX >= 0.0f && lerpX <= 1.0f &&
+						    ColliderMath.InFrontOf(new Vector2(worldX, Mathf.Lerp(currentPoint.x, nextPoint.x, lerpX)), platformNormal, platformA))
+						{
+							lowerJumpSpeed = Mathf.Min(speed, lowerJumpSpeed);
+						}
+					}
+
+					if ((currentPoint.x - lowerOrigin.x) * xDirection < 0.0f || (nextPoint.x - lowerOrigin.x) * xDirection < 0.0f)
+					{
+						float xCrossing = (lowerOrigin.x - currentPoint.x) / (nextPoint.x - currentPoint.x);
+						float yCrossing = Mathf.Lerp(currentPoint.y, nextPoint.y, xCrossing);
+
+						if (xCrossing >= 0.0f && xCrossing <= 1.0f && yCrossing < lowerOrigin.y && 
+						    ColliderMath.InFrontOf(new Vector2(lowerOrigin.x, yCrossing), platformNormal, platformA))
+						{
+							lowerJumpSpeed = float.MinValue;
+						}
+					}
+				}
+			}
+		}
+
+		return new Range(lowerJumpSpeed, upperJumpSpeed);
 	}
 	
-	private Range BlockedRange(ShapeOutline section, Vector2 startPoint, Vector2 endPoint)
+	
+	private List<Range> BlockedHorizontalRanges(Vector2 startPoint, Vector2 direction, Vector2 platformA, Vector2 platformB, BoundingBox jumpRange)
+	{
+		List<Range> result = new List<Range>();
+		
+		for (int i = 0; i < colliders.ColliderCount; ++i)
+		{
+			ConcaveCollider collider = colliders.GetCollider(i);
+			if (collider.BB.Overlaps(jumpRange))
+			{
+				for (int j = 0; j < collider.SectionCount; ++j)
+				{
+					ConvexSection section = collider.GetSection(j);
+					
+					if (section.BB.Overlaps(jumpRange))
+					{
+						Range blockedRange = BlockedHorizontalVelocities(section, startPoint, direction, platformA, platformB);
+						
+						if (blockedRange.min < blockedRange.max)
+						{
+							result.Add(blockedRange);
+						}
+					}
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	private Range BlockedRange(ConvexSection section, Vector2 startPoint, Vector2 endPoint)
 	{
 		float upperJumpHeight = float.MinValue;
 		float lowerJumpHeight = float.MaxValue;
@@ -145,20 +253,28 @@ public class NodeEdgeFinder {
 		public bool isStart;
 	}
 
-	private List<Range> BlockedRanges(List<ShapeOutline> colliderGroup, Vector2 startPoint, Vector2 endPoint, BoundingBox jumpRange)
+	private List<Range> BlockedRanges(Vector2 startPoint, Vector2 endPoint, BoundingBox jumpRange)
 	{
 		List<Range> result = new List<Range>();
 
-		for (int i = 0; i < colliderGroup.Count; ++i)
+		for (int i = 0; i < colliders.ColliderCount; ++i)
 		{
-			ShapeOutline collider = colliderGroup[i];
+			ConcaveCollider collider = colliders.GetCollider(i);
 			if (collider.BB.Overlaps(jumpRange))
 			{
-				Range blockedRange = BlockedRange(collider, startPoint, endPoint);
-
-				if (blockedRange.min < blockedRange.max)
+				for (int j = 0; j < collider.SectionCount; ++j)
 				{
-					result.Add(blockedRange);
+					ConvexSection section = collider.GetSection(j);
+
+					if (section.BB.Overlaps(jumpRange))
+					{
+						Range blockedRange = BlockedRange(section, startPoint, endPoint);
+
+						if (blockedRange.min < blockedRange.max)
+						{
+							result.Add(blockedRange);
+						}
+					}
 				}
 			}
 		}
@@ -166,23 +282,19 @@ public class NodeEdgeFinder {
 		return result;
 	}
 
-	public List<Range> FindClearRanges(Vector2 startPoint, Vector2 endPoint)
+	private static List<Range> InvertRange(List<Range> ranges, float minValue, float maxValue)
 	{
-		BoundingBox jumpRange = new BoundingBox(startPoint, endPoint);
-		jumpRange.max.y = Mathf.Infinity;
-
-		List<Range> blockedRanges = BlockedRanges(colliders, startPoint, endPoint, jumpRange);
 		List<Boundary> boundaries = new List<Boundary>();
-
-		boundaries.Add(new Boundary(float.MaxValue, true));
-		boundaries.Add(new Boundary(Mathf.Max(0.0f, endPoint.y - startPoint.y), false));
-
-		foreach (Range blockedRange in blockedRanges)
+		
+		boundaries.Add(new Boundary(maxValue, true));
+		boundaries.Add(new Boundary(minValue, false));
+		
+		foreach (Range range in ranges)
 		{
-			boundaries.Add(new Boundary(blockedRange.min, true));
-			boundaries.Add(new Boundary(blockedRange.max, false));
+			boundaries.Add(new Boundary(range.min, true));
+			boundaries.Add(new Boundary(range.max, false));
 		}
-
+		
 		boundaries.Sort((a, b) => {
 			if (a.position > b.position)
 			{
@@ -197,12 +309,12 @@ public class NodeEdgeFinder {
 				return 0;
 			}
 		});
-
+		
 		float clearRangeStart = 0.0f;
 		int blockedCount = 1;
-
+		
 		List<Range> result = new List<Range>();
-
+		
 		for (int i = 0; i < boundaries.Count; ++i)
 		{
 			if (boundaries[i].isStart)
@@ -211,20 +323,82 @@ public class NodeEdgeFinder {
 				{
 					result.Add(new Range(clearRangeStart, boundaries[i].position));
 				}
-
+				
 				++blockedCount;
 			}
 			else
 			{
 				--blockedCount;
-
+				
 				if (blockedCount == 0)
 				{
 					clearRangeStart = boundaries[i].position;
 				}
 			}
 		}
-
+		
 		return result;
+	}
+
+	public List<Range> FindClearRanges(Vector2 startPoint, Vector2 endPoint)
+	{
+		BoundingBox jumpRange = new BoundingBox(startPoint, endPoint);
+		jumpRange.max.y = Mathf.Infinity;
+		List<Range> blockedRanges = BlockedRanges(startPoint, endPoint, jumpRange);
+		return InvertRange(blockedRanges, Mathf.Max(0.0f, endPoint.y - startPoint.y), float.MaxValue);
+	}
+	
+	public List<Range> FindClearHorizontalRanges(Vector2 startPoint, Vector2 direction, Vector2 platformA, Vector2 platformB)
+	{
+		BoundingBox jumpRange = new BoundingBox(platformA, platformB);
+		jumpRange.Extend(startPoint);
+		jumpRange.max.y = Mathf.Infinity;
+		List<Range> blockedRanges = BlockedHorizontalRanges(startPoint, direction, platformA, platformB, jumpRange);
+		
+		Vector2 normal = direction.x > 0.0f ? ColliderMath.RotateCCW(direction) : ColliderMath.RotateCW(direction);
+		Vector2 lowerOrigin = startPoint + characterSize.radius * normal;
+
+		Vector2 platformNormal = ColliderMath.RotateCW(platformB - platformA).normalized;
+		
+		if (platformNormal.y < 0.0f)
+		{
+			platformNormal *= -1.0f;
+		}
+
+		
+		float edgeSlope = direction.y / direction.x;
+
+		float xDirection = Mathf.Sign(direction.x);
+
+		float minSpeed = 0.0f;
+		float maxSpeed = float.MaxValue;
+		float edgeSpeed;
+
+		Vector2 closerPoint;
+		Vector2 furtherPoint;
+
+		if ((platformB - platformA).x * xDirection > 0.0f)
+		{
+			closerPoint = platformA + platformNormal * characterSize.radius;
+			furtherPoint = platformB + platformNormal * characterSize.radius;
+		}
+		else
+		{
+			closerPoint = platformB + platformNormal * characterSize.radius;
+			furtherPoint = platformA + platformNormal * characterSize.radius;
+		}
+
+		if (PathingMath.FreefallSpeedToPoint(edgeSlope, closerPoint - lowerOrigin, Physics.gravity.y, out edgeSpeed))
+		{
+			minSpeed = Mathf.Max(minSpeed, edgeSpeed);
+		}
+		
+		if (PathingMath.FreefallSpeedToPoint(edgeSlope, furtherPoint - lowerOrigin, Physics.gravity.y, out edgeSpeed))
+		{
+			maxSpeed = edgeSpeed;
+		}
+
+
+		return InvertRange(blockedRanges, minSpeed, maxSpeed);
 	}
 }

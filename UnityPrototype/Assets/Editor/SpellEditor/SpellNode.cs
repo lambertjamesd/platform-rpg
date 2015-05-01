@@ -759,6 +759,8 @@ public class SpellNode
 			return new Color(0.5f, 0.5f, 0.5f);
 		case "Any":
 			return new Color(1.0f, 1.0f, 1.0f);
+		case "Color":
+			return new Color(0.0f, 0.0f, 0.5f);
 		}
 
 		return Color.black;

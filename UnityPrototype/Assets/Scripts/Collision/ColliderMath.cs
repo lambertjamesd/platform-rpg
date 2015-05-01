@@ -42,5 +42,32 @@ public static class ColliderMath
 	{
 		return new Vector2(-input.y, input.x);
 	}
+
+	public static bool InFrontOf(Vector2 point, Vector2 planeNormal, Vector2 planePoint)
+	{
+		return Vector2.Dot(planeNormal, point - planePoint) > 0.0f;
+	}
+
+	public static bool DoesCollide(Ray ray, Vector3 sphereCenter, float sphereRadius)
+	{
+		Vector3 pointToCheck = ray.ProjectOnto(sphereCenter);
+
+		return (pointToCheck - sphereCenter).sqrMagnitude <= sphereRadius * sphereRadius;
+	}
+
+	public static Vector3 ProjectOnto(this Ray ray, Vector3 toProject)
+	{
+		return ray.origin + Vector3.Project(toProject - ray.origin, ray.direction);
+	}
+
+	public static Ray TransformRay(Ray input, Transform transform)
+	{
+		return new Ray(transform.TransformPoint(input.origin), transform.TransformDirection(input.direction));
+	}
+	
+	public static Ray InverseTransformRay(Ray input, Transform transform)
+	{
+		return new Ray(transform.InverseTransformPoint(input.origin), transform.InverseTransformDirection(input.direction));
+	}
 }
 

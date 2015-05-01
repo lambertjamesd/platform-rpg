@@ -28,7 +28,7 @@ public class JumpState : MonoBehaviour, IState {
 		float minJumpHeight = Mathf.Min(player.Stats.GetNumberStat("minJumpHeight"), maxJumpHeight);
 
 		jumpHeightControlWindow = player.Stats.GetNumberStat("jumpHeightControlWindow");
-		jumpHeightControlWindow = Mathf.Ceil(jumpHeightControlWindow / Time.fixedDeltaTime) * jumpHeightControlWindow;
+		jumpHeightControlWindow = Mathf.Ceil(jumpHeightControlWindow / Time.fixedDeltaTime) * Time.fixedDeltaTime;
 
 		initialJumpImpulse = Mathf.Sqrt(2.0f * minJumpHeight * -Physics.gravity.y);
 		

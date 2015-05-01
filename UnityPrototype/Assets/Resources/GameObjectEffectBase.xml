@@ -74,5 +74,12 @@
 				The collision layer this game object is on
 			</description>
 		</parameter>
+		<parameter>
+			<name>effect</name>
+			<type>IEffect</type>
+			<description>
+				A reference to the effect object
+			</description>
+		</parameter>
 	</output-configuration>
 </effect-settings>

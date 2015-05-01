@@ -1,20 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Collision\ConvexSection.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Player\Player.cs">
     <Files>
-      <File FileName="Assets\Scripts\Pathfinding\NodeEdgeFinder.cs" Line="176" Column="1" />
-      <File FileName="Assets\Scripts\Pathfinding\ShapeOutline.cs" Line="13" Column="28" />
-      <File FileName="Assets\Scripts\Pathfinding\PathingEdgeFactory.cs" Line="21" Column="25" />
-      <File FileName="Assets\Scripts\Pathfinding\PathingNetwork.cs" Line="162" Column="2" />
-      <File FileName="Assets\Scripts\Pathfinding\PathingNodeFactory.cs" Line="13" Column="34" />
-      <File FileName="Assets\Scripts\Collision\TilemapOverlapCorrecter.cs" Line="517" Column="52" />
-      <File FileName="Assets\Scripts\Collision\ConvexSection.cs" Line="78" Column="1" />
+      <File FileName="Assets\Effects\Shaders\SolidAura.shader" Line="15" Column="31" />
+      <File FileName="Assets\Scripts\CharacterSpawner.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Player\Player.cs" Line="238" Column="16" />
+      <File FileName="Assets\Scripts\Spells\Visual\CircleAura.cs" Line="9" Column="60" />
+      <File FileName="Assets\Scripts\Player\PlayerHUD.cs" Line="88" Column="34" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="C:\Users\James\Documents\PRPG\UnityPrototype\Assets\Scripts\AreaEffect.cs" line="27" />
-      <Breakpoint file="C:\Users\James\Documents\PRPG\UnityPrototype\Assets\Scripts\Collision\ConcaveCollider.cs" line="150" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

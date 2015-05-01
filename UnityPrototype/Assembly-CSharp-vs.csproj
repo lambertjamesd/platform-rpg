@@ -124,6 +124,9 @@
      <Compile Include="Assets\Scripts\Spells\StatFunctions.cs" />
      <Compile Include="Assets\Scripts\Spells\SwingEffect.cs" />
      <Compile Include="Assets\Scripts\Spells\TeleportEffect.cs" />
+     <Compile Include="Assets\Scripts\Spells\Visual\CircleAura.cs" />
+     <Compile Include="Assets\Scripts\Spells\Visual\SpellColors.cs" />
+     <Compile Include="Assets\Scripts\Spells\Visual\TeamColors.cs" />
      <Compile Include="Assets\Scripts\TimeGameObject.cs" />
      <Compile Include="Assets\Scripts\TimeManager.cs" />
      <Compile Include="Assets\Scripts\UpdateManager.cs" />
@@ -153,9 +156,11 @@
      <None Include="Assets\Resources\FunctionSettings.xml" />
      <None Include="Assets\Resources\AreaEffects.xml" />
      <None Include="Assets\Resources\ProjectileEffect.xml" />
+     <None Include="Assets\Effects\Shaders\SolidAura.shader" />
      <None Include="Assets\Effects\Grenade.xml" />
      <None Include="Assets\Resources\BuffEffects.xml" />
      <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\Credits.txt" />
+     <None Include="Assets\Resources\Visual.xml" />
      <None Include="Assets\Resources\ShieldEffects.xml" />
      <None Include="Assets\JSON Tests\TroubleShoot.txt" />
      <None Include="Assets\Resources\StatEffects.xml" />

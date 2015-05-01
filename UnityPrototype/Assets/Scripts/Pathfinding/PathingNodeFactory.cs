@@ -19,7 +19,8 @@ public class PathingNodeFactory {
 		{
 			if (outline.GetNormal(i).y > TOP_SURFACE_Y_TOLERANCE)
 			{
-				result.Add(new PlatformPathingNode(outline.GetPoint(i), outline.GetPoint(i + 1)));
+				result.Add(new PlatformPathingNode(outline.GetPoint(i), outline.GetNormal(i - 1 + outline.PointCount).x < 0.0f, 
+				                                   outline.GetPoint(i + 1), outline.GetNormal(i + 1).x > 0.0f));
 
 				++currentSurfaceId;
 			}

@@ -6,7 +6,7 @@ public class PathingEdgeFactory {
 	private NodeEdgeFinder jumpEdgeFinder;
 	private CharacterSize characterSize;
 
-	public PathingEdgeFactory(List<ShapeOutline> environment, CharacterSize characterSize)
+	public PathingEdgeFactory(ConcaveColliderGroup environment, CharacterSize characterSize)
 	{
 		jumpEdgeFinder = new NodeEdgeFinder(environment, characterSize);
 		this.characterSize = characterSize;
@@ -37,6 +37,23 @@ public class PathingEdgeFactory {
 			{
 
 				return new JumpPathingEdge(startNodePoint, startNode, endNodePoint, endNode, clearJumpHeights, characterSize);
+			}
+		}
+		
+		return null;
+	}
+	
+	public FreefallPathingEdge CreateFreefallEdge(PlatformPathingNode startNode, Vector2 startNodePosition, Vector2 startNodeDirection, PlatformPathingNode endNode)
+	{
+		if ((startNodePosition.y > endNode.PointA.y || startNodePosition.y > endNode.PointB.y) &&
+		    ((endNode.PointA.x - startNodePosition.x) * startNodeDirection.x > 0.0f || (endNode.PointB.x - startNodePosition.x) * startNodeDirection.x > 0.0f))
+		{
+			
+			List<NodeEdgeFinder.Range> clearSpeeds = jumpEdgeFinder.FindClearHorizontalRanges(startNodePosition, startNodeDirection, endNode.PointA, endNode.PointB);
+			
+			if (clearSpeeds.Count > 0)
+			{	
+				return new FreefallPathingEdge(startNodePosition, startNodeDirection, startNode, endNode, clearSpeeds, characterSize);
 			}
 		}
 		

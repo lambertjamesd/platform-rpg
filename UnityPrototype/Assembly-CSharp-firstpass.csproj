@@ -57,9 +57,11 @@
      <None Include="Assets\Resources\FunctionSettings.xml" />
      <None Include="Assets\Resources\AreaEffects.xml" />
      <None Include="Assets\Resources\ProjectileEffect.xml" />
+     <None Include="Assets\Effects\Shaders\SolidAura.shader" />
      <None Include="Assets\Effects\Grenade.xml" />
      <None Include="Assets\Resources\BuffEffects.xml" />
      <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\Credits.txt" />
+     <None Include="Assets\Resources\Visual.xml" />
      <None Include="Assets\Resources\ShieldEffects.xml" />
      <None Include="Assets\JSON Tests\TroubleShoot.txt" />
      <None Include="Assets\Resources\StatEffects.xml" />

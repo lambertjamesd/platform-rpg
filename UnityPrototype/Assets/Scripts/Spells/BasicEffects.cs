@@ -153,6 +153,36 @@ public class IfEffect : EffectObject
 	}
 }
 
+public class ForeachEffect : EffectObject
+{
+	public override void StartEffect(EffectInstance instance) {
+		base.StartEffect(instance);
+
+		List<object> elements = instance.GetValue<List<object>>("elements", null);
+
+		if (elements != null)
+		{
+			int index = 0;
+			foreach (object element in elements)
+			{
+				instance.TriggerEvent("emit", new LambdaPropertySource(propertyName => {
+					if (propertyName == "element")
+					{
+						return element;
+					}
+					else if (propertyName == "index")
+					{
+						return index;
+					}
+
+					return null;
+				}));
+				++index;
+			}
+		}
+	}
+}
+
 public class DebugLogEffect : EffectObject
 {
 	public override void StartEffect(EffectInstance instance) {
@@ -235,7 +265,7 @@ public class CaptureValueEffect : EffectObject {
 public class CountEffect : EffectObject {
 	public override void StartEffect(EffectInstance instance) {
 		base.StartEffect(instance);
-		instance.GetContextValue<CounterEffect>("target", null).Increment();
+		instance.GetValue<CounterEffect>("target", null).Increment(instance.GetValue<object>("element", null));
 	}
 
 }
@@ -245,6 +275,7 @@ public class CounterEffect : EffectObject, ITimeTravelable {
 	private int countTo = 0;
 	private bool cancelled = false;
 	private TimeManager timeManager;
+	private List<object> elements = new List<object>();
 
 	public override void StartEffect(EffectInstance instance) {
 		base.StartEffect(instance);
@@ -266,8 +297,12 @@ public class CounterEffect : EffectObject, ITimeTravelable {
 					return (float)currentValue / countTo;
 				case "counterCompleted":
 					return currentValue >= countTo;
+				case "cancelled":
+					return cancelled;
 				case "effect":
 					return this;
+				case "elements":
+					return elements;
 				}
 				
 				return null;
@@ -275,15 +310,30 @@ public class CounterEffect : EffectObject, ITimeTravelable {
 		}
 	}
 
-	public void Increment()
+	public override void Cancel()
 	{
-		++currentValue;
-
-		instance.TriggerEvent("count", null);
-
-		if (currentValue == countTo)
+		if (!cancelled && currentValue < countTo)
 		{
-			instance.TriggerEvent("completed", null);
+			cancelled = true;
+			instance.TriggerEvent("cancelled", null);
+			instance.TriggerEvent("ended", null);
+		}
+	}
+
+	public void Increment(object element)
+	{
+		if (!cancelled)
+		{
+			++currentValue;
+			elements.Add(element);
+
+			instance.TriggerEvent("count", null);
+
+			if (currentValue == countTo)
+			{
+				instance.TriggerEvent("completed", null);
+				instance.TriggerEvent("ended", null);
+			}
 		}
 	}
 	
@@ -291,15 +341,24 @@ public class CounterEffect : EffectObject, ITimeTravelable {
 	{
 		return new object[]{
 			currentValue,
-			cancelled
+			cancelled,
+			new List<object>(elements)
 		};
 	}
 
 	public void RewindToState(object state)
 	{
-		object[] objectArray = (object[])state;
-		currentValue = (int)objectArray[0];
-		cancelled = (bool)objectArray[1];
+		if (state != null)
+		{
+			object[] objectArray = (object[])state;
+			currentValue = (int)objectArray[0];
+			cancelled = (bool)objectArray[1];
+			elements = (List<object>)objectArray[2];
+		}
+		else
+		{
+			cancelled = true;
+		}
 	}
 	
 	public TimeManager GetTimeManager()

@@ -1,0 +1,41 @@
+
+<effect-settings>
+	<input-configuration name="circle-aura-in" parent="game-object-in">
+		<parameter>
+			<name>radius</name>
+			<type>float</type>
+			<description>
+				The radius of the aura
+			</description>
+		</parameter>
+		<parameter>
+			<name>color</name>
+			<type>Color</type>
+			<description>
+				The color of the aura
+			</description>
+		</parameter>
+	</input-configuration>
+	<output-configuration name="circle-aura-out" parent="game-object-out">
+	</output-configuration>
+	
+	<effect class="CircleAura" alias="circle-aura" namespace="visual" input="circle-aura-in" output="circle-aura-out">
+		<description>
+			Creates circle to visualize an aura
+		</description>
+	</effect>
+	
+	<function name="HealColor" namespace="visual">
+		<return-type>Color</return-type>
+		<description>
+			The color of heal effects
+		</description>
+	</function>
+	
+	<function name="SpeedColor" namespace="visual">
+		<return-type>Color</return-type>
+		<description>
+			The color of speed buff effects
+		</description>
+	</function>
+</effect-settings>

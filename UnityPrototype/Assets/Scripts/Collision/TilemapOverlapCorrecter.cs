@@ -494,6 +494,8 @@ public class TilemapOverlapCorrecter : MonoBehaviour {
 	[SerializeField]
 	private List<PathingNetwork> pathingNetworks = new List<PathingNetwork>();
 
+	private Ray pickerRay;
+
 	public bool debugDrawPathing = false;
 
 	void Start () {
@@ -539,6 +541,19 @@ public class TilemapOverlapCorrecter : MonoBehaviour {
 
 		Rebuild();
 	}
+	
+	public Ray PickerRay
+	{
+		get
+		{
+			return pickerRay;
+		}
+		
+		set
+		{
+			pickerRay = value;
+		}
+	}
 
 	void OnDrawGizmosSelected()
 	{
@@ -551,7 +566,7 @@ public class TilemapOverlapCorrecter : MonoBehaviour {
 		{
 			foreach (PathingNetwork network in pathingNetworks)
 			{
-				network.DebugDraw(transform);
+				network.DebugDraw(transform, network.SelectNode(pickerRay));
 			}
 		}
 	}

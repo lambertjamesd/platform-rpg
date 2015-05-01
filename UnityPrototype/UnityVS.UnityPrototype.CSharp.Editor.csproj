@@ -152,6 +152,7 @@
     <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\Credits.txt" />
     <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\HOW TO USE THE SKINS.txt" />
     <None Include="Assets\Effects\Grenade.xml" />
+    <None Include="Assets\Effects\Shaders\SolidAura.shader" />
     <None Include="Assets\Effects\Wall.xml" />
     <None Include="Assets\JSON Tests\TroubleShoot.txt" />
     <None Include="Assets\Resources\AreaEffects.xml" />
@@ -165,6 +166,7 @@
     <None Include="Assets\Resources\ShieldEffects.xml" />
     <None Include="Assets\Resources\StatEffects.xml" />
     <None Include="Assets\Resources\TimeEffects.xml" />
+    <None Include="Assets\Resources\Visual.xml" />
     <None Include="Assets\ThirdParty\Spriter2Unity\Example\Spriter Project\GreyGuy\Copyright_Information_Please_Read.txt" />
     <None Include="Assets\UnityVS\Editor\SyntaxTree.VisualStudio.Unity.Bridge.dll" />
     <None Include="Assets\UnityVS\Editor\SyntaxTree.VisualStudio.Unity.Messaging.dll" />

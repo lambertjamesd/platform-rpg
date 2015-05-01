@@ -1,5 +1,5 @@
 {
-	"maxMoveSpeed": 10,
+	"maxMoveSpeed": 12,
 	"moveAcceleration": 40,
 	
 	"minJumpHeight": 0.25,

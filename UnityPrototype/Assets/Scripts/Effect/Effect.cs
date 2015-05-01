@@ -4,10 +4,12 @@ using System.Collections;
 public class GameObjectPropertySource : IEffectPropertySource
 {
 	private GameObject target;
+	private EffectGameObject effect;
 
-	public GameObjectPropertySource(GameObject target)
+	public GameObjectPropertySource(GameObject target, EffectGameObject effect)
 	{
 		this.target = target;
+		this.effect = effect;
 	}
 
 	public object GetObject(string name)
@@ -22,6 +24,8 @@ public class GameObjectPropertySource : IEffectPropertySource
 			return (target == null) ? Vector3.zero : target.transform.TransformDirection(Vector3.up);
 		case "layer":
 			return (target == null) ? 0 : target.layer;
+		case "effect":
+			return effect;
 		}
 
 		return null;
@@ -40,7 +44,7 @@ public abstract class EffectGameObject : MonoBehaviour, IEffect {
 	{
 		get
 		{
-			return new GameObjectPropertySource(gameObject);
+			return new GameObjectPropertySource(gameObject, this);
 		}
 	}
 	

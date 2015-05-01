@@ -219,6 +219,44 @@ This event is triggered if the condition is false
 		</description>
 	</effect>
 	
+	<input-configuration name="foreach-in">
+		<parameter>
+			<name>elements</name>
+			<type>List</type>
+			<description>
+				The list to iterator over
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="foreach-out">
+		<event name="on-emit">
+			<parameter>
+				<name>element</name>
+				<type>Any</type>
+				<description>
+					A single element in the list
+				</description>
+			</parameter>
+			<parameter>
+				<name>index</name>
+				<type>int</type>
+				<description>
+					The index of the element in the list
+				</description>
+			</parameter>
+			<description>
+Called for each element in the input list
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="ForeachEffect" alias="foreach"  namespace="control" input="foreach-in" output="foreach-out">
+		<description>
+			Loops through elements in a list
+		</description>
+	</effect>
+	
 	<input-configuration name="debug-log-in">
 		<parameter>
 			<name>label</name>
@@ -419,6 +457,13 @@ Called if the teleport failed
 				The counter to increment
 			</description>
 		</parameter>
+		<parameter>
+			<name>element</name>
+			<type>Any</type>
+			<description>
+				Object to add to the counter
+			</description>
+		</parameter>
 	</input-configuration>
 	
 	<effect class="CountEffect" alias="count" namespace="count" input="count-in">
@@ -460,10 +505,24 @@ Called if the teleport failed
 			</description>
 		</parameter>
 		<parameter>
+			<name>cancelled</name>
+			<type>bool</type>
+			<description>
+				Returns true if the counter was cancelled
+			</description>
+		</parameter>
+		<parameter>
 			<name>effect</name>
 			<type>IEffect</type>
 			<description>
 				Reference to the counter
+			</description>
+		</parameter>
+		<parameter>
+			<name>elements</name>
+			<type>List</type>
+			<description>
+				The objects added to the counter
 			</description>
 		</parameter>
 		<event name="on-count">
@@ -472,6 +531,16 @@ Called if the teleport failed
 			</description>
 		</event>
 		<event name="on-completed">
+			<description>
+				Called when the counter reaches countTo
+			</description>
+		</event>
+		<event name="on-cancelled">
+			<description>
+				Called when the counter reaches countTo
+			</description>
+		</event>
+		<event name="on-ended">
 			<description>
 				Called when the counter reaches countTo
 			</description>

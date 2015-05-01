@@ -14,4 +14,15 @@ public class OverlapCorrectorEditor : Editor {
 			((TilemapOverlapCorrecter)target).Rebuild();
 		}
 	}
+
+	public void OnSceneGUI()
+	{	
+		if (Event.current.type == EventType.MouseMove)
+		{
+			Event mouseEvent = Event.current;
+			Ray worldRay = Camera.current.ScreenPointToRay(new Vector3(mouseEvent.mousePosition.x, Camera.current.pixelHeight - mouseEvent.mousePosition.y, 0.0f));
+			TilemapOverlapCorrecter tilemap = (TilemapOverlapCorrecter)target;
+			tilemap.PickerRay = ColliderMath.InverseTransformRay(worldRay, tilemap.transform);
+		}
+	}
 }
