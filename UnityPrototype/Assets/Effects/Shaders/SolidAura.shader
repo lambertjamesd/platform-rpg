@@ -18,8 +18,8 @@
    			float2 circlePos;
 		};
 
-		float4 _Color;
-		float4 _RimColor;
+		half4 _Color;
+		half4 _RimColor;
 		float _RimThickness;
 		
 	    void vert (inout appdata_full v, out Input o) {
@@ -32,18 +32,18 @@
 		
 			if (uvDistanceSqrd < _RimThickness)
 			{
-				o.Albedo = _Color.rgb;
-				o.Alpha = _Color.a;
+				o.Emission = _Color.rgb;
+				o.Alpha = 1.0f;
 			}
 			else if (uvDistanceSqrd < 1)
 			{
-				o.Albedo = _RimColor.rgb;
-				o.Alpha = _RimColor.a;
+				o.Emission = _RimColor.rgb;
+				o.Alpha = 1.0f;
 			}
 			else
 			{
-				o.Albedo = float3(0, 0, 0);
-				o.Alpha = 0;
+				o.Emission = float3(0, 0, 0);
+				o.Alpha = 0.0f;
 			}
 		}
 		ENDCG

@@ -19,7 +19,11 @@ public class DashEffect : EffectObject, IDashStateDelegate
 		if (target != null)
 		{
 			IDashable dashable = target.GetInterfaceComponent<IDashable>();
-			dashable.DashTo(position, speed, this);
+
+			if (dashable != null)
+			{
+				dashable.DashTo(position, speed, this);
+			}
 		}
 	}
 	

@@ -28,18 +28,18 @@ public class CancelEventEffect : EffectObject
 	}
 }
 
-public class DelayEffect : EffectObject, IFixedUpdate
+public class DelayEffect : EffectObject, IFixedUpdate, ITimeTravelable
 {
-	private float targetTime;
+	private float remainingTime;
 	private int startSnapshotIndex;
 	private UpdateManager updateManager;
 	private TimeManager timeManager;
 
-	private float CurrentTime
+	public bool Persistant
 	{
 		get
 		{
-			return timeManager.CurrentTime;
+			return startSnapshotIndex != timeManager.SnapshotIndex;
 		}
 	}
 
@@ -48,7 +48,7 @@ public class DelayEffect : EffectObject, IFixedUpdate
 		updateManager = instance.GetContextValue<UpdateManager>("updateManager", null);
 		timeManager = instance.GetContextValue<TimeManager>("timeManager", null);
 		
-		targetTime = CurrentTime + instance.GetValue<float>("duration", 0.0f);
+		remainingTime = instance.GetValue<float>("duration", 0.0f);
 		startSnapshotIndex = timeManager.SnapshotIndex;
 
 		this.AddToUpdateManager(updateManager);
@@ -56,17 +56,50 @@ public class DelayEffect : EffectObject, IFixedUpdate
 
 	public void FixedUpdateTick(float dt)
 	{
-		if (CurrentTime >= targetTime && CurrentTime - dt < targetTime)
+		if (remainingTime > 0.0f)
 		{
-			instance.TriggerEvent("timeout", null);
+			remainingTime -= dt;
 
-			if (startSnapshotIndex == timeManager.SnapshotIndex)
+			if (remainingTime <= 0.0f)
 			{
-				// no snapshot happened betweeen the start and end of the timer
-				// so it is safe to remove this from the update manager
-				this.RemoveFromUpdateManager(updateManager);
+				instance.TriggerEvent("timeout", null);
+
+				if (!Persistant)
+				{
+					this.RemoveFromUpdateManager(updateManager);
+				}
 			}
 		}
+	}
+
+	public float RemainingTime
+	{
+		get
+		{
+			return remainingTime;
+		}
+	}
+	
+	public object GetCurrentState()
+	{
+		return remainingTime;
+	}
+	
+	public void RewindToState(object state)
+	{
+		if (state == null)
+		{
+			this.RemoveFromUpdateManager(updateManager);
+		}
+		else
+		{
+			remainingTime = (float)state;
+		}
+	}
+	
+	public TimeManager GetTimeManager()
+	{
+		return timeManager;
 	}
 }
 

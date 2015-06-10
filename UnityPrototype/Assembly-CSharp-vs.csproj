@@ -75,7 +75,6 @@
      <Compile Include="Assets\Scripts\FormatWith.cs" />
      <Compile Include="Assets\Scripts\GizmoHelper.cs" />
      <Compile Include="Assets\Scripts\Knockback.cs" />
-     <Compile Include="Assets\Scripts\NumericalHealthBar.cs" />
      <Compile Include="Assets\Scripts\Pathfinding\NodeEdgeFinder.cs" />
      <Compile Include="Assets\Scripts\Pathfinding\PathingEdgeFactory.cs" />
      <Compile Include="Assets\Scripts\Pathfinding\PathingMath.cs" />
@@ -124,7 +123,12 @@
      <Compile Include="Assets\Scripts\Spells\StatFunctions.cs" />
      <Compile Include="Assets\Scripts\Spells\SwingEffect.cs" />
      <Compile Include="Assets\Scripts\Spells\TeleportEffect.cs" />
+     <Compile Include="Assets\Scripts\Spells\Visual\BuffVisualizer.cs" />
      <Compile Include="Assets\Scripts\Spells\Visual\CircleAura.cs" />
+     <Compile Include="Assets\Scripts\Spells\Visual\CountdownTimer.cs" />
+     <Compile Include="Assets\Scripts\Spells\Visual\GUIHelper.cs" />
+     <Compile Include="Assets\Scripts\Spells\Visual\HealthBar.cs" />
+     <Compile Include="Assets\Scripts\Spells\Visual\NumericalHealthBar.cs" />
      <Compile Include="Assets\Scripts\Spells\Visual\SpellColors.cs" />
      <Compile Include="Assets\Scripts\Spells\Visual\TeamColors.cs" />
      <Compile Include="Assets\Scripts\TimeGameObject.cs" />
@@ -161,6 +165,7 @@
      <None Include="Assets\Resources\BuffEffects.xml" />
      <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\Credits.txt" />
      <None Include="Assets\Resources\Visual.xml" />
+     <None Include="Assets\Effects\Shaders\HealthBar.shader" />
      <None Include="Assets\Resources\ShieldEffects.xml" />
      <None Include="Assets\JSON Tests\TroubleShoot.txt" />
      <None Include="Assets\Resources\StatEffects.xml" />

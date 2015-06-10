@@ -1,12 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Player\Player.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Resources\Visual.xml">
     <Files>
-      <File FileName="Assets\Effects\Shaders\SolidAura.shader" Line="15" Column="31" />
-      <File FileName="Assets\Scripts\CharacterSpawner.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Player\Player.cs" Line="238" Column="16" />
-      <File FileName="Assets\Scripts\Spells\Visual\CircleAura.cs" Line="9" Column="60" />
-      <File FileName="Assets\Scripts\Player\PlayerHUD.cs" Line="88" Column="34" />
+      <File FileName="Assets\Scripts\Spells\Visual\BuffVisualizer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Spells\Visual\BuffVisualizer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Player\PlayerStats.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Spells\Visual\CountdownTimer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Spells\BasicEffects.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Spells\Visual\HealthBar.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Spells\AreaEffect.cs" Line="1" Column="1" />
+      <File FileName="Assets\Resources\AreaEffects.xml" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Spells\Visual\SpellColors.cs" Line="7" Column="3" />
+      <File FileName="Assets\Resources\Visual.xml" Line="31" Column="29" />
+      <File FileName="Assets\Effects\Shaders\SolidAura.shader" Line="28" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

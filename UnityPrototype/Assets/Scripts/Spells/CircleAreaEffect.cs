@@ -32,6 +32,14 @@ public class CircleAreaEffect : AreaEffect, IFixedUpdate {
 		}
 	}
 
+	public override Bounds bounds
+	{
+		get
+		{
+			return new Bounds(transform.position, Vector3.one * radius);
+		}
+	}
+
 	public void OnEnable()
 	{
 		EnsureAddedToUpdate();

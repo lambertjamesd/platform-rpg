@@ -5,8 +5,8 @@ public static class TeamColors
 {
 	public static Color[] COLORS = new Color[]{
 		Color.green,
-		Color.cyan,
 		Color.Lerp(Color.red, Color.yellow, 0.5f),
+		Color.cyan,
 		Color.magenta
 	};
 

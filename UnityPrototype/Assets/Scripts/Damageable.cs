@@ -30,6 +30,37 @@ public class Damageable : MonoBehaviour, ITimeTravelable {
 		}
 	}
 
+	public float SheildHealth
+	{
+		get
+		{
+			float result = 0.0f;
+
+			foreach (Shield sheild in shields)
+			{
+				result += sheild.Health;
+			}
+
+			return result;
+		}
+	}
+
+	public float CurrentHealthWithSheild
+	{
+		get
+		{
+			return currentHealth + SheildHealth;
+		}
+	}
+
+	public float MaxHealthWithShield
+	{
+		get
+		{
+			return Mathf.Max(maxHealth, CurrentHealthWithSheild);
+		}
+	}
+
 	public float HealthPercentage
 	{
 		get

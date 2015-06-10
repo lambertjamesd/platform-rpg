@@ -45,6 +45,14 @@ public class Shield
 		health = 0.0f;
 	}
 
+	public float Health
+	{
+		get
+		{
+			return health;
+		}
+	}
+
 	public void ShieldDestroyed()
 	{
 		shieldDelegate.Destroyed();

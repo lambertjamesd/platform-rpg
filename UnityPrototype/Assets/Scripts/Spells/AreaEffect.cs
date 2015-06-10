@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class AreaEffectExitListener : EffectGameObject, IOnExitDelegate {
 
@@ -203,9 +204,34 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 			exitListeners = (Dictionary<GameObject,List<IOnExitDelegate>>)stateArray[3];
 		}
 	}
+
+	public virtual Bounds bounds
+	{
+		get
+		{
+			return new Bounds(transform.position, Vector3.zero);
+		}
+	}
 	
 	public TimeManager GetTimeManager()
 	{
 		return timeManager;
+	}
+
+	public override IEffectPropertySource PropertySource {
+		get {
+			IEffectPropertySource baseSource = base.PropertySource;
+
+			return new LambdaPropertySource(name => {
+				switch (name) {
+				case "enclosedObjects":
+					return enclosedObjects.ToList();
+				case "alreadyCollided":
+					return alreadyCollided.ToList();
+				}
+
+				return baseSource.GetObject(name);
+			});
+		}
 	}
 }

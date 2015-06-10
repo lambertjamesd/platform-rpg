@@ -20,9 +20,19 @@ public class PlayerStats : MonoBehaviour {
 		}
 	}
 
+	public float GetStatScale(string name)
+	{
+		return GetNumberStat(name) / GetBaseStat(name);
+	}
+
+	public float GetBaseStat(string name)
+	{
+		return numberStats.ContainsKey(name) ? numberStats[name] : 0.0f;
+	}
+
 	public float GetNumberStat(string name)
 	{
-		float result = numberStats.ContainsKey(name) ? numberStats[name] : 0.0f;
+		float result = GetBaseStat(name);
 
 		foreach (PlayerBuff buff in buffs)
 		{

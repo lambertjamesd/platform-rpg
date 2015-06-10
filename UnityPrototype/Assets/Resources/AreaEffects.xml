@@ -49,6 +49,20 @@
 	</output-configuration>
 	
 	<output-configuration name="area-effect-out" parent="game-object-out">
+		<parameter>
+			<name>enclosedObjects</name>
+			<type>List</type>
+			<description>
+				Any objects currently overlapping the shape
+			</description>
+		</parameter>
+		<parameter>
+			<name>alreadyCollided</name>
+			<type>List</type>
+			<description>
+				Any objects that have ever come in contact with the shape
+			</description>
+		</parameter>
 		<event name="on-enter" parent="area-effect-event">
 			<description>
 				Called when another object enters the collision area of this object

@@ -38,4 +38,29 @@
 			The color of speed buff effects
 		</description>
 	</function>
+	
+	<function name="TeleportColor" namespace="visual">
+		<return-type>Color</return-type>
+		<description>
+			The color of teleportation
+		</description>
+	</function>
+	
+	<input-configuration name="countdown-timer-in" parent="game-object-in">
+		<parameter>
+			<name>target</name>
+			<type>IEffect</type>
+			<description>
+				The delay object to monitor
+			</description>
+		</parameter>
+	</input-configuration>
+	<output-configuration name="countdown-timer-out" parent="game-object-out">
+	</output-configuration>
+	
+	<effect class="CountdownTimer" alias="countdown-timer" namespace="visual" input="countdown-timer-in" output="countdown-timer-out">
+		<description>
+			Creates a countdown timer for a delay
+		</description>
+	</effect>
 </effect-settings>

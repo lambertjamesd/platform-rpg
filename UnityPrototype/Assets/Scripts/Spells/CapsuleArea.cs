@@ -104,6 +104,14 @@ public class CapsuleArea : AreaEffect, IFixedUpdate {
 
 		lastPosition = transform.TransformPoint(center);
 	}
+
+	public override Bounds bounds
+	{
+		get
+		{
+			return new Bounds(transform.TransformPoint(center), new Vector3(radius, (halfOffset + radius) * 2.0f, radius));
+		}
+	}
 	
 	public void OnEnable() {
 		AddToUpdate();
