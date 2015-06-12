@@ -128,7 +128,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	private float floorUpTolerance;
 
 	private bool isGrounded;
-
+	
 	private Vector3 wallNormal;
 	private bool isWallSliding;
 
@@ -478,11 +478,11 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	{
 		if (Vector3.Dot(velocity, hit.normal) < 0.0f)
 		{
+			ApplyFallingDamage(new Vector2(velocity.x, velocity.y), new Vector2(hit.normal.x, hit.normal.y));
+
 			velocity = velocity - Vector3.Project(velocity, hit.normal);
 			velocity.z = 0.0f;
 		}
-
-		Debug.DrawRay(hit.point, hit.normal);
 
 		if (Vector3.Dot(hit.normal, Vector3.up) > floorUpTolerance)
 		{
@@ -547,6 +547,24 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	public TimeManager GetTimeManager()
 	{
 		return timeManager;
+	}
+
+	public void ApplyFallingDamage(Vector2 speed, Vector2 normal)
+	{
+		float minFallDistance = stats.GetNumberStat("minFallDamageDistance", 12.0f);
+		float maxFallDistance = stats.GetNumberStat("maxFallDamageDistance", 30.0f);
+
+		float minFallDamage = stats.GetNumberStat("minFallDamage", 20.0f);
+		float maxFallDamage = stats.GetNumberStat("maxFallDamage", 80.0f);
+
+		float damageRatio = PathingMath.FallingDamageRatio(velocity, normal, Physics.gravity.y, minFallDistance, maxFallDistance);
+
+		if (damageRatio > 0.0f)
+		{
+			float damage = Mathf.Lerp(minFallDamage, maxFallDamage, damageRatio);
+
+			damageable.ApplyDamage(damage);
+		}
 	}
 
 	public bool TeleportTo(Vector3 position)

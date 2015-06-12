@@ -102,6 +102,27 @@ public static class PathingMath {
 		return yVelocity * timeOfPeak + 0.5f * gravity * timeOfPeak * timeOfPeak;
 	}
 
+	public static float TimeForFreefall(float height, float gravity)
+	{
+		return Mathf.Sqrt(Mathf.Abs(2.0f * height / gravity));
+	}
+
+	public static float TimeUntilSpeed(float velocity, float gravity)
+	{
+		return velocity / gravity;
+	}
+
+	public static float FallingDamageRatio(Vector2 velocity, Vector2 collisionNormal, float gravity, float minDamageDistance, float maxDamageDistance)
+	{
+		float normalVelocity = Vector2.Dot(velocity, collisionNormal);
+		float fallTime = TimeUntilSpeed(normalVelocity, gravity);
+
+		float minTime = TimeForFreefall(minDamageDistance, gravity);
+		float maxTime = TimeForFreefall(maxDamageDistance, gravity);
+
+		return Mathf.Clamp01((fallTime - minTime) / (maxTime - minTime));
+	}
+
 	public static float PeakPosition(float a, float b)
 	{
 		return -b / (2.0f * a);

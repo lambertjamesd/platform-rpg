@@ -191,7 +191,8 @@ public class ForeachEffect : EffectObject
 	public override void StartEffect(EffectInstance instance) {
 		base.StartEffect(instance);
 
-		List<object> elements = instance.GetValue<List<object>>("elements", null);
+		object enumerable = instance.GetValue<object>("elements", null);
+		IEnumerable elements = (IEnumerable)enumerable;
 
 		if (elements != null)
 		{

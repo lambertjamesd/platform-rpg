@@ -25,14 +25,14 @@ public class PlayerStats : MonoBehaviour {
 		return GetNumberStat(name) / GetBaseStat(name);
 	}
 
-	public float GetBaseStat(string name)
+	public float GetBaseStat(string name, float defaultValue = 0.0f)
 	{
-		return numberStats.ContainsKey(name) ? numberStats[name] : 0.0f;
+		return numberStats.ContainsKey(name) ? numberStats[name] : defaultValue;
 	}
 
-	public float GetNumberStat(string name)
+	public float GetNumberStat(string name, float defaultValue = 0.0f)
 	{
-		float result = GetBaseStat(name);
+		float result = GetBaseStat(name, defaultValue);
 
 		foreach (PlayerBuff buff in buffs)
 		{
