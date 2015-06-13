@@ -124,6 +124,7 @@
      <None Include="Assets\JSON Tests\TroubleShoot.txt" />
      <None Include="Assets\Resources\StatEffects.xml" />
      <None Include="Assets\Resources\BasicEffects.xml" />
+     <None Include="Assets\Effects\Shaders\AimIndicator.shader" />
  <Reference Include="Assembly-UnityScript">
  <HintPath>Library\ScriptAssemblies\Assembly-UnityScript.dll</HintPath>
  </Reference>

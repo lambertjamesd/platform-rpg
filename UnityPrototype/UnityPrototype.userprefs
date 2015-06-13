@@ -1,11 +1,19 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Spells\BasicEffects.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Effects\Shaders\AimIndicator.shader">
     <Files>
       <File FileName="Assets\Scripts\Spells\BasicEffects.cs" Line="191" Column="61" />
-      <File FileName="Assets\Scripts\Spells\AreaEffect.cs" Line="228" Column="38" />
-      <File FileName="Assets\Scripts\Effect\EffectInstance.cs" Line="92" Column="1" />
-      <File FileName="Assets\Scripts\Effect\EffectDefinition.cs" Line="150" Column="62" />
+      <File FileName="Assets\Scripts\Spells\AreaEffect.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Effect\EffectInstance.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Effect\EffectDefinition.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Pathfinding\PathingMath.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Player\States\FreeFallState.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Player\MouseInputSource.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Player\Player.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Player\PlayerStats.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Spells\Visual\AimIndicator.cs" Line="49" Column="27" />
+      <File FileName="Assets\Effects\Shaders\AimIndicator.shader" Line="53" Column="135" />
+      <File FileName="Assets\Effects\Shaders\HealthBar.shader" Line="31" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
