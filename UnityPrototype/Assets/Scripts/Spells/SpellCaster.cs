@@ -5,6 +5,7 @@ using System.Linq;
 
 public interface SpellcastFireListener
 {
+	void SpellAimed(IEffectPropertySource propertySource);
 	void SpellFired(IEffectPropertySource propertySource);
 	int Priority { get; }
 	bool ConsumeEvent { get; }
@@ -16,6 +17,7 @@ public class SpellCasterFireEvent : EffectObject, SpellcastFireListener
 	private int spellIndex = 0;
 	private int priority = 0;
 	private bool consume = false;
+	private IEffectPropertySource lastAimEvent;
 
 	public override void StartEffect(EffectInstance instance) {
 		base.StartEffect(instance);
@@ -35,9 +37,40 @@ public class SpellCasterFireEvent : EffectObject, SpellcastFireListener
 		}
 	}
 
+	public void SpellAimed(IEffectPropertySource propertySource)
+	{
+		lastAimEvent = propertySource;
+		instance.TriggerEvent("aim", propertySource);
+	}
+
 	public void SpellFired(IEffectPropertySource propertySource)
 	{
+		lastAimEvent = propertySource;
 		instance.TriggerEvent("fire", propertySource);
+	}
+
+	public override IEffectPropertySource PropertySource
+	{
+		get
+		{
+			IEffectPropertySource parentSource = base.PropertySource;
+			return new LambdaPropertySource(name => {
+				object result = parentSource.GetObject(name);
+
+				if (result != null)
+				{
+					return result;
+				}
+				else if (lastAimEvent != null)
+				{
+					return lastAimEvent.GetObject(name);
+				}
+				else
+				{
+					return null;
+				}
+			});
+		}
 	}
 	
 	public int Priority
@@ -178,6 +211,40 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 	}
 
+	private IEffectPropertySource HoldSource(int spellIndex, Vector3 direction, float timestamp)
+	{	
+		float holdTime = timestamp - spellStates[spellIndex].startTime;
+
+		return new LambdaPropertySource(name => {
+			switch (name)
+			{
+			case "direction":
+				return direction;
+			case "position":
+				return transform.TransformPoint(spells[spellIndex].castOrigin);
+			case "holdTime":
+				return holdTime;
+			case "holdTimeNormalized":
+				return Mathf.Clamp01(holdTime / spells[spellIndex].maxHoldTime);
+			case "index":
+				return spellIndex;
+			}
+			
+			return null;
+		});
+	}
+
+	public void CastSpellHold(int spellIndex, Vector3 direction, float timestamp)
+	{
+		IEffectPropertySource aimSource = HoldSource(spellIndex, direction, timestamp);
+		rootInstances[spellIndex].TriggerEvent("aim", aimSource);
+
+		foreach (SpellcastFireListener listener in spellStates[spellIndex].fireListeners)
+		{
+			listener.SpellAimed(aimSource);
+		}
+	}
+
 	public void CastSpellBegin(int spellIndex, Vector3 direction, float timestamp)
 	{
 		if (spellStates[spellIndex].CanUse(timestamp))
@@ -214,9 +281,16 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 	{
 		for (int i = 0; i < spells.Length; ++i)
 		{
-			if (spellStates[i].isFiring && timestamp - spellStates[i].startTime > spells[i].maxHoldTime)
+			if (spellStates[i].isFiring)
 			{
-				CastSpellFire(i, direction, timestamp);
+				if (timestamp - spellStates[i].startTime > spells[i].maxHoldTime)
+				{
+					CastSpellFire(i, direction, timestamp);
+				}
+				else
+				{
+					CastSpellHold(i, direction, timestamp);
+				}
 			}
 		}
 	}
@@ -225,25 +299,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 	{
 		if (spellStates[spellIndex].isFiring)
 		{
-			float holdTime = timestamp - spellStates[spellIndex].startTime;
-
-			IEffectPropertySource propertySource = new LambdaPropertySource(name => {
-				switch (name)
-				{
-				case "direction":
-					return direction;
-				case "position":
-					return transform.TransformPoint(spells[spellIndex].castOrigin);
-				case "holdTime":
-					return holdTime;
-				case "holdTimeNormalized":
-					return Mathf.Clamp01(holdTime / spells[spellIndex].maxHoldTime);
-				case "index":
-					return spellIndex;
-				}
-				
-				return null;
-			});
+			IEffectPropertySource propertySource = HoldSource(spellIndex, direction, timestamp);
 
 			// trigger listeners first
 			List<SpellcastFireListener> fireListeners = spellStates[spellIndex].fireListeners;

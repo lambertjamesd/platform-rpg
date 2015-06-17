@@ -82,7 +82,7 @@
 		</parameter>
 	</input-configuration>
 	
-	<output-configuration name="caster-fire-out">
+	<output-configuration name="caster-fire-out" parent="caster-fire">
 		<parameter>
 			<name>effect</name>
 			<type>IEffect</type>
@@ -90,6 +90,11 @@
 				A reference to the fire listener used to cancel the listener
 			</description>
 		</parameter>
+		<event name="on-aim" parent="caster-fire">
+			<description>
+				Called every frame a spell is held down
+			</description>
+		</event>
 		<event name="on-fire" parent="caster-fire">
 			<description>
 				Called whenever the player releases the cast button

@@ -1,9 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AimIndicator : MonoBehaviour {
+public class AimIndicatorUpdate : EffectObject 
+{
+	public override void StartEffect(EffectInstance instance)
+	{
+		base.StartEffect(instance);
+		AimIndicator target = instance.GetValue<AimIndicator>("target", null);
+		target.InitialVelocity = instance.GetValue<Vector3>("direction", Vector3.zero).normalized * instance.GetValue<float>("speed", 0.0f);
+		target.ChargeAmount = instance.GetValue<float>("normalizedHoldTime", 0.0f);
+	}
+}
 
-	public Material aimMaterial;
+public class AimIndicator : EffectGameObject, ITimeTravelable 
+{
+	public Gradient chargeColor = new Gradient();
+
+	public float predectionDuration = 1.0f;
+
+	private bool useGravity;
+
+	private float chargeAmount;
+	private Vector2 initialVelocity;
+	private TimeManager timeManager;
 
 	private static readonly int DEFAULT_STRIP_RESOLUTION = 16;
 
@@ -68,13 +87,88 @@ public class AimIndicator : MonoBehaviour {
 		return stripMesh;
 	}
 
-	// Use this for initialization
-	void Start () {
-		
+	public float ChargeAmount
+	{
+		get
+		{
+			return chargeAmount;
+		}
+
+		set
+		{
+			chargeAmount = value;
+			renderer.material.SetColor("_ChargeColor", chargeColor.Evaluate(value));
+			renderer.material.SetFloat ("_ChargeAmount", value);
+		}
+	}
+
+	public Vector2 InitialVelocity
+	{
+		get
+		{
+			return initialVelocity;
+		}
+
+		set
+		{
+			initialVelocity = value;
+
+			Vector3 gravity = useGravity ? Physics.gravity * predectionDuration * predectionDuration : Vector3.zero;
+
+			renderer.material.SetVector("_PathCoeff", new Vector4(
+				value.x * predectionDuration, 
+				gravity.x, 
+				value.y * predectionDuration, 
+				gravity.y)); 
+		}
+	}
+
+	public override void StartEffect(EffectInstance instance)
+	{
+		base.StartEffect (instance);
+		MeshFilter filter = gameObject.GetOrAddComponent<MeshFilter>();
+
+		filter.sharedMesh = filter.sharedMesh ?? GetStripMesh();
+
+		useGravity = instance.GetValue<bool>("useGravity", false);
+
+		timeManager = instance.GetContextValue<TimeManager>("timeManager", null);
+
+		if (timeManager != null)
+		{
+			timeManager.AddTimeTraveler(this);
+		}
+	}
+
+	public override IEffectPropertySource PropertySource {
+		get {
+			IEffectPropertySource parentSource = base.PropertySource;
+
+			return new LambdaPropertySource(name => {
+				if (name == "effect")
+				{
+					return this;
+				}
+				else
+				{
+					return parentSource.GetObject(name);
+				}
+			});
+		}
+	}
+
+	public object GetCurrentState()
+	{
+		return null;
+	}
+
+	public void RewindToState(object state)
+	{
+		Destroy(gameObject);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-
+	public TimeManager GetTimeManager()
+	{
+		return timeManager;
 	}
 }

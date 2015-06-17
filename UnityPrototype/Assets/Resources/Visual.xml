@@ -63,4 +63,63 @@
 			Creates a countdown timer for a delay
 		</description>
 	</effect>
+	
+	
+	<input-configuration name="aim-indicator-in" parent="game-object-in">
+		<parameter>
+			<name>useGravity</name>
+			<type>bool</type>
+			<description>
+				True if the projectile is effected by gravity
+			</description>
+		</parameter>
+	</input-configuration>
+	<output-configuration name="aim-indicator-out" parent="game-object-out">
+	</output-configuration>
+	
+	<effect class="AimIndicator" alias="aim-indicator" namespace="visual" input="aim-indicator-in" output="aim-indicator-out">
+		<description>
+			Creates a projectile prediction preview
+		</description>
+	</effect>
+	
+	
+	<input-configuration name="aim-indicator-update-in">
+		<parameter>
+			<name>target</name>
+			<type>IEffect</type>
+			<description>
+				Reference to the aim indicator effect
+			</description>
+		</parameter>
+		<parameter>
+			<name>direction</name>
+			<type>Vector3</type>
+			<description>
+				The initial direction of the projectile
+			</description>
+		</parameter>
+		<parameter>
+			<name>speed</name>
+			<type>float</type>
+			<description>
+				The initial speed of the projectile
+			</description>
+		</parameter>
+		<parameter>
+			<name>normalizedHoldTime</name>
+			<type>float</type>
+			<description>
+				Value between 0-1 that represents how long the player can hold down an attack
+			</description>
+		</parameter>
+	</input-configuration>
+	<output-configuration name="aim-indicator-update-out">
+	</output-configuration>
+	
+	<effect class="AimIndicatorUpdate" alias="aim-indicator-update" namespace="visual" input="aim-indicator-update-in" output="aim-indicator-update-out">
+		<description>
+			Updates the velocity and charge time for an aim-indicator
+		</description>
+	</effect>
 </effect-settings>
