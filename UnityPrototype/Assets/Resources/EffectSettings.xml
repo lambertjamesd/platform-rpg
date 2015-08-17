@@ -47,6 +47,11 @@
 	</output-configuration>
 	
 	<output-configuration name="caster-out" parent="game-object-out">
+		<parameter>
+			<name>forward</name>
+			<type>Vector3</type>
+			<description>The direction the caster if facing</description>
+		</parameter>
 		<event name="on-fire" parent="caster-fire">
 			<description>
 				Called whenever the player releases the cast button

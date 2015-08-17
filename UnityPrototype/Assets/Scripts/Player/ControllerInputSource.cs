@@ -5,6 +5,8 @@ public class ControllerInputSource : IInputSource
 {
 	private InputState previousState = null;
 	private InputState currentState = null;
+
+	private static readonly float DEAD_ZONE = 0.1f;
 	
 	public ControllerInputSource()
 	{
@@ -15,8 +17,17 @@ public class ControllerInputSource : IInputSource
 	{
 		previousState = currentState;
 		Vector3 aimDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);
+
+		float aimMagnitude = aimDirection.magnitude;
+
+		if (aimMagnitude > 0.0f)
+		{
+			float scaleFactor = Mathf.Max(aimMagnitude - DEAD_ZONE, 0.0f) / (1.0f - DEAD_ZONE);
+			aimDirection *= (scaleFactor / aimMagnitude);
+		}
+
 		bool[] fireButtons = new bool[]{Input.GetButton("Fire0"), Input.GetButton("Fire1"), Input.GetButton("Fire2")};
-		currentState = new InputState(previousState, Input.GetAxis("Horizontal"), Input.GetButton("Jump"), fireButtons, aimDirection);
+		currentState = new InputState(previousState, aimDirection.x, Input.GetButton("Jump"), fireButtons, aimDirection);
 	}
 	
 	public InputState State

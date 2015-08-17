@@ -113,7 +113,7 @@ public class AimIndicator : EffectGameObject, ITimeTravelable
 		{
 			initialVelocity = value;
 
-			Vector3 gravity = useGravity ? Physics.gravity * predectionDuration * predectionDuration : Vector3.zero;
+			Vector3 gravity = useGravity ? Physics.gravity * predectionDuration * predectionDuration * 0.5f : Vector3.zero;
 
 			renderer.material.SetVector("_PathCoeff", new Vector4(
 				value.x * predectionDuration, 

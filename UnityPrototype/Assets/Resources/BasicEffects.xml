@@ -364,6 +364,39 @@ Called if the teleport failed
 		</description>
 	</effect>
 	
+	<input-configuration name="set-position-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The object to move
+			</description>
+		</parameter>
+		<parameter>
+			<name>position</name>
+			<type>Vector3</type>
+			<description>
+				The position to move to
+			</description>
+		</parameter>
+		<parameter>
+			<name>parent</name>
+			<type>GameObject</type>
+			<description>
+				The new parent of the target
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="set-position-out">
+	</output-configuration>
+	
+	<effect class="SetPositionEffect" alias="set-position" namespace="movement" input="set-position-in" output="set-position-out">
+		<description>
+			Sets the position of a game object
+		</description>
+	</effect>
+	
 	<input-configuration name="root-in">
 		<parameter>
 			<name>target</name>

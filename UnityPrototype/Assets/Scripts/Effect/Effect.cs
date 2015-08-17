@@ -26,6 +26,8 @@ public class GameObjectPropertySource : IEffectPropertySource
 			return (target == null) ? 0 : target.layer;
 		case "effect":
 			return effect;
+		case "forward":
+			return Vector3.Project(target.transform.TransformDirection(Vector3.right), Vector3.right).normalized;;
 		}
 
 		return null;

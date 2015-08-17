@@ -101,6 +101,7 @@ public class SpellCasterFireEvent : EffectObject, SpellcastFireListener
 public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 	public SpellDescription[] spells;
+	private Vector3 forward = Vector3.right;
 	
 	private struct SpellState
 	{
@@ -171,12 +172,21 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 	private EffectDefinition[] effectDefinitions;
 	private EffectInstance[] rootInstances;
 	private SpellState[] spellStates;
-	private GameObjectPropertySource propertySource;
+	private IEffectPropertySource propertySource;
 	private TimeManager timeManager;
 
 	// Use this for initialization
 	void Awake () {
-		propertySource = new GameObjectPropertySource(gameObject, null);
+		IEffectPropertySource gameObjectPropertySource = new GameObjectPropertySource(gameObject, null);
+		propertySource = new LambdaPropertySource(name => {
+			switch (name)
+			{
+			case "forward":
+				return forward;
+			}
+			
+			return gameObjectPropertySource.GetObject(name);
+		});
 
 		effectDefinitions = new EffectDefinition[spells.Length];
 		rootInstances = new EffectInstance[spells.Length];
@@ -192,6 +202,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 		context["timeManager"] = timeManager;
 		context["playerManager"] = gameObject.GetComponentWithAncestors<PlayerManager>();
 		context["casterTeam"] = Player.LayerToTeam(gameObject.layer);
+		context["gameObject"] = gameObject;
 
 		for (int i = 0; i < spells.Length; ++i)
 		{
@@ -381,5 +392,18 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 	public TimeManager GetTimeManager()
 	{
 		return timeManager;
+	}
+
+	public Vector3 Forward
+	{
+		get
+		{
+			return forward;
+		}
+
+		set
+		{
+			forward = value;
+		}
 	}
 }

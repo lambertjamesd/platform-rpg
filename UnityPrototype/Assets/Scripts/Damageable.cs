@@ -141,7 +141,7 @@ public class Damageable : MonoBehaviour, ITimeTravelable {
 	{
 		object[] objectArray = (object[])state;
 		maxHealth = (float)objectArray[0];
-		maxHealth = (float)objectArray[1];
+		currentHealth = (float)objectArray[1];
 
 		object[] shieldStates = (object[])objectArray[2];
 		shields = shieldStates.Select(shieldState => Shield.RewindToState(shieldState)).ToList();

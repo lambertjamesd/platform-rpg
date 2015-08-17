@@ -21,6 +21,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
 	private bool[] hasPlayerGone;
 	private int currentTurn = -1;
+	private int numberPlayersStarted = 0;
 
 	private bool isSelectingPlayer;
 	private int currentSelection;
@@ -97,6 +98,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
 	private void StartSelectedPlayer()
 	{
+		players[currentSelection].StartTurn(numberPlayersStarted);
 		players[currentSelection].StartRecording();
 		hasPlayerGone[currentSelection] = true;
 		updateManager.Paused = false;
@@ -106,6 +108,28 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		playerHUD.showSpellDescriptions = false;
 	}
 
+	private void ChangeTeams()
+	{	
+		numberPlayersStarted = 0;
+
+		for (int i = 0; i < players.Count; ++i)
+		{
+			if (players[i].Team == currentTurn)
+			{
+				players[i].EndTurn();
+			}
+		}
+
+		currentTurn = (currentTurn + 1) % teamCount;
+		
+		for (int i = 0; i < hasPlayerGone.Length; ++i)
+		{
+			hasPlayerGone[i] = players[i].Team != currentTurn;
+		}
+		
+		timeManager.TakeSnapshot();
+	}
+
 	private void StartTurn()
 	{
 		updateManager.Paused = true;
@@ -113,18 +137,12 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		
 		if (AllPlayersHaveGone)
 		{
-			currentTurn = (currentTurn + 1) % teamCount;
-
-			for (int i = 0; i < hasPlayerGone.Length; ++i)
-			{
-				hasPlayerGone[i] = players[i].Team != currentTurn;
-			}
-
-			timeManager.TakeSnapshot();
+			ChangeTeams();
 			playerHUD.showSpellDescriptions = true;
 		}
 		else
 		{
+			++numberPlayersStarted;
 			timeManager.Rewind();
 		}
 		

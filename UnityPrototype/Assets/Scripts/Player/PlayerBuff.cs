@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class BuffStat {
 	public BuffStat(string statName, float statValue, bool multiply)
@@ -49,6 +50,19 @@ public class BuffEffect : EffectObject {
 	private PlayerBuff buff;
 	private PlayerStats target;
 
+	private static HashSet<string> movementBuffs = new HashSet<string>(new string[]{
+		"maxMoveSpeed",
+		"moveAcceleration",
+		"minJumpHeight",
+		"maxJumpHeight",
+		"jumpHeightControlWindow"
+	});
+
+	private static bool HasMovementBuff(IEnumerable<BuffStat> buffs)
+	{
+		return buffs.Any(buff => movementBuffs.Contains(buff.statName));
+	}
+
 	public override void StartEffect (EffectInstance instance)
 	{
 		base.StartEffect(instance);
@@ -58,19 +72,24 @@ public class BuffEffect : EffectObject {
 		if (gameObjectTarget != null)
 		{
 			target = gameObjectTarget.GetComponent<PlayerStats>();
+			bool applyMovementBuffs = Player.GetTurnOrder(gameObjectTarget) >= Player.GetTurnOrder(instance.GetContextValue<GameObject>("gameObject", null));
 
 			if (target != null)
 			{
-				List<object> stats = instance.GetValue<List<object>>("buffs", new List<object>());
-				buff = new PlayerBuff(instance.GetIntValue("priority", 0), stats.ConvertAll<BuffStat>(objectStat => (BuffStat)objectStat));
-				target.AddBuff(buff);
+				List<BuffStat> stats = instance.GetValue<List<object>>("buffs", new List<object>()).ConvertAll<BuffStat>(objectStat => (BuffStat)objectStat);
+
+				if (applyMovementBuffs || !HasMovementBuff(stats))
+				{
+					buff = new PlayerBuff(instance.GetIntValue("priority", 0), stats);
+					target.AddBuff(buff);
+				}
 			}
 		}
 	}
 
 	public override void Cancel()
 	{
-		if (target != null)
+		if (target != null && buff != null)
 		{
 			target.RemoveBuff(buff);
 		}

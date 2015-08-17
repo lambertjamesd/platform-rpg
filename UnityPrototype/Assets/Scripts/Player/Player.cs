@@ -100,6 +100,8 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	public RootedState rootedState;
 
 	private int team;
+	public const int TURN_NOT_STARTED = int.MaxValue;
+	private int turnOrder;
 
 	public PlayerSettings settings;
 	private PlayerStats stats;
@@ -249,6 +251,38 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 				childRenderer.material.color = TeamColors.GetColor(team);
 			}
 		}
+	}
+
+	public static int GetTurnOrder(GameObject source)
+	{
+		Player player = source.GetComponent<Player>();
+	
+		if (player == null)
+		{
+			return TURN_NOT_STARTED;
+		}
+		else
+		{
+			return player.turnOrder;
+		}
+	}
+	
+	public int TurnOrder
+	{
+		get
+		{
+			return turnOrder;
+		}
+	}
+
+	public void StartTurn(int turnOrder)
+	{
+		this.turnOrder = turnOrder;
+	}
+
+	public void EndTurn()
+	{
+		this.turnOrder = TURN_NOT_STARTED;
 	}
 
 	public void LimitVelocity(float speed)
@@ -442,10 +476,12 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 			if (velocity.x > 0.0f)
 			{
 				visualScale.x = Mathf.Abs(visualScale.x);
+				spellCaster.Forward = Vector3.right;
 			}
 			else if (velocity.x < 0.0f)
 			{
 				visualScale.x = -Mathf.Abs(visualScale.x);
+				spellCaster.Forward = Vector3.left;
 			}
 
 			visual.transform.localScale = visualScale;

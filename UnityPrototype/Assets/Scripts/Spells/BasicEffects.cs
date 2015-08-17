@@ -10,7 +10,12 @@ public class DestroyGameObjectEffect : EffectObject
 		
 		if (target != null)
 		{
-			TimeManager.DestroyGameObject(target);
+			// ask the object to destroy itself, it it doesn't
+			// then just destroy the game object normally
+			if (!SelfDestruct.DestroySelf(target))
+			{
+				TimeManager.DestroyGameObject(target);
+			}
 		}
 	}
 }
@@ -222,7 +227,7 @@ public class DebugLogEffect : EffectObject
 	public override void StartEffect(EffectInstance instance) {
 		base.StartEffect(instance);
 
-		object input = instance.GetValue<object>("input");
+		object input = instance.GetValue<object>("input", "");
 
 		if (input == null)
 		{
@@ -398,5 +403,18 @@ public class CounterEffect : EffectObject, ITimeTravelable {
 	public TimeManager GetTimeManager()
 	{
 		return timeManager;
+	}
+}
+
+public class SetPositionEffect : EffectObject {
+	public override void StartEffect(EffectInstance instance) {
+		base.StartEffect(instance);
+		GameObject target = instance.GetValue<GameObject>("target", null);
+
+		if (target != null) {
+			GameObject parent = instance.GetValue<GameObject>("parent", target.GetParent());
+			target.transform.parent = parent ? parent.transform : null;
+			target.transform.position = instance.GetValue<Vector3>("position", target.transform.position);
+		}
 	}
 }
