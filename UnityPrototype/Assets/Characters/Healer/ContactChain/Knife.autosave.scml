@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r4.1">
+    <folder id="0">
+        <file id="0" name="GoldKnife.png" width="32" height="85" pivot_x="0.5" pivot_y="0.5"/>
+    </folder>
+    <entity id="0" name="Knife">
+        <animation id="0" name="Start" length="100" interval="100" looping="false">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+                <key id="1" time="100">
+                    <object_ref id="0" timeline="0" key="1" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="GoldKnife">
+                <key id="0" spin="0">
+                    <object folder="0" file="0" x="0.114761" y="21.92882" scale_x="0.2" scale_y="0.2" a="0"/>
+                </key>
+                <key id="1" time="100" spin="0">
+                    <object folder="0" file="0" x="-0.338129" y="71.021583"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="1" name="Loop" length="2000" interval="100">
+            <mainline>
+                <key id="0" curve_type="bezier" c1="0.3339" c2="0" c3="0.649063" c4="0.995261">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+                <key id="1" time="645" curve_type="bezier" c1="0.350937" c2="0" c3="0.662692" c4="0.995261">
+                    <object_ref id="0" timeline="0" key="1" z_index="0"/>
+                </key>
+                <key id="2" time="908" curve_type="bezier" c1="0.350937" c2="0" c3="0.662692" c4="0.995261">
+                    <object_ref id="0" timeline="0" key="2" z_index="0"/>
+                </key>
+                <key id="3" time="1692">
+                    <object_ref id="0" timeline="0" key="3" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="GoldKnife">
+                <key id="0" spin="0">
+                    <object folder="0" file="0" x="-0.338129" y="71.021583"/>
+                </key>
+                <key id="1" time="645" spin="0">
+                    <object folder="0" file="0" x="-0.028532" y="89.442635"/>
+                </key>
+                <key id="2" time="908" spin="0">
+                    <object folder="0" file="0" x="-0.037663" y="88.899318"/>
+                </key>
+                <key id="3" time="1692" spin="0">
+                    <object folder="0" file="0" x="-0.338129" y="71.021583"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="2" name="Damage" length="200" interval="100" looping="false">
+            <mainline>
+                <key id="0" curve_type="bezier" c1="0.3339" c2="0" c3="0.649063" c4="0.995261">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+                <key id="1" time="200" curve_type="bezier" c1="0.3339" c2="0" c3="0.649063" c4="0.995261">
+                    <object_ref id="0" timeline="0" key="1" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="GoldKnife">
+                <key id="0" spin="0">
+                    <object folder="0" file="0" x="-0.338129" y="71.021583"/>
+                </key>
+                <key id="1" time="200" spin="0">
+                    <object folder="0" file="0" x="-0.338129" y="0.588146"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>

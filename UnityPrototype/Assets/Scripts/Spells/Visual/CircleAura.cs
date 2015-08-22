@@ -19,12 +19,12 @@ public class CircleAura : EffectGameObject {
 	{
 		get
 		{
-			return renderer.material.color;
+			return GetComponent<Renderer>().material.color;
 		}
 
 		set
 		{
-			renderer.material.color = value;
+			GetComponent<Renderer>().material.color = value;
 		}
 	}
 
@@ -38,7 +38,7 @@ public class CircleAura : EffectGameObject {
 		set
 		{
 			team = value;
-			renderer.material.SetColor("_RimColor", TeamColors.GetColor(team));
+			GetComponent<Renderer>().material.SetColor("_RimColor", TeamColors.GetColor(team));
 		}
 	}
 
@@ -53,7 +53,7 @@ public class CircleAura : EffectGameObject {
 		{
 			transform.localScale = Vector3.one * value * 2.0f;
 			float uvThickness = 1.0f - RIM_THICKNESS / (value * 2.0f);
-			renderer.material.SetFloat("_RimThickness", uvThickness * uvThickness);
+			GetComponent<Renderer>().material.SetFloat("_RimThickness", uvThickness * uvThickness);
 		}
 	}
 }

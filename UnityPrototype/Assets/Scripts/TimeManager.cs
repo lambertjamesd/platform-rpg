@@ -10,6 +10,14 @@ public interface ITimeTravelable
 	TimeManager GetTimeManager();
 }
 
+public static class TimeTravelable
+{
+	public static bool IsPersistant(this ITimeTravelable target)
+	{
+		return target.GetTimeManager().IsSaved(target);
+	}
+}
+
 public class TimeSnapshot
 {
 	private List<object> objectData;
@@ -61,6 +69,14 @@ public class TimeSnapshot
 		}
 	}
 
+	public int ObjectCount
+	{
+		get
+		{
+			return objectData.Count;
+		}
+	}
+
 	public void Apply(List<ITimeTravelable> timeObjects)
 	{
 		for (int i = 0; i < timeObjects.Count; ++i)
@@ -104,6 +120,18 @@ public class TimeManager : MonoBehaviour, IFixedUpdate {
 		{
 			timeObjects.Add(traveler);
 		}
+	}
+
+	public bool IsSaved(ITimeTravelable traveler)
+	{
+		int index = timeObjects.IndexOf(traveler);
+
+		if (index != -1 && snapShots.Count > 0)
+		{
+			return index < snapShots[snapShots.Count - 1].ObjectCount;
+		}
+
+		return false;
 	}
 
 	public void TakeSnapshot()

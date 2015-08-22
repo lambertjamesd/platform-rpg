@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
@@ -47,6 +48,11 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 				return null;
 			}
 		}
+	}
+
+	public IEnumerable<Player> PlayersOnLayers(int bitmask)
+	{
+		return players.Where( player => player.gameObject.activeSelf && (CollisionLayers.AllyLayers(player.gameObject.layer) & bitmask) != 0 );
 	}
 
 	private bool AllPlayersHaveGone
@@ -124,7 +130,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		
 		for (int i = 0; i < hasPlayerGone.Length; ++i)
 		{
-			hasPlayerGone[i] = players[i].Team != currentTurn;
+			hasPlayerGone[i] = !players[i].gameObject.activeSelf || players[i].Team != currentTurn;
 		}
 		
 		timeManager.TakeSnapshot();

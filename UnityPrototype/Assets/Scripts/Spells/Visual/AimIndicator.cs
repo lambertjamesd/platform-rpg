@@ -97,8 +97,8 @@ public class AimIndicator : EffectGameObject, ITimeTravelable
 		set
 		{
 			chargeAmount = value;
-			renderer.material.SetColor("_ChargeColor", chargeColor.Evaluate(value));
-			renderer.material.SetFloat ("_ChargeAmount", value);
+			GetComponent<Renderer>().material.SetColor("_ChargeColor", chargeColor.Evaluate(value));
+			GetComponent<Renderer>().material.SetFloat ("_ChargeAmount", value);
 		}
 	}
 
@@ -115,7 +115,7 @@ public class AimIndicator : EffectGameObject, ITimeTravelable
 
 			Vector3 gravity = useGravity ? Physics.gravity * predectionDuration * predectionDuration * 0.5f : Vector3.zero;
 
-			renderer.material.SetVector("_PathCoeff", new Vector4(
+			GetComponent<Renderer>().material.SetVector("_PathCoeff", new Vector4(
 				value.x * predectionDuration, 
 				gravity.x, 
 				value.y * predectionDuration, 

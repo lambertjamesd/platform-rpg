@@ -113,21 +113,25 @@ namespace Assets.ThirdParty.Spriter2Unity.Editor.Unity
                 AssetDatabase.SaveAssets();
 
                 var animatorControllerPath = Path.ChangeExtension(prefabPath, "controller");
-                var oldController = (AnimatorController)AssetDatabase.LoadAssetAtPath(animatorControllerPath, typeof (AnimatorController));
-                var controller = oldController;
+                UnityEditor.Animations.AnimatorController oldController = (UnityEditor.Animations.AnimatorController)AssetDatabase.LoadAssetAtPath(animatorControllerPath, typeof (UnityEditor.Animations.AnimatorController));
+                UnityEditor.Animations.AnimatorController controller = oldController;
 
                 if (!oldController)
                 {
-                    controller = AnimatorController.CreateAnimatorControllerAtPath(animatorControllerPath);
+                    controller = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath(animatorControllerPath);
                     foreach (var animationClip in allAnimClips)
                     {
                         if (animationClip)
                         {
-                            AnimatorController.AddAnimationClipToController(controller, animationClip);
+#if UNITY_5
+							controller.AddMotion(animationClip);
+#else
+                            UnityEditor.Animations.AnimatorController.AddAnimationClipToController(controller, animationClip);
+#endif
                         }
                     }
                 }
-                AnimatorController.SetAnimatorController(animator, controller);
+                UnityEditor.Animations.AnimatorController.SetAnimatorController(animator, controller);
                 go.SetActive(true);
                 //Update the prefab
                 PrefabUtility.ReplacePrefab(go, prefabGo, ReplacePrefabOptions.ConnectToPrefab);

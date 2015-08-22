@@ -36,15 +36,25 @@ public class CancelEventEffect : EffectObject
 public class DelayEffect : EffectObject, IFixedUpdate, ITimeTravelable
 {
 	private float remainingTime;
-	private int startSnapshotIndex;
+	private bool addedToUpdateManager;
 	private UpdateManager updateManager;
 	private TimeManager timeManager;
 
-	public bool Persistant
+	private void AddToUpdate()
 	{
-		get
+		if (!addedToUpdateManager)
 		{
-			return startSnapshotIndex != timeManager.SnapshotIndex;
+			this.AddToUpdateManager(updateManager);
+			addedToUpdateManager = true;
+		}
+	}
+
+	private void RemoveFromUpdate()
+	{
+		if (addedToUpdateManager)
+		{
+			this.RemoveFromUpdateManager(updateManager);
+			addedToUpdateManager = false;
 		}
 	}
 
@@ -52,11 +62,11 @@ public class DelayEffect : EffectObject, IFixedUpdate, ITimeTravelable
 		base.StartEffect(instance);
 		updateManager = instance.GetContextValue<UpdateManager>("updateManager", null);
 		timeManager = instance.GetContextValue<TimeManager>("timeManager", null);
+		timeManager.AddTimeTraveler(this);
 		
 		remainingTime = instance.GetValue<float>("duration", 0.0f);
-		startSnapshotIndex = timeManager.SnapshotIndex;
 
-		this.AddToUpdateManager(updateManager);
+		AddToUpdate();
 	}
 
 	public void FixedUpdateTick(float dt)
@@ -68,11 +78,7 @@ public class DelayEffect : EffectObject, IFixedUpdate, ITimeTravelable
 			if (remainingTime <= 0.0f)
 			{
 				instance.TriggerEvent("timeout", null);
-
-				if (!Persistant)
-				{
-					this.RemoveFromUpdateManager(updateManager);
-				}
+				RemoveFromUpdate();
 			}
 		}
 	}
@@ -94,11 +100,16 @@ public class DelayEffect : EffectObject, IFixedUpdate, ITimeTravelable
 	{
 		if (state == null)
 		{
-			this.RemoveFromUpdateManager(updateManager);
+			RemoveFromUpdate();
 		}
 		else
 		{
 			remainingTime = (float)state;
+
+			if (remainingTime > 0.0f)
+			{
+				AddToUpdate();
+			}
 		}
 	}
 	

@@ -16,7 +16,8 @@ public class HealthBar : MonoBehaviour {
 	public Material healthbarMaterial;
 	public Vector2 screenSize;
 	public Vector2 screenOffset;
-	public Texture2D manditoryTexture;
+	public Sprite manditorySprite;
+	public string sortLayer;
 
 	public Color shieldColor = new Color(0.7f, 0.7f, 0.7f);
 	public Color backgroundColor = Color.black;
@@ -24,6 +25,8 @@ public class HealthBar : MonoBehaviour {
 
 	public Vector2 shardGraviy = new Vector2(0.0f, -10.0f);
 	public Vector2 shardSize = new Vector2(32.0f, 20.0f);
+
+	private GameObject spriteObject;
 
 	private Material materialCopy;
 	private Vector3 localHealthbarAnchor;
@@ -61,6 +64,15 @@ public class HealthBar : MonoBehaviour {
 		localHealthbarAnchor = transform.InverseTransformPoint(Vector3.Scale(playerBounds.min, new Vector3(0.5f, 0.0f, 0.5f)) + Vector3.Scale(playerBounds.max, new Vector3(0.5f, 1.0f, 0.5f)));
 
 		UpdateMaterial();
+
+		spriteObject = new GameObject();
+		spriteObject.transform.parent = transform;
+		spriteObject.name = "Health Bar";
+
+		SpriteRenderer spriteRenderer = spriteObject.AddComponent<SpriteRenderer>();
+		spriteRenderer.sprite = manditorySprite;
+		spriteRenderer.material = materialCopy;
+		spriteRenderer.sortingLayerName = sortLayer;
 	}
 
 	public void Update()
@@ -99,23 +111,37 @@ public class HealthBar : MonoBehaviour {
 		}
 	}
 
+	private Vector3 RayToWorldPos(Ray ray, Vector3 targetPos, Vector3 targetForward)
+	{
+		float distance = Mathf.Abs(Vector3.Dot(targetForward, targetPos - ray.origin) / Vector3.Dot(ray.direction, targetForward));
+		return ray.GetPoint(distance);
+	}
+
+	public void LateUpdate()
+	{
+		Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+		screenPos += new Vector3(screenOffset.x, screenOffset.y, 0.0f);
+
+		Vector3 bottomLeft = screenPos - new Vector3(screenSize.x, screenSize.y, 0.0f) * 0.5f;
+		Vector3 topRight = screenPos + new Vector3(screenSize.x, screenSize.y, 0.0f) * 0.5f;
+
+		Vector3 targetPos = transform.position;
+		Vector3 targetForward = spriteObject.transform.forward;
+
+		Vector3 bottomLeftWorld = RayToWorldPos(Camera.main.ScreenPointToRay(bottomLeft), targetPos, targetForward);
+		Vector3 topRightWorld = RayToWorldPos(Camera.main.ScreenPointToRay(topRight), targetPos, targetForward);
+
+		spriteObject.transform.position = (bottomLeftWorld + topRightWorld) * 0.5f - Vector3.forward * 2.0f;;
+
+		Vector3 offsetLocal = transform.InverseTransformPoint(topRightWorld) - transform.InverseTransformPoint(bottomLeftWorld);
+		spriteObject.transform.localScale = new Vector3(
+			manditorySprite.pixelsPerUnit * offsetLocal.x / manditorySprite.rect.width, 
+			manditorySprite.pixelsPerUnit * offsetLocal.y / manditorySprite.rect.height, 
+			1.0f);
+	}
+
 	public void FireShard(HealthShard shard)
 	{
 		healthShards.Add(shard);
-	}
-
-	public void OnGUI()
-	{
-		Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.TransformPoint(localHealthbarAnchor));
-		screenPos.y = Screen.height - screenPos.y;
-
-		Graphics.DrawTexture(new Rect(screenPos.x + screenOffset.x, screenPos.y + screenOffset.y, screenSize.x, screenSize.y), manditoryTexture, materialCopy);
-
-		foreach (HealthShard shard in healthShards)
-		{
-			Vector2 shardPosition = new Vector2(screenPos.x, screenPos.y) + shard.position;
-			GUI.color = shard.color;
-			GUI.Label(new Rect(shardPosition.x - shardSize.x * 0.5f, shardPosition.y - shardSize.y, shardSize.x, shardSize.y), shard.amount.ToString());
-		}
 	}
 }

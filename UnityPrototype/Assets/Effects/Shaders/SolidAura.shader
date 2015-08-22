@@ -12,7 +12,7 @@
 		LOD 200
 		
 		CGPROGRAM
-		#pragma surface surf Lambert vertex:vert
+		#pragma surface surf Lambert vertex:vert alpha
 
 		struct Input {
    			float2 circlePos;
@@ -33,12 +33,12 @@
 			if (uvDistanceSqrd < _RimThickness)
 			{
 				o.Emission = _Color.rgb;
-				o.Alpha = 1.0f;
+				o.Alpha = _Color.a;
 			}
 			else if (uvDistanceSqrd < 1)
 			{
 				o.Emission = _RimColor.rgb;
-				o.Alpha = 1.0f;
+				o.Alpha = _RimColor.a;
 			}
 			else
 			{

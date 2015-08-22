@@ -122,4 +122,43 @@
 			Updates the velocity and charge time for an aim-indicator
 		</description>
 	</effect>
+	
+	<input-configuration name="target-pointer-in" parent="game-object-in">
+		<parameter>
+			<name>limit</name>
+			<type>int</type>
+			<description>
+				Maximun number of targets suggested
+			</description>
+		</parameter>
+		<parameter>
+			<name>template</name>
+			<type>Prefab</type>
+			<description>
+				GameObject to instantiate as pointer
+			</description>
+		</parameter>
+		<parameter>
+			<name>collideWith</name>
+			<type>bitMask</type>
+			<description>
+				Targets any players who collide with the given bitmask
+			</description>
+		</parameter>
+		<parameter>
+			<name>exclude</name>
+			<type>List</type>
+			<description>
+				GameObjects to not target
+			</description>
+		</parameter>
+	</input-configuration>
+	<output-configuration name="target-pointer-out" parent="game-object-out">
+	</output-configuration>
+	
+	<effect class="TargetPointerEffect" alias="target-pointer" namespace="visual" input="target-pointer-in" output="target-pointer-out">
+		<description>
+			Shows the way to the nearest targets
+		</description>
+	</effect>
 </effect-settings>

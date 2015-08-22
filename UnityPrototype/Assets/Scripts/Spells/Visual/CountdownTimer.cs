@@ -49,7 +49,7 @@ public class CountdownTimer : EffectGameObject
 		}
 		else
 		{
-			if (targetDelay.Persistant)
+			if (targetDelay.IsPersistant())
 			{
 				gameObject.SetActive(false);
 			}

@@ -245,11 +245,11 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 			team = value;
 			gameObject.layer = firstTeamLayer + team * layerOffsetPerTeam;
 
-			SpriteRenderer[] renderers = gameObject.GetComponentsInChildren<SpriteRenderer>(renderer);
+			/*SpriteRenderer[] renderers = gameObject.GetComponentsInChildren<SpriteRenderer>(renderer);
 			foreach (Renderer childRenderer in renderers)
 			{
 				childRenderer.material.color = TeamColors.GetColor(team);
-			}
+			}*/
 		}
 	}
 
@@ -590,8 +590,8 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		float minFallDistance = stats.GetNumberStat("minFallDamageDistance", 12.0f);
 		float maxFallDistance = stats.GetNumberStat("maxFallDamageDistance", 30.0f);
 
-		float minFallDamage = stats.GetNumberStat("minFallDamage", 20.0f);
-		float maxFallDamage = stats.GetNumberStat("maxFallDamage", 80.0f);
+		float minFallDamage = stats.GetNumberStat("minFallDamage", 0.02f) * damageable.maxHealth;
+		float maxFallDamage = stats.GetNumberStat("maxFallDamage", 0.1f) * damageable.maxHealth;
 
 		float damageRatio = PathingMath.FallingDamageRatio(velocity, normal, Physics.gravity.y, minFallDistance, maxFallDistance);
 
