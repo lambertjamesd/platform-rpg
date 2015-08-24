@@ -8,23 +8,26 @@ public class AnimatorStateSaver {
 	private Animator animator;
 	private List<AnimationParameter> parameters;
 
-	public AnimatorStateSaver(Animator target, string[] floatParameters, string[] intParameters, string[] boolParameters)
+	public AnimatorStateSaver(Animator target)
 	{
 		animator = target;
 
 		parameters = new List<AnimationParameter>();
 
-		for (int i = 0; i < floatParameters.Length; ++i)
+		foreach (AnimatorControllerParameter param in target.parameters)
 		{
-			parameters.Add(new FloatAnimationParameter(Animator.StringToHash(floatParameters[i])));
-		}
-		for (int i = 0; i < intParameters.Length; ++i)
-		{
-			parameters.Add(new IntAnimationParameter(Animator.StringToHash(intParameters[i])));
-		}
-		for (int i = 0; i < boolParameters.Length; ++i)
-		{
-			parameters.Add(new BoolAnimationParameter(Animator.StringToHash(boolParameters[i])));
+			if (param.type == AnimatorControllerParameterType.Bool)
+			{
+				parameters.Add(new BoolAnimationParameter(param.nameHash));
+			} 
+			else if (param.type == AnimatorControllerParameterType.Float)
+			{
+				parameters.Add(new FloatAnimationParameter(param.nameHash));
+			}
+			else if (param.type == AnimatorControllerParameterType.Int)
+			{
+				parameters.Add(new IntAnimationParameter(param.nameHash));
+			}
 		}
 	}
 
@@ -133,7 +136,7 @@ public class AnimatorStateSaver {
 
 		for (int i = 0; i < animState.layerStates.Length; ++i)
 		{
-			animator.CrossFade(animState.layerStates[i].nameHash, 0.0f, i, animState.layerStates[i].normalizedTime);
+			animator.CrossFade(animState.layerStates[i].fullPathHash, 0.0f, i, animState.layerStates[i].normalizedTime);
 		}
 
 		for (int i = 0; i < animState.parameterValues.Length; ++i)

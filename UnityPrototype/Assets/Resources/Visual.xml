@@ -161,4 +161,44 @@
 			Shows the way to the nearest targets
 		</description>
 	</effect>
+	
+	
+	<input-configuration name="teleport-trail-in" parent="game-object-in">
+		<parameter>
+			<name>duration</name>
+			<type>float</type>
+			<description>
+				How long the trail persists
+			</description>
+		</parameter>
+		<parameter>
+			<name>start</name>
+			<type>Vector3</type>
+			<description>
+				The start of the trail
+			</description>
+		</parameter>
+		<parameter>
+			<name>end</name>
+			<type>Vector3</type>
+			<description>
+				The end of the trail
+			</description>
+		</parameter>
+		<parameter>
+			<name>bendHandle</name>
+			<type>Vector3</type>
+			<description>
+				Bends the trail in this direction
+			</description>
+		</parameter>
+	</input-configuration>
+	<output-configuration name="teleport-trail-out" parent="game-object-out">
+	</output-configuration>
+	
+	<effect class="TeleportVisualizer" alias="teleport-trail" namespace="visual" input="teleport-trail-in" output="teleport-trail-out">
+		<description>
+			Draws a trail indicating teleportation
+		</description>
+	</effect>
 </effect-settings>

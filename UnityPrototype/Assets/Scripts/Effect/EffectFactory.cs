@@ -267,6 +267,30 @@ public static class VectorFunctions
 	}
 }
 
+public static class GameObjectFunctions
+{
+	public static object GetObjectPosition(object[] parameters)
+	{
+		if (parameters.Length == 1)
+		{
+			if (!(parameters[0] is GameObject))
+			{
+				Debug.LogError("GetObjectPosition expects to get a game object");
+			}
+			else
+			{
+				return ((GameObject)parameters[0]).transform.position;
+			}
+		}
+		else
+		{
+			Debug.LogError("GetObjectPosition expects 1 parameters");
+		}
+
+		return null;
+	}
+}
+
 public class GameObjectEffectConstructor<I> : EffectConstructor where I : EffectGameObject
 {
 	public override IEffect SpawnEffect(EffectInstance eventInstance)

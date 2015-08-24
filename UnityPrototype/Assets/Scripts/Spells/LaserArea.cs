@@ -3,6 +3,8 @@ using System.Collections;
 
 public class LaserArea : AreaEffect, IFixedUpdate {
 
+	public LaserVisualizer visualizer;
+
 	private float skinThickness = 0.001f;
 	private float defaultMaxRange = 100.0f;
 
@@ -25,6 +27,11 @@ public class LaserArea : AreaEffect, IFixedUpdate {
 		
 		areaRadius = instance.GetValue<float>("areaRadius", blockRadius + skinThickness);
 		areaLayers = instance.GetValue<int>("areaLayers", blockLayers);
+
+		if (visualizer != null)
+		{
+			visualizer.SetRadius(areaRadius);
+		}
 		
 		maxRange = instance.GetValue<float>("maxRange", defaultMaxRange);
 
@@ -51,6 +58,11 @@ public class LaserArea : AreaEffect, IFixedUpdate {
 		if (Physics.SphereCast(ray, blockRadius, out hitInfo, maxRange, blockLayers))
 		{
 			lastDistance = hitInfo.distance;
+		}
+
+		if (!visualizer != null)
+		{
+			visualizer.SetInnerLength(lastDistance);
 		}
 
 		RaycastHit[] hits = Physics.SphereCastAll(ray, areaRadius, lastDistance, areaLayers);

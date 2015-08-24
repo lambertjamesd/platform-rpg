@@ -58,4 +58,14 @@ public class PlayerStats : MonoBehaviour {
 	{
 		buffs.Remove(buff);
 	}
+
+	public object GetCurrentState()
+	{
+		return new List<PlayerBuff>(buffs);
+	}
+
+	public void RewindToState(object state)
+	{
+		buffs = new List<PlayerBuff>((List<PlayerBuff>)state);
+	}
 }

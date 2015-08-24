@@ -377,4 +377,19 @@
 		</description>
 	</function>
 	
+	
+	<function name="GetObjectPosition" namespace="game object">
+		<return-type>Vector3</return-type>
+		<parameter>
+			<name>input</name>
+			<type>GameObject</type>
+			<description>
+				The game object to get the position of
+			</description>
+		</parameter>
+		<description>
+			Gets the position of a GameObject
+		</description>
+	</function>
+	
 </effect-settings>

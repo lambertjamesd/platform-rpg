@@ -198,8 +198,8 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 		else
 		{
 			object[] stateArray = (object[])state;
-			enclosedObjects = (HashSet<GameObject>)stateArray[0];
-			alreadyCollided = (HashSet<GameObject>)stateArray[1];
+			enclosedObjects = new HashSet<GameObject>((HashSet<GameObject>)stateArray[0]);
+			alreadyCollided = new HashSet<GameObject>((HashSet<GameObject>)stateArray[1]);
 			TimeGameObject.RewindToState(gameObject, stateArray[2]);
 			exitListeners = (Dictionary<GameObject,List<IOnExitDelegate>>)stateArray[3];
 		}

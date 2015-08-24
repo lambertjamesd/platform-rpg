@@ -10,8 +10,9 @@ public class PlayerState
 	private InputRecording input;
 	private object animationState;
 	private object stateMachineState;
+	private object statsState;
 
-	public PlayerState(Vector3 position, Vector3 velocity, float health, InputRecording input, object animationState, object stateMachineState)
+	public PlayerState(Vector3 position, Vector3 velocity, float health, InputRecording input, object animationState, object stateMachineState, object statsState)
 	{
 		this.position = position;
 		this.velocity = velocity;
@@ -19,6 +20,7 @@ public class PlayerState
 		this.input = input;
 		this.animationState = animationState;
 		this.stateMachineState = stateMachineState;
+		this.statsState = statsState;
 	}
 
 	public Vector3 Position
@@ -71,6 +73,14 @@ public class PlayerState
 		get
 		{
 			return stateMachineState;
+		}
+	}
+
+	public object StatsState
+	{
+		get
+		{
+			return statsState;
 		}
 	}
 }
@@ -377,13 +387,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 				}
 
 				visualAnimator = visual.GetComponent<Animator>();
-				animatorStateSaver = new AnimatorStateSaver(visualAnimator, new string[]{
-
-				}, new string[]{
-
-				}, new string[]{
-
-				});
+				animatorStateSaver = new AnimatorStateSaver(visualAnimator);
 			}
 			
 			inputSource = new IdleInputSource();
@@ -536,7 +540,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	{
 		EnsureInitialized();
 		object animationState = animatorStateSaver == null ? null : animatorStateSaver.GetCurrentState();
-		lastState = new PlayerState(transform.position, velocity, damageable.CurrentHealth, null, animationState, stateMachine.GetCurrentState());
+		lastState = new PlayerState(transform.position, velocity, damageable.CurrentHealth, null, animationState, stateMachine.GetCurrentState(), stats.GetCurrentState());
 		return lastState;
 	}
 
@@ -575,6 +579,8 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 			{
 				animatorStateSaver.RewindToState(lastState.AnimationState);
 			}
+
+			stats.RewindToState(lastState.StatsState);
 
 			stateMachine.RewindToState(lastState.StateMachineState);
 		}

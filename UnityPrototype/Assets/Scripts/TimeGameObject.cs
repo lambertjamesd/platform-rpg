@@ -34,6 +34,7 @@ public class TimeGameObject : MonoBehaviour, ITimeTravelable {
 	{
 		return timeManager;
 	}
+
 	
 	private class GameObjectData
 	{
@@ -69,7 +70,7 @@ public class TimeGameObject : MonoBehaviour, ITimeTravelable {
 		}
 		else
 		{
-			gameObject.SetActive(false);
+			Destroy(gameObject);
 		}
 	}
 }
