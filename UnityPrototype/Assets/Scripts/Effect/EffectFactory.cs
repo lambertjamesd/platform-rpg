@@ -289,6 +289,27 @@ public static class GameObjectFunctions
 
 		return null;
 	}
+
+	public static object GetObjectParent(object[] parameters)
+	{
+		if (parameters.Length == 1)
+		{
+			if (!(parameters[0] is GameObject))
+			{
+				Debug.LogError("GetObjectParent expects to get a game object");
+			}
+			else
+			{
+				return ((GameObject)parameters[0]).GetParent();
+			}
+		}
+		else
+		{
+			Debug.LogError("GetObjectParent expects 1 parameters");
+		}
+		
+		return null;
+	}
 }
 
 public class GameObjectEffectConstructor<I> : EffectConstructor where I : EffectGameObject

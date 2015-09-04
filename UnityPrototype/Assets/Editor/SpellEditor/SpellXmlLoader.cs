@@ -239,6 +239,11 @@ public class SpellXmlLoader {
 			SpellNode newNode = editor.AddNode(spellType, position);
 			
 			effectIDStack.Add(id);
+			
+			if (id != null)
+			{
+				spellNodes[id] = newNode;
+			}
 
 			if (reader.IsEmptyElement)
 			{
@@ -247,11 +252,6 @@ public class SpellXmlLoader {
 			}
 
 			reader.Read();
-
-			if (id != null)
-			{
-				spellNodes[id] = newNode;
-			}
 
 			while (reader.NodeType != XmlNodeType.EndElement && reader.NodeType != XmlNodeType.None)
 			{

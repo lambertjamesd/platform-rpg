@@ -24,14 +24,10 @@ public class FreeFallState : MonoBehaviour, IState {
 	
 	public void Update(StateMachine stateMachine, float timestep)
 	{
-		float maxMoveSpeed = player.Stats.GetNumberStat("maxMoveSpeed");
-		float horizontalMovement = player.InputSource.State.HorizontalControl;
-		float targetRightSpeed = Mathf.Clamp(player.Velocity.x + horizontalMovement * maxMoveSpeed, -maxMoveSpeed, maxMoveSpeed);
-
 		player.DefaultMovement(timestep);
 		player.ApplyGravity(timestep);
 		player.HandleKnockback();
-		player.Velocity += Vector3.right * (targetRightSpeed - player.Velocity.x) * player.settings.airAcceleration * timestep;
+		HandleHorizontalControl(player, timestep);
 
 		if (player.IsGrounded)
 		{
@@ -41,6 +37,14 @@ public class FreeFallState : MonoBehaviour, IState {
 		{
 			stateMachine.SetNextState("WallSlide");
 		}
+	}
+
+	public static void HandleHorizontalControl(Player player, float timestep)
+	{
+		float maxMoveSpeed = player.Stats.GetNumberStat("maxMoveSpeed");
+		float horizontalMovement = player.InputSource.State.HorizontalControl;
+		float targetRightSpeed = Mathf.Clamp(player.Velocity.x + horizontalMovement * maxMoveSpeed, -maxMoveSpeed, maxMoveSpeed);
+		player.Velocity += Vector3.right * Mathf.Sign(targetRightSpeed - player.Velocity.x) * player.Stats.GetNumberStat("airAcceleration") * timestep;
 	}
 	
 	public void EndState(StateMachine stateMachine)

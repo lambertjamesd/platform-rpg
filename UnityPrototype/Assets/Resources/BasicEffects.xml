@@ -585,5 +585,74 @@ Called if the teleport failed
 			Counts up to a specified value
 		</description>
 	</effect>
+	
+	
+	<input-configuration name="store-value-in">
+		<parameter>
+			<name>target</name>
+			<type>IEffect</type>
+			<description>
+				The value store to modify
+			</description>
+		</parameter>
+		<parameter>
+			<name>value</name>
+			<type>Any</type>
+			<description>
+				The value to store
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<effect class="StoreValueEffect" alias="store-value" namespace="count" input="store-value-in">
+		<description>
+			Sets a value of a value store
+		</description>
+	</effect>
+	
+	<input-configuration name="value-store-in">
+	</input-configuration>
+	
+	<output-configuration name="value-store-out">
+		<parameter>
+			<name>currentValue</name>
+			<type>Any</type>
+			<description>
+				The current value store
+			</description>
+		</parameter>
+		<parameter>
+			<name>effect</name>
+			<type>IEffect</type>
+			<description>
+				Reference to the value set
+			</description>
+		</parameter>
+		<event name="on-change">
+			<parameter>
+				<name>newValue</name>
+				<type>Any</type>
+				<description>
+					The new value being set
+				</description>
+			</parameter>
+			<parameter>
+				<name>oldValue</name>
+				<type>Any</type>
+				<description>
+					The previous value
+				</description>
+			</parameter>
+			<description>
+				Called when the value changes
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="ValueStoreEffect" alias="value-store" namespace="count" input="value-store-in" output="value-store-out">
+		<description>
+			Stores a single value at a time
+		</description>
+	</effect>
 
 </effect-settings>

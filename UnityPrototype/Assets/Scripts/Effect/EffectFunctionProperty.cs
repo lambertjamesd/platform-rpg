@@ -201,6 +201,10 @@ public static class EffectCastingFunctions
 			{
 				return bool.Parse((string)value);
 			}
+			else if (value is Vector3)
+			{
+				return ((Vector3)value) != Vector3.zero;
+			}
 			else
 			{
 				return value != null;

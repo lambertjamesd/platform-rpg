@@ -31,7 +31,7 @@ public class WallSlideState : MonoBehaviour, IState {
 		player.ApplyGravity(timestep);
 		player.HandleKnockback();
 		player.Velocity *= Mathf.Pow(player.Settings.wallSlideDamping, timestep);
-		player.Velocity -= player.WallNormal * player.settings.airAcceleration * timestep;
+		player.Velocity -= player.WallNormal * player.Stats.GetNumberStat("airAcceleration") * timestep;
 
 		if (player.WallNormal.x * horizontalMovement >= 0.0f)
 		{

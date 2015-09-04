@@ -70,7 +70,8 @@ public class JumpState : MonoBehaviour, IState {
 		player.ApplyGravity(timestep);
 		player.HandleKnockback();
 		player.Velocity += Vector3.up * jumpAcceration * timestep 
-			+ horizontalMovement * Vector3.right * player.settings.airAcceleration * timestep;
+			+ horizontalMovement * Vector3.right * player.Stats.GetNumberStat("airAcceleration") * timestep;
+		FreeFallState.HandleHorizontalControl(player, timestep);
 
 		if (jumpControlTime <= 0.0 || !player.InputSource.State.JumpButton)
 		{

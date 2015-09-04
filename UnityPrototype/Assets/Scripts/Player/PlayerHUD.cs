@@ -83,9 +83,9 @@ public class PlayerHUD : MonoBehaviour {
 			Rect currentStatRect = statsPosition;
 			currentStatRect.height = statLineHeight;
 			GUI.color = Color.white;
-			GUI.Label(currentStatRect, "Speed: " + currentPlayer.Stats.GetNumberStat("maxMoveSpeed")); currentStatRect.y += statLineHeight;
-			GUI.Label(currentStatRect, "Ajility: " + currentPlayer.Settings.moveAcceleration); currentStatRect.y += statLineHeight;
-			GUI.Label(currentStatRect, "Jump Height: " + currentPlayer.Stats.GetNumberStat("maxJumpHeight")); currentStatRect.y += statLineHeight;
+			GUI.Label(currentStatRect, "Speed: " + currentPlayer.Stats.GetBaseStat("maxMoveSpeed")); currentStatRect.y += statLineHeight;
+			GUI.Label(currentStatRect, "Ajility: " + currentPlayer.Stats.GetBaseStat("moveAcceleration")); currentStatRect.y += statLineHeight;
+			GUI.Label(currentStatRect, "Jump Height: " + currentPlayer.Stats.GetBaseStat("maxJumpHeight")); currentStatRect.y += statLineHeight;
 		}
 
 		GUI.EndGroup();

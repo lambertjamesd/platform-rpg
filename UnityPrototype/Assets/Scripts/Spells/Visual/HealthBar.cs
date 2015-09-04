@@ -15,7 +15,7 @@ public class HealthShard
 public class HealthBar : MonoBehaviour {
 	public Material healthbarMaterial;
 	public Vector2 screenSize;
-	public Vector2 screenOffset;
+	public Vector3 worldOffset = Vector3.up * 1.5f;
 	public Sprite manditorySprite;
 	public string sortLayer;
 
@@ -119,8 +119,7 @@ public class HealthBar : MonoBehaviour {
 
 	public void LateUpdate()
 	{
-		Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
-		screenPos += new Vector3(screenOffset.x, screenOffset.y, 0.0f);
+		Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + worldOffset);
 
 		Vector3 bottomLeft = screenPos - new Vector3(screenSize.x, screenSize.y, 0.0f) * 0.5f;
 		Vector3 topRight = screenPos + new Vector3(screenSize.x, screenSize.y, 0.0f) * 0.5f;

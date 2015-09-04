@@ -29,7 +29,7 @@ public class TargetPointerEffect : EffectGameObject {
 			IEnumerable<object> exclude = (IEnumerable<object>)instance.GetValue<object>("exclude", new List<object>());
 
 			IEnumerable<Vector3> finalTargets = playerManager.PlayersOnLayers(collideWith)
-				.Where(player => !exclude.Contains(player.gameObject))
+				.Where(player => !exclude.Contains(player.gameObject) && player.gameObject != gameObject.GetParent())
 				.Select(player => player.transform.position)
 				.OrderBy(position => (position - source).sqrMagnitude);
 

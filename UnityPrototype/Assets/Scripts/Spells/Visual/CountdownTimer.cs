@@ -14,9 +14,11 @@ public class CountdownTimer : EffectGameObject
 {
 	private DelayEffect targetDelay;
 
+	public CustomFontRenderer fontRenderer;
 	public Color color = Color.red;
 	public float growHitpoint = 0.5f;
 	public Vector2 screenSize = new Vector2(32.0f, 20.0f);
+	public Vector3 worldOffset;
 
 	public override void StartEffect (EffectInstance instance)
 	{
@@ -30,22 +32,20 @@ public class CountdownTimer : EffectGameObject
 		new Keyframe(1.0f, 1.0f)
 	});
 
-	public void OnGUI()
+	private delegate void DrawCallback(string text, float lerp);
+
+	private void HandleTextDraw(DrawCallback drawCallback)
 	{
 		float remainingTime = targetDelay.RemainingTime;
-
+		
 		if (remainingTime >= 0.0f)
 		{
 			gameObject.SetActive(true);
-
-			Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
-			screenPos.y = Screen.height - screenPos.y;
-			
 			float timeInSecond = 1.0f - (remainingTime + growHitpoint) % 1.0f;
 			float lerpValue = perSecondGrow.Evaluate(timeInSecond);
 
-			GUI.color = new Color(color.r, color.g, color.b, color.a * lerpValue);
-			GUI.Label(new Rect(screenPos.x - screenSize.x * 0.5f, screenPos.y - screenSize.y, screenSize.x, screenSize.y), remainingTime.ToString());
+			drawCallback(remainingTime.ToString("0.0"), lerpValue);
+
 		}
 		else
 		{
@@ -57,6 +57,31 @@ public class CountdownTimer : EffectGameObject
 			{
 				Destroy(gameObject);
 			}
+		}
+
+	}
+
+	public void Update()
+	{
+		if (fontRenderer != null)
+		{
+			HandleTextDraw((text, lerpValue) => {
+				fontRenderer.DrawText(transform.position + worldOffset, text, CustomFontRenderer.CenterAlign);
+			});
+		}
+	}
+
+	public void OnGUI()
+	{
+		if (fontRenderer == null)
+		{
+			HandleTextDraw((text, lerpValue) => {
+				Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + worldOffset);
+				screenPos.y = Screen.height - screenPos.y;
+
+				GUI.color = new Color(color.r, color.g, color.b, color.a * lerpValue);
+				GUI.Label(new Rect(screenPos.x - screenSize.x * 0.5f, screenPos.y - screenSize.y, screenSize.x, screenSize.y), text);
+			});
 		}
 	}
 }

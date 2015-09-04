@@ -31,7 +31,7 @@ public class MoveState : MonoBehaviour, IState {
 
 		Vector3 velocityDirection = targetVelocity - player.Velocity;
 
-		float accelerationAmount = player.Settings.moveAcceleration * timestep;
+		float accelerationAmount = player.Stats.GetNumberStat("moveAcceleration") * timestep;
 
 		if (velocityDirection.sqrMagnitude <= accelerationAmount * accelerationAmount)
 		{
