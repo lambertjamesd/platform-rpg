@@ -6,9 +6,13 @@ using System.Linq;
 public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
 	public Transform selectionCursor;
-	public GUIText countdownTimer;
+	public CustomFontRenderer fontRenderer;
 
 	public float turnLength = 10.0f;
+	public StateMachine stateMachine;
+	public PlayerManTextState textState;
+	public PlayerManWaitForTurn waitTurnState;
+
 	private PlayerHUD playerHUD;
 
 	private TimeManager timeManager;
@@ -24,6 +28,10 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 	private int currentTurn = -1;
 	private int numberPlayersStarted = 0;
 
+
+	public float freeCameraSpeed = 20.0f;
+	private Transform freeCameraFollow;
+	private bool isFreeCamera;
 	private bool isSelectingPlayer;
 	private int currentSelection;
 	private float lastHorizontal;
@@ -47,6 +55,14 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 			{
 				return null;
 			}
+		}
+	}
+
+	public int CurrentTurn
+	{
+		get
+		{
+			return currentTurn;
 		}
 	}
 
@@ -175,36 +191,95 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		updateManager.Paused = true;
 
 		StartTurn();
+
+		stateMachine = new StateMachine((string stateName) => {
+			switch (stateName)
+			{
+			case "Start":
+				textState.text = "TEAM " + (currentTurn + 1) + " START";
+				textState.color = TeamColors.GetColor(currentTurn);
+				textState.nextState = "WaitForTurn";
+				return textState;
+			case "WaitForTurn":
+				waitTurnState.nextState = "Start";
+				return waitTurnState;
+			}
+			return null;
+		});
 	}
 
 	public void Update()
 	{
-		cameraAI.FollowTarget = CurrentPlayer.transform;
-
-		if (isSelectingPlayer)
+		if (isFreeCamera)
 		{
-			float horizontal = Input.GetAxis("Horizontal");
-
-			if (Input.GetButtonDown("Prev") || lastHorizontal > -0.5f && horizontal <= -0.5f)
+			if (Input.GetButtonDown("FreeCamera"))
 			{
-				SelectPrevPlayer();
+				isFreeCamera = false;
+				cameraAI.FollowTarget = players[currentSelection].transform;
 			}
-			
-			if (Input.GetButtonDown("Next") || lastHorizontal < 0.5f && horizontal >= 0.5f)
+			else
 			{
-				SelectNextPlayer();
+				freeCameraFollow.transform.position += freeCameraSpeed * Time.deltaTime * (
+					cameraAI.transform.up * Input.GetAxis("Vertical") +
+					cameraAI.transform.right * Input.GetAxis("Horizontal")
+					);
+				
+				fontRenderer.renderScale = 0.5f;
+				fontRenderer.DrawTextScreen(new Vector3(0.5f, 0.25f, 0.5f), "PRESS LEFT CTRL TO RETURN", CustomFontRenderer.CenterAlign);
 			}
-			
-			selectionCursor.position = players[currentSelection].transform.position;
-			
-			if (Input.GetButtonDown("Select"))
-			{
-				selectionCursor.transform.position = new Vector3(10000.0f, 0.0f, 0.0f);
-				StartSelectedPlayer();
-			}
-
-			lastHorizontal = horizontal;
 		}
+		else if (isSelectingPlayer)
+		{
+			cameraAI.FollowTarget = CurrentPlayer.transform;
+
+			if (Input.GetButtonDown("FreeCamera"))
+			{
+				isFreeCamera = true;
+
+				if (freeCameraFollow == null)
+				{
+					GameObject target = new GameObject();
+					freeCameraFollow = target.transform;
+				}
+
+				freeCameraFollow.transform.position = players[currentSelection].transform.position;
+				cameraAI.FollowTarget = freeCameraFollow.transform;
+			}
+			else
+			{
+				float horizontal = Input.GetAxis("Horizontal");
+
+				if (Input.GetButtonDown("Prev") || lastHorizontal > -0.5f && horizontal <= -0.5f)
+				{
+					SelectPrevPlayer();
+				}
+				
+				if (Input.GetButtonDown("Next") || lastHorizontal < 0.5f && horizontal >= 0.5f)
+				{
+					SelectNextPlayer();
+				}
+				
+				selectionCursor.position = players[currentSelection].transform.position;
+				
+				if (Input.GetButtonDown("Select"))
+				{
+					selectionCursor.transform.position = new Vector3(10000.0f, 0.0f, 0.0f);
+					StartSelectedPlayer();
+				}
+
+				fontRenderer.renderScale = 0.5f;
+				fontRenderer.DrawTextScreen(new Vector3(0.5f, 0.25f, 0.5f), "PRESS LEFT CTRL FOR FREE CAMERA", CustomFontRenderer.CenterAlign);
+
+				lastHorizontal = horizontal;
+			}
+		}
+		else
+		{
+			fontRenderer.renderScale = 1.0f;
+			fontRenderer.DrawTextScreen(new Vector3(0.75f, 0.25f, 0.5f), remainingTime.ToString("0.0"), CustomFontRenderer.CenterAlign);
+		}
+
+		stateMachine.Update(Time.deltaTime);
 	}
 
 	public void FixedUpdateTick(float dt)
@@ -214,8 +289,6 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 			if (remainingTime > 0.0f)
 			{
 				remainingTime -= dt;
-				
-				countdownTimer.text = remainingTime.ToString("F");
 				
 				if (remainingTime <= 0.0f)
 				{

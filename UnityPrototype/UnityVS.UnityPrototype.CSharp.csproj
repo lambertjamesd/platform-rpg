@@ -115,6 +115,8 @@
     <Compile Include="Assets\Scripts\Player\IInputSource.cs" />
     <Compile Include="Assets\Scripts\Player\IdleInputSource.cs" />
     <Compile Include="Assets\Scripts\Player\KnockbackHandler.cs" />
+    <Compile Include="Assets\Scripts\Player\ManagerStates\PlayerManTextState.cs" />
+    <Compile Include="Assets\Scripts\Player\ManagerStates\PlayerManWaitForTurn.cs" />
     <Compile Include="Assets\Scripts\Player\MouseInputSource.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerBuff.cs" />

@@ -127,6 +127,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor\CustomFontEditor.cs" />
     <Compile Include="Assets\Editor\OverlapCorrectorEditor.cs" />
     <Compile Include="Assets\Editor\SpellDescriptionEditor.cs" />
     <Compile Include="Assets\Editor\SpellEditor\SpellAttributeBuilder.cs" />

@@ -1,0 +1,484 @@
+fileFormatVersion: 2
+guid: 871b6afa62ab20a448decbf6413acf4e
+timeCreated: 1441666284
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: BoldBigA
+    21300002: BoldBigB
+    21300004: BoldBigC
+    21300006: BoldBigD
+    21300008: BoldBigE
+    21300010: BoldBigF
+    21300012: BoldBigG
+    21300014: BoldBigH
+    21300016: BoldBigI
+    21300018: BoldBigJ
+    21300020: BoldBigK
+    21300022: BoldBigL
+    21300024: BoldBigM
+    21300026: BoldBigN
+    21300028: BoldBigO
+    21300030: BoldBigP
+    21300032: BoldBigQ
+    21300034: BoldBigR
+    21300036: BoldBigS
+    21300038: BoldBigT
+    21300040: BoldBigU
+    21300042: BoldBigV
+    21300044: BoldBigW
+    21300046: BoldBigX
+    21300048: BoldBigY
+    21300050: BoldBigZ
+    21300052: BoldBig0
+    21300054: BoldBig1
+    21300056: BoldBig2
+    21300058: BoldBig3
+    21300060: BoldBig4
+    21300062: BoldBig5
+    21300064: BoldBig6
+    21300066: BoldBig7
+    21300068: BoldBig8
+    21300070: BoldBig9
+    21300072: BoldBig!
+    21300074: BoldBig__
+    21300076: BoldBig.
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: BoldBigA
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 217
+        width: 26
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigB
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 217
+        width: 26
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigC
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 217
+        width: 24
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigD
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 217
+        width: 25
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigE
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 217
+        width: 25
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigF
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 217
+        width: 24
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigG
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 217
+        width: 24
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigH
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 177
+        width: 26
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigI
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 177
+        width: 14
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigJ
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 177
+        width: 16
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigK
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 177
+        width: 25
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigL
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 177
+        width: 24
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigM
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 177
+        width: 30
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigN
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 177
+        width: 26
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigO
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 137
+        width: 24
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigP
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 137
+        width: 25
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigQ
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 133
+        width: 24
+        height: 35
+      alignment: 9
+      pivot: {x: 0, y: .114285715}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigR
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 137
+        width: 26
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigS
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 137
+        width: 23
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigT
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 137
+        width: 27
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigU
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 137
+        width: 25
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigV
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 97
+        width: 26
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigW
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 97
+        width: 35
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigX
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 97
+        width: 25
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigY
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 97
+        width: 25
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBigZ
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 97
+        width: 26
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBig0
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 97
+        width: 24
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBig1
+      rect:
+        serializedVersion: 2
+        x: 223
+        y: 97
+        width: 14
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBig2
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 57
+        width: 24
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBig3
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 57
+        width: 24
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBig4
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 57
+        width: 24
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBig5
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 57
+        width: 23
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBig6
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 57
+        width: 23
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBig7
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 57
+        width: 23
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBig8
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 57
+        width: 24
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBig9
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 17
+        width: 23
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBig!
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 17
+        width: 13
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: BoldBig__
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 17
+        width: 16
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 2, w: 0}
+    - name: BoldBig.
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 17
+        width: 11
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

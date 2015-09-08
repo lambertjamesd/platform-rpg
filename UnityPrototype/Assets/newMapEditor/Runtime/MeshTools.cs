@@ -592,45 +592,48 @@ public class MeshSimplifier
 
 		public void Triangulate(List<int> output, Dictionary<int, int> indexMapping, Vector3[] positions)
 		{
-			List<int> edgeLoop = edgeLoops[0];
-
-			int failCount = 0;
-			int currentVertex = 0;
-
-			while (edgeLoop.Count > 2)
+			if (edgeLoops.Count > 0)
 			{
-				int indexA = edgeLoop[currentVertex];
-				int indexB = edgeLoop[(currentVertex + 1) % edgeLoop.Count];
-				int indexC = edgeLoop[(currentVertex + 2) % edgeLoop.Count];
+				List<int> edgeLoop = edgeLoops[0];
 
-				Vector3 vertexA = positions[indexA];
-				Vector3 vertexB = positions[indexB];
-				Vector3 vertexC = positions[indexC];
+				int failCount = 0;
+				int currentVertex = 0;
 
-				Vector3 faceNormal = Vector3.Cross(vertexB - vertexA, vertexC - vertexA);
-
-				if (Vector3.Dot(faceNormal, normal) > 0.0f && 
-				    IsEdgeClear(indexA, indexB, positions) && 
-				    IsEdgeClear(indexB, indexC, positions) && 
-				    IsTriangleEmpty(indexA, indexB, indexC, positions))
+				while (edgeLoop.Count > 2)
 				{
-					output.Add(indexMapping[indexA]);
-					output.Add(indexMapping[indexB]);
-					output.Add(indexMapping[indexC]);
+					int indexA = edgeLoop[currentVertex];
+					int indexB = edgeLoop[(currentVertex + 1) % edgeLoop.Count];
+					int indexC = edgeLoop[(currentVertex + 2) % edgeLoop.Count];
 
-					edgeLoop.RemoveAt((currentVertex + 1) % edgeLoop.Count);
-					currentVertex = (currentVertex + 1) % edgeLoop.Count;
-					failCount = 0;
-				}
-				else
-				{
-					currentVertex = (currentVertex + 1) % edgeLoop.Count;
-					++failCount;
+					Vector3 vertexA = positions[indexA];
+					Vector3 vertexB = positions[indexB];
+					Vector3 vertexC = positions[indexC];
 
-					if (failCount > edgeLoop.Count * 2)
+					Vector3 faceNormal = Vector3.Cross(vertexB - vertexA, vertexC - vertexA);
+
+					if (Vector3.Dot(faceNormal, normal) > 0.0f && 
+					    IsEdgeClear(indexA, indexB, positions) && 
+					    IsEdgeClear(indexB, indexC, positions) && 
+					    IsTriangleEmpty(indexA, indexB, indexC, positions))
 					{
-						Debug.LogError("Infinite loop detected");
-						break;
+						output.Add(indexMapping[indexA]);
+						output.Add(indexMapping[indexB]);
+						output.Add(indexMapping[indexC]);
+
+						edgeLoop.RemoveAt((currentVertex + 1) % edgeLoop.Count);
+						currentVertex = (currentVertex + 1) % edgeLoop.Count;
+						failCount = 0;
+					}
+					else
+					{
+						currentVertex = (currentVertex + 1) % edgeLoop.Count;
+						++failCount;
+
+						if (failCount > edgeLoop.Count * 2)
+						{
+							Debug.LogError("Infinite loop detected");
+							break;
+						}
 					}
 				}
 			}

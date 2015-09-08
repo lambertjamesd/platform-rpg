@@ -44,7 +44,13 @@ public class FreeFallState : MonoBehaviour, IState {
 		float maxMoveSpeed = player.Stats.GetNumberStat("maxMoveSpeed");
 		float horizontalMovement = player.InputSource.State.HorizontalControl;
 		float targetRightSpeed = Mathf.Clamp(player.Velocity.x + horizontalMovement * maxMoveSpeed, -maxMoveSpeed, maxMoveSpeed);
-		player.Velocity += Vector3.right * Mathf.Sign(targetRightSpeed - player.Velocity.x) * player.Stats.GetNumberStat("airAcceleration") * timestep;
+		float acceleration = Mathf.Sign(targetRightSpeed - player.Velocity.x) * player.Stats.GetNumberStat("airAcceleration") * timestep;
+
+		if (Mathf.Abs(targetRightSpeed - player.Velocity.x) < Mathf.Abs(acceleration)) {
+			acceleration = targetRightSpeed - player.Velocity.x;
+		}
+
+		player.Velocity += Vector3.right * acceleration;
 	}
 	
 	public void EndState(StateMachine stateMachine)

@@ -8,6 +8,7 @@ public class CustomFontRenderer : MonoBehaviour {
 	public string sortingLayer = "Default";
 	public int sortingOrder = 0;
 	public bool screenSpaceUnits = true;
+	public float renderScale = 1.0f;
 
 	private List<SpriteRenderer> glyphCache = new List<SpriteRenderer>();
 	private int currentGlyphIndex = 0;
@@ -35,7 +36,7 @@ public class CustomFontRenderer : MonoBehaviour {
 		}
 	}
 
-	public delegate GlyphVariation VariationCallback();
+	public delegate GlyphVariation VariationCallback(int index);
 
 	private SpriteRenderer AllocRenderer()
 	{
@@ -62,6 +63,13 @@ public class CustomFontRenderer : MonoBehaviour {
 
 		return result;
 	}
+	
+	public Vector3 DrawTextScreen(Vector3 screenPos, string text, float horizontalAnchor = 0.0f, VariationCallback variationCallback = null)
+	{
+		Camera currentCamera = Camera.main;
+		return DrawText(currentCamera.ViewportToWorldPoint(screenPos), text, horizontalAnchor, variationCallback);
+
+	}
 
 	public Vector3 DrawText(Vector3 worldPosition, string text, float horizontalAnchor = 0.0f, VariationCallback variationCallback = null)
 	{
@@ -70,26 +78,26 @@ public class CustomFontRenderer : MonoBehaviour {
 		Vector3 currentPosition = worldPosition;
 		Vector3 right = currentCamera.transform.right;
 
-		float scale = 1.0f;
+		float scale = renderScale;
 
 		if (screenSpaceUnits)
 		{
 			Vector3 offset = currentCamera.WorldToScreenPoint(currentPosition + right) - currentCamera.WorldToScreenPoint(currentPosition);
-			scale = font.PixelsPerUnit / offset.x;
+			scale *= font.PixelsPerUnit / offset.x;
 		}
 
 		if (horizontalAnchor != 0.0f)
 		{
 			float totalWidth = 0.0f;
 			
-			font.ForeachGlyph(text, glyph => {
+			font.ForeachGlyph(text, (glyph, index) => {
 				totalWidth += glyph.sprite.rect.width / glyph.sprite.pixelsPerUnit;
 			});
 
 			currentPosition -= (horizontalAnchor * scale * totalWidth) * right;
 		}
 
-		font.ForeachGlyph(text, glyph => {
+		font.ForeachGlyph(text, (glyph, index) => {
 			GlyphVariation variation;
 			
 			if (variationCallback == null)
@@ -98,7 +106,7 @@ public class CustomFontRenderer : MonoBehaviour {
 			}
 			else
 			{
-				variation = variationCallback();
+				variation = variationCallback(index);
 			}
 			
 			SpriteRenderer renderer = AllocRenderer();
@@ -106,7 +114,7 @@ public class CustomFontRenderer : MonoBehaviour {
 			renderer.sprite = glyph.sprite;
 			
 			renderer.transform.rotation = cameraRotation;
-			renderer.transform.position = currentPosition;
+			renderer.transform.position = currentPosition + (scale / glyph.sprite.pixelsPerUnit) * variation.screenOffset;
 			renderer.transform.localScale = new Vector3(variation.scale * scale, variation.scale * scale, 1.0f);
 			
 			renderer.color = variation.color;

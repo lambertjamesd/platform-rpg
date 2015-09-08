@@ -13,6 +13,12 @@ public class CustomFont : ScriptableObject {
 	{
 		public string character;
 		public Sprite sprite;
+
+		public FontCharacter(string character, Sprite sprite)
+		{
+			this.character = character;
+			this.sprite = sprite;
+		}
 	}
 	
 	public List<FontCharacter> characters = new List<FontCharacter>();
@@ -27,7 +33,14 @@ public class CustomFont : ScriptableObject {
 
 			foreach (FontCharacter character in characters)
 			{
-				characterMapping[character.character.ToCharArray()[0]] = character;
+				char fontChar = character.character.ToCharArray()[0];
+
+				if(character.character == "__")
+				{
+					fontChar = ' ';
+				}
+
+				characterMapping[fontChar] = character;
 			}
 		}
 	}
@@ -61,18 +74,25 @@ public class CustomFont : ScriptableObject {
 		}
 	}
 
-	public delegate void ForeachGlyphCallback(FontCharacter glyph);
+	public delegate void ForeachGlyphCallback(FontCharacter glyph, int index);
 
 	public void ForeachGlyph(string text, ForeachGlyphCallback callbcak)
 	{
+		int index = 0;
 		foreach (char character in text)
 		{
 			FontCharacter glyph = GetCharacter(character);
 			
 			if (glyph != null)
 			{
-				callbcak(glyph);
+				callbcak(glyph, index);
 			}
+			else if (character == ' ')
+			{
+
+			}
+
+			++index;
 		}
 	}
 

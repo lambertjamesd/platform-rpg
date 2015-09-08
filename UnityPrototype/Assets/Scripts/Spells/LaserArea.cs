@@ -60,7 +60,7 @@ public class LaserArea : AreaEffect, IFixedUpdate {
 			lastDistance = hitInfo.distance;
 		}
 
-		if (!visualizer != null)
+		if (visualizer != null)
 		{
 			visualizer.SetInnerLength(lastDistance);
 		}
