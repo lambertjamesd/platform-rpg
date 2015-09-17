@@ -46,6 +46,13 @@
 		</description>
 	</function>
 	
+	<function name="SlowColor" namespace="visual">
+		<return-type>Color</return-type>
+		<description>
+			The color of slowing
+		</description>
+	</function>
+	
 	<input-configuration name="countdown-timer-in" parent="game-object-in">
 		<parameter>
 			<name>target</name>

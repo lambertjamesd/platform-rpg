@@ -11,8 +11,9 @@ public class PlayerState
 	private object animationState;
 	private object stateMachineState;
 	private object statsState;
+	private InputState currentInputState;
 
-	public PlayerState(Vector3 position, Vector3 velocity, float health, InputRecording input, object animationState, object stateMachineState, object statsState)
+	public PlayerState(Vector3 position, Vector3 velocity, float health, InputRecording input, object animationState, object stateMachineState, object statsState, InputState currentInputState)
 	{
 		this.position = position;
 		this.velocity = velocity;
@@ -21,6 +22,7 @@ public class PlayerState
 		this.animationState = animationState;
 		this.stateMachineState = stateMachineState;
 		this.statsState = statsState;
+		this.currentInputState = currentInputState;
 	}
 
 	public Vector3 Position
@@ -83,6 +85,14 @@ public class PlayerState
 			return statsState;
 		}
 	}
+
+	public InputState CurrentInputState
+	{
+		get
+		{
+			return currentInputState;
+		}
+	}
 }
 
 public class PlayerStatus
@@ -110,7 +120,6 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	public RootedState rootedState;
 
 	private int team;
-	public const int TURN_NOT_STARTED = int.MaxValue;
 	private int turnOrder;
 
 	public PlayerSettings settings;
@@ -129,6 +138,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	private UpdateManager updateManager;
 	private TimeManager timeManager;
 
+	private InputState currentInputState = new InputState(null);
 	private IInputSource inputSource;
 
 	private StateMachine stateMachine;
@@ -168,11 +178,11 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		}
 	}
 
-	public IInputSource InputSource
+	public InputState CurrentInputState
 	{
 		get
 		{
-			return inputSource;
+			return currentInputState;
 		}
 	}
 
@@ -269,7 +279,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	
 		if (player == null)
 		{
-			return TURN_NOT_STARTED;
+			return int.MaxValue;
 		}
 		else
 		{
@@ -292,7 +302,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 
 	public void EndTurn()
 	{
-		this.turnOrder = TURN_NOT_STARTED;
+
 	}
 
 	public void LimitVelocity(float speed)
@@ -418,6 +428,11 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		}
 	}
 
+	public void LastFrame()
+	{
+
+	}
+
 	public void StartRecording()
 	{
 		EnsureInitialized();
@@ -466,7 +481,9 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 
 	public void FixedUpdateTick(float timestep)
 	{
-		inputSource.FrameStart();
+		inputSource.FrameStart(currentInputState);
+		currentInputState = inputSource.State;
+
 		stateMachine.Update(timestep);
 
 		if (visualAnimator != null)
@@ -495,18 +512,18 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		{
 			SpellDescription description = Caster.GetSpell(i);
 
-			if (InputSource.State.FireButtonDown(i) && Status.CanCastSpell(description))
+			if (CurrentInputState.FireButtonDown(i) && Status.CanCastSpell(description))
 			{
-				Caster.CastSpellBegin(i, InputSource.State.AimDirection, timeManager.CurrentTime);
+				Caster.CastSpellBegin(i, CurrentInputState.AimDirection, timeManager.CurrentTime);
 			}
 
-			if (InputSource.State.FireButtonUp(i))
+			if (CurrentInputState.FireButtonUp(i))
 			{
-				Caster.CastSpellFire(i, InputSource.State.AimDirection, timeManager.CurrentTime);
+				Caster.CastSpellFire(i, CurrentInputState.AimDirection, timeManager.CurrentTime);
 			}
 		}
 
-		Caster.SpellUpdate(InputSource.State.AimDirection, timeManager.CurrentTime);
+		Caster.SpellUpdate(CurrentInputState.AimDirection, timeManager.CurrentTime);
 
 		if (damageable.IsDead && gameObject.activeSelf)
 		{
@@ -540,7 +557,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	{
 		EnsureInitialized();
 		object animationState = animatorStateSaver == null ? null : animatorStateSaver.GetCurrentState();
-		lastState = new PlayerState(transform.position, velocity, damageable.CurrentHealth, null, animationState, stateMachine.GetCurrentState(), stats.GetCurrentState());
+		lastState = new PlayerState(transform.position, velocity, damageable.CurrentHealth, null, animationState, stateMachine.GetCurrentState(), stats.GetCurrentState(), currentInputState);
 		return lastState;
 	}
 
@@ -583,6 +600,8 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 			stats.RewindToState(lastState.StatsState);
 
 			stateMachine.RewindToState(lastState.StateMachineState);
+
+			currentInputState = lastState.CurrentInputState;
 		}
 	}
 

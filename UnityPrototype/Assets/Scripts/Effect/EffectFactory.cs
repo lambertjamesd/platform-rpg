@@ -310,6 +310,68 @@ public static class GameObjectFunctions
 		
 		return null;
 	}
+
+	public static object GetMaxHealth(object [] parameters)
+	{
+		if (parameters.Length == 1)
+		{
+			if (!(parameters[0] is GameObject))
+			{
+				Debug.LogError("GetMaxHealth expects to get a game object");
+			}
+			else
+			{
+				GameObject gameObject = (GameObject)parameters[0];
+				Damageable damageable = gameObject.GetComponent<Damageable>();
+
+				if (damageable == null)
+				{
+					return 0.0f;
+				} 
+				else
+				{
+					return damageable.maxHealth;
+				}
+			}
+		}
+		else
+		{
+			Debug.LogError("GetMaxHealth expects 1 parameters");
+		}
+		
+		return null;
+	}
+	
+	public static object GetCurrentHealth(object [] parameters)
+	{
+		if (parameters.Length == 1)
+		{
+			if (!(parameters[0] is GameObject))
+			{
+				Debug.LogError("GetCurrentHealth expects to get a game object");
+			}
+			else
+			{
+				GameObject gameObject = (GameObject)parameters[0];
+				Damageable damageable = gameObject.GetComponent<Damageable>();
+				
+				if (damageable == null)
+				{
+					return 0.0f;
+				}
+				else
+				{
+					return damageable.CurrentHealth;
+				}
+			}
+		}
+		else
+		{
+			Debug.LogError("GetCurrentHealth expects 1 parameters");
+		}
+		
+		return null;
+	}
 }
 
 public class GameObjectEffectConstructor<I> : EffectConstructor where I : EffectGameObject

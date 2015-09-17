@@ -97,7 +97,7 @@ public class PlayerHUD : MonoBehaviour {
 
 		if (currentPlayer != null)
 		{
-			controllerInputSource.FrameStart();
+			controllerInputSource.FrameStart(null);
 			
 			for (hoverSpellIndex = 0; hoverSpellIndex < Player.SPELL_COUNT; ++hoverSpellIndex)
 			{

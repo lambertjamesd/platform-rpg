@@ -3,7 +3,6 @@ using System.Collections;
 
 public class ControllerInputSource : IInputSource
 {
-	private InputState previousState = null;
 	private InputState currentState = null;
 
 	private static readonly float DEAD_ZONE = 0.1f;
@@ -13,9 +12,8 @@ public class ControllerInputSource : IInputSource
 
 	}
 	
-	public void FrameStart()
+	public void FrameStart(InputState previousState)
 	{
-		previousState = currentState;
 		Vector3 aimDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);
 
 		float aimMagnitude = aimDirection.magnitude;

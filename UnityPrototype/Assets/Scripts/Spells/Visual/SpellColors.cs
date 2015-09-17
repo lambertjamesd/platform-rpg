@@ -17,4 +17,9 @@ public static class SpellColors {
 	{
 		return new Color(0.0f, 0.8f, 0.7f, 0.25f);
 	}
+	
+	public static object SlowColor(object[] input)
+	{
+		return new Color(0.0f, 0.6f, 0.7f, 0.25f);
+	}
 }

@@ -12,21 +12,23 @@ using UnityEngine;
 
 public class IdleInputSource : IInputSource
 {
+	private InputState currentState;
+
 	public IdleInputSource ()
 	{
 
 	}
 
-	public void FrameStart()
+	public void FrameStart(InputState previousState)
 	{
-
+		currentState = new InputState(previousState);
 	}
-
+	
 	public InputState State
 	{
 		get
 		{
-			return new InputState();
+			return currentState;
 		}
 	}
 }

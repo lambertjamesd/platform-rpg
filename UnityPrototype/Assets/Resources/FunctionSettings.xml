@@ -398,11 +398,39 @@
 			<name>input</name>
 			<type>GameObject</type>
 			<description>
-				The game object to get the parent of
+				The game object to get the max parent of
 			</description>
 		</parameter>
 		<description>
-			Gets the parent of a GameObject
+			Gets the max parent of a GameObject
+		</description>
+	</function>
+	
+	<function name="GetMaxHealth" namespace="game object">
+		<return-type>float</return-type>
+		<parameter>
+			<name>input</name>
+			<type>GameObject</type>
+			<description>
+				The game object to get the health of
+			</description>
+		</parameter>
+		<description>
+			Gets the health of a GameObject
+		</description>
+	</function>
+	
+	<function name="GetCurrentHealth" namespace="game object">
+		<return-type>float</return-type>
+		<parameter>
+			<name>input</name>
+			<type>GameObject</type>
+			<description>
+				The game object to get the current health of
+			</description>
+		</parameter>
+		<description>
+			Gets the current health of a GameObject
 		</description>
 	</function>
 	

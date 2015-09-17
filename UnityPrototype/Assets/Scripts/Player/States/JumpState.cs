@@ -64,7 +64,7 @@ public class JumpState : MonoBehaviour, IState {
 	
 	public void Update(StateMachine stateMachine, float timestep)
 	{
-		float horizontalMovement = player.InputSource.State.HorizontalControl;
+		float horizontalMovement = player.CurrentInputState.HorizontalControl;
 		
 		player.Move(player.Velocity * timestep + 0.5f * timestep * timestep * (Physics.gravity + Vector3.up * jumpAcceration));
 		player.ApplyGravity(timestep);
@@ -73,7 +73,7 @@ public class JumpState : MonoBehaviour, IState {
 			+ horizontalMovement * Vector3.right * player.Stats.GetNumberStat("airAcceleration") * timestep;
 		FreeFallState.HandleHorizontalControl(player, timestep);
 
-		if (jumpControlTime <= 0.0 || !player.InputSource.State.JumpButton)
+		if (jumpControlTime <= 0.0 || !player.CurrentInputState.JumpButton)
 		{
 			stateMachine.SetNextState("FreeFall");
 		}

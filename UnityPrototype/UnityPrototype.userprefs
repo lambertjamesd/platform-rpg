@@ -1,11 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Player\States\FreeFallState.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Resources\Visual.xml">
     <Files>
-      <File FileName="Assets\Scripts\Player\PlayerManager.cs" Line="273" Column="33" />
-      <File FileName="Assets\Scripts\CustomFontRenderer.cs" Line="93" Column="8" />
-      <File FileName="Assets\Scripts\Player\ManagerStates\PlayerManTextState.cs" Line="34" Column="29" />
-      <File FileName="Assets\Scripts\Player\States\FreeFallState.cs" Line="51" Column="4" />
+      <File FileName="Assets\Scripts\Spells\Visual\SpellColors.cs" Line="21" Column="32" />
+      <File FileName="Assets\Resources\Visual.xml" Line="52" Column="24" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

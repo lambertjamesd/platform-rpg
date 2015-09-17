@@ -12,7 +12,6 @@ using UnityEngine;
 
 public class MouseInputSource : IInputSource
 {
-	private InputState previousState = null;
 	private InputState currentState = null;
 	private Transform playerTransform;
 
@@ -21,10 +20,8 @@ public class MouseInputSource : IInputSource
 		this.playerTransform = playerTransform;
 	}
 	
-	public void FrameStart()
+	public void FrameStart(InputState previousState)
 	{
-		previousState = currentState;
-
 		Ray mousePosition = Camera.main.ScreenPointToRay(Input.mousePosition);
 		Vector3 playerPosition = playerTransform.position + new Vector3(0.0f, 1.0f, 0.0f);
 		float distance = (playerPosition.z - mousePosition.origin.z) / mousePosition.direction.z;

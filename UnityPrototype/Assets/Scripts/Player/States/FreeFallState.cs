@@ -42,7 +42,7 @@ public class FreeFallState : MonoBehaviour, IState {
 	public static void HandleHorizontalControl(Player player, float timestep)
 	{
 		float maxMoveSpeed = player.Stats.GetNumberStat("maxMoveSpeed");
-		float horizontalMovement = player.InputSource.State.HorizontalControl;
+		float horizontalMovement = player.CurrentInputState.HorizontalControl;
 		float targetRightSpeed = Mathf.Clamp(player.Velocity.x + horizontalMovement * maxMoveSpeed, -maxMoveSpeed, maxMoveSpeed);
 		float acceleration = Mathf.Sign(targetRightSpeed - player.Velocity.x) * player.Stats.GetNumberStat("airAcceleration") * timestep;
 

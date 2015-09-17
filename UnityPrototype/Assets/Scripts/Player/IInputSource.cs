@@ -18,9 +18,9 @@ public class InputState
 	private bool[] fireButtons;
 	private Vector3 aimDirection;
 
-	public InputState()
+	public InputState(InputState previousState)
 	{
-		this.previousState = null;
+		this.previousState = previousState;
 		this.horizontalControl = 0.0f;
 		this.jumpButton = false;
 		this.fireButtons = new bool[0];
@@ -114,6 +114,6 @@ public class InputState
 
 public interface IInputSource
 {
-	void FrameStart();
+	void FrameStart(InputState previousState);
 	InputState State { get; }
 }

@@ -25,7 +25,7 @@ public class MoveState : MonoBehaviour, IState {
 
 	public void Update(StateMachine stateMachine, float timestep)
 	{
-		float horizontalMovement = player.InputSource.State.HorizontalControl;
+		float horizontalMovement = player.CurrentInputState.HorizontalControl;
 
 		Vector3 targetVelocity = horizontalMovement * player.FloorTangent * player.Stats.GetNumberStat("maxMoveSpeed");
 
@@ -51,7 +51,7 @@ public class MoveState : MonoBehaviour, IState {
 		{
 			stateMachine.SetNextState("FreeFall");
 		}
-		else if (player.InputSource.State.JumpButtonDown)
+		else if (player.CurrentInputState.JumpButtonDown)
 		{
 			player.JumpNormal = player.FloorNormal;
 			stateMachine.SetNextState("Jump");

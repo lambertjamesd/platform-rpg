@@ -38,6 +38,8 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
 	private FollowCamera cameraAI;
 
+	private bool lastFrame = false;
+
 	private void UpdateHUD()
 	{
 		playerHUD.CurrentPlayer = CurrentPlayer;
@@ -132,8 +134,6 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
 	private void ChangeTeams()
 	{	
-		numberPlayersStarted = 0;
-
 		for (int i = 0; i < players.Count; ++i)
 		{
 			if (players[i].Team == currentTurn)
@@ -292,12 +292,22 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 				
 				if (remainingTime <= 0.0f)
 				{
-					players[currentSelection].BecomeIdle();
+					players[currentSelection].LastFrame();
 				}
+
+				lastFrame = true;
 			}
 			else
 			{
-				StartTurn();
+				if (lastFrame)
+				{
+					players[currentSelection].BecomeIdle();
+					lastFrame = false;
+				}
+				else
+				{
+					StartTurn();
+				}
 			}
 		}
 	}

@@ -12,7 +12,7 @@ public class ReplayInputSource : IInputSource {
 		this.source = source;
 	}
 	
-	public void FrameStart()
+	public void FrameStart(InputState previousState)
 	{
 		if (inputIndex < source.Length)
 		{
@@ -21,7 +21,7 @@ public class ReplayInputSource : IInputSource {
 		}
 		else
 		{
-			currentState = new InputState();
+			currentState = new InputState(previousState);
 		}
 	}
 	

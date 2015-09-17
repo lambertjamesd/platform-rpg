@@ -42,7 +42,7 @@ public class InputRecording
 
 public class RecordInputSource : IInputSource
 {
-	private InputState currentState = null;
+	private InputState currentState = new InputState(null);
 	private IInputSource inputSource;
 	private InputRecording target;
 
@@ -52,14 +52,13 @@ public class RecordInputSource : IInputSource
 		this.inputSource = inputSource;
 	}
 	
-	public void FrameStart()
+	public void FrameStart(InputState previousState)
 	{
-		inputSource.FrameStart();
+		inputSource.FrameStart(previousState);
 		currentState = inputSource.State;
 		target.LogInput(currentState);
 	}
-	
-	
+
 	public InputState State
 	{
 		get

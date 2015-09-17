@@ -25,7 +25,7 @@ public class WallSlideState : MonoBehaviour, IState {
 	
 	public void Update(StateMachine stateMachine, float timestep)
 	{
-		float horizontalMovement = player.InputSource.State.HorizontalControl;
+		float horizontalMovement = player.CurrentInputState.HorizontalControl;
 
 		player.DefaultMovement(timestep);
 		player.ApplyGravity(timestep);
@@ -42,7 +42,7 @@ public class WallSlideState : MonoBehaviour, IState {
 			stickTimer = player.Settings.wallStickTime;
 		}
 
-		if (player.InputSource.State.JumpButtonDown)
+		if (player.CurrentInputState.JumpButtonDown)
 		{
 			player.JumpNormal = player.WallNormal + Vector3.up;
 			stateMachine.SetNextState("Jump");
