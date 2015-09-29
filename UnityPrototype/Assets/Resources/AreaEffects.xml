@@ -139,6 +139,13 @@
 	</effect>
 	
 	<output-configuration name="laser-area-out" parent="area-effect-out">
+		<parameter>
+			<name>length</name>
+			<type>float</type>
+			<description>
+				The current length of the laser area
+			</description>
+		</parameter>
 	</output-configuration>
 	
 	<input-configuration name="laser-area-in" parent="area-effect-in">

@@ -1,9 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Resources\Visual.xml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Spells\BasicEffects.cs">
     <Files>
-      <File FileName="Assets\Scripts\Spells\Visual\SpellColors.cs" Line="21" Column="32" />
-      <File FileName="Assets\Resources\Visual.xml" Line="52" Column="24" />
+      <File FileName="Assets\Scripts\Spells\LaserArea.cs" Line="90" Column="26" />
+      <File FileName="Assets\Resources\AreaEffects.xml" Line="128" Column="18" />
+      <File FileName="Assets\Scripts\CustomFont.cs" Line="79" Column="2" />
+      <File FileName="Assets\Scripts\Spells\BasicEffects.cs" Line="269" Column="7" />
+      <File FileName="Assets\Scripts\TimeManager.cs" Line="6" Column="2" />
+      <File FileName="Assets\Resources\BasicEffects.xml" Line="266" Column="24" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

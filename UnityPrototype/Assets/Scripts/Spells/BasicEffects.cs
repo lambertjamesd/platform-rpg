@@ -233,6 +233,64 @@ public class ForeachEffect : EffectObject
 	}
 }
 
+public class UpdateEffect : EffectObject, IFixedUpdate, ITimeTravelable
+{
+	private UpdateManager updateManager;
+	private TimeManager timeManager;
+
+	public override void StartEffect(EffectInstance instance) {
+		base.StartEffect(instance);
+
+		updateManager = instance.GetContextValue<UpdateManager>("updateManager", null);
+		updateManager.AddReciever(this);
+		timeManager = instance.GetContextValue<TimeManager>("timeManager", null);
+		timeManager.AddTimeTraveler(this);
+	}
+	
+	public override void Cancel()
+	{
+		if (updateManager != null)
+		{
+			updateManager.RemoveReciever(this);
+			updateManager = null;
+		}
+	}
+	
+	public void FixedUpdateTick(float timestep)
+	{
+		instance.TriggerEvent("frame", new LambdaPropertySource(name => {
+			switch (name)
+			{
+			case "timestep":
+				return timestep;
+			}
+
+			return null;
+		}));
+	}
+
+	
+	public object GetCurrentState()
+	{
+		return updateManager;
+	}
+
+	public void RewindToState(object state)
+	{
+		updateManager = (UpdateManager)state;
+
+		if (updateManager != null)
+		{
+			updateManager.AddReciever(this);
+		}
+	}
+	
+	public TimeManager GetTimeManager()
+	{
+		return timeManager;
+	}
+}
+
 public class DebugLogEffect : EffectObject
 {
 	public override void StartEffect(EffectInstance instance) {

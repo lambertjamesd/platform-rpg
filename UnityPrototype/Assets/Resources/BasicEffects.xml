@@ -257,6 +257,37 @@ Called for each element in the input list
 		</description>
 	</effect>
 	
+	<input-configuration name="update-in">
+	</input-configuration>
+	
+	<output-configuration name="update-out">
+		<parameter>
+			<name>effect</name>
+			<type>IEffect</type>
+			<description>
+				The update effect
+			</description>
+		</parameter>
+		<event name="on-frame">
+			<parameter>
+				<name>timestep</name>
+				<type>float</type>
+				<description>
+					The time between frames
+				</description>
+			</parameter>
+			<description>
+Called for each element in the input list
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="UpdateEffect" alias="update"  namespace="control" input="update-in" output="update-out">
+		<description>
+			Triggers an event every frame
+		</description>
+	</effect>
+	
 	<input-configuration name="debug-log-in">
 		<parameter>
 			<name>label</name>

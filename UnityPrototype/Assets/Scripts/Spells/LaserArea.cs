@@ -50,7 +50,8 @@ public class LaserArea : AreaEffect, IFixedUpdate {
 	}
 	
 	public void FixedUpdateTick (float dt) {
-
+		
+		maxRange = instance.GetValue<float>("maxRange", defaultMaxRange);
 		lastDistance = maxRange;
 
 		Ray ray = new Ray(transform.position, transform.TransformDirection(Vector3.up));
@@ -75,6 +76,22 @@ public class LaserArea : AreaEffect, IFixedUpdate {
 		}
 
 		UpdateContainedColliders(colliderList, dt);
+	}
+
+	public override IEffectPropertySource PropertySource
+	{
+		get
+		{
+			IEffectPropertySource baseSource = base.PropertySource;
+			return new LambdaPropertySource(name => {
+				switch (name)
+				{
+				case "length":
+					return lastDistance;
+				}
+				return baseSource.GetObject(name);
+			});
+		}
 	}
 
 	public void OnDrawGizmos()
