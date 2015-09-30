@@ -1,13 +1,20 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Spells\BasicEffects.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Effect\EffectFactory.cs">
     <Files>
-      <File FileName="Assets\Scripts\Spells\LaserArea.cs" Line="90" Column="26" />
-      <File FileName="Assets\Resources\AreaEffects.xml" Line="128" Column="18" />
-      <File FileName="Assets\Scripts\CustomFont.cs" Line="79" Column="2" />
+      <File FileName="Assets\Scripts\Spells\LaserArea.cs" Line="1" Column="1" />
+      <File FileName="Assets\Resources\AreaEffects.xml" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CustomFont.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Spells\BasicEffects.cs" Line="269" Column="7" />
-      <File FileName="Assets\Scripts\TimeManager.cs" Line="6" Column="2" />
-      <File FileName="Assets\Resources\BasicEffects.xml" Line="266" Column="24" />
+      <File FileName="Assets\Scripts\TimeManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Resources\BasicEffects.xml" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Player\Player.cs" Line="165" Column="53" />
+      <File FileName="Assets\Scripts\Spells\SpellCaster.cs" Line="221" Column="18" />
+      <File FileName="Assets\Scripts\Spells\Projectile.cs" Line="70" Column="101" />
+      <File FileName="Assets\Scripts\Collision\ColliderMath.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Pathfinding\PathingMath.cs" Line="26" Column="2" />
+      <File FileName="Assets\Scripts\Effect\EffectFactory.cs" Line="67" Column="15" />
+      <File FileName="Assets\Resources\FunctionSettings.xml" Line="65" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

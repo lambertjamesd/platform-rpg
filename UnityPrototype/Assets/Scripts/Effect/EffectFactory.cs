@@ -41,6 +41,31 @@ public static class BasicFunctions
 		
 		return null;
 	}
+
+	public static object NumberPow(object[] parameters)
+	{
+		if (parameters.Length == 2)
+		{
+			if (!(parameters[0] is float))
+			{
+				Debug.LogError("Select expects the first parameter to be a float");
+			}
+			else if (!(parameters[1] is float))
+			{
+				Debug.LogError("Select expects the second parameter to be a float");
+			}
+			else
+			{
+				return Mathf.Pow((float)parameters[0], (float)parameters[1]);
+			}
+		}
+		else
+		{
+			Debug.LogError("Pow requires two parameters");
+		}
+
+		return null;
+	}
 }
 
 public static class VectorFunctions

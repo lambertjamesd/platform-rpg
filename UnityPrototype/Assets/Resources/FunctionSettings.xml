@@ -62,6 +62,27 @@
 		</description>
 	</function>
 	
+	<function name="NumberPow" namespace="math">
+		<return-type>float</return-type>
+		<parameter>
+			<name>base</name>
+			<type>float</type>
+			<description>
+				Base of the exponent
+			</description>
+		</parameter>
+		<parameter>
+			<name>exponent</name>
+			<type>float</type>
+			<description>
+				The exponent
+			</description>
+		</parameter>
+		<description>
+			Returns the power of two numbers
+		</description>
+	</function>
+	
 	<function name="RotateVector" namespace="vector">
 		<return-type>Vector3</return-type>
 		<parameter>
