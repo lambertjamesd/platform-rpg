@@ -14,7 +14,7 @@ public class ControllerInputSource : IInputSource
 	
 	public void FrameStart(InputState previousState)
 	{
-		Vector3 aimDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);
+		Vector3 aimDirection = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0.0f);
 
 		float aimMagnitude = aimDirection.magnitude;
 

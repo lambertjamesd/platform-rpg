@@ -12,8 +12,17 @@ public class PlayerState
 	private object stateMachineState;
 	private object statsState;
 	private InputState currentInputState;
+	private List<InputScrambler> scramblers;
 
-	public PlayerState(Vector3 position, Vector3 velocity, float health, InputRecording input, object animationState, object stateMachineState, object statsState, InputState currentInputState)
+	public PlayerState(Vector3 position, 
+	                   Vector3 velocity, 
+	                   float health, 
+	                   InputRecording input, 
+	                   object animationState, 
+	                   object stateMachineState, 
+	                   object statsState, 
+	                   InputState currentInputState,
+	                   List<InputScrambler> scramblers)
 	{
 		this.position = position;
 		this.velocity = velocity;
@@ -23,6 +32,7 @@ public class PlayerState
 		this.stateMachineState = stateMachineState;
 		this.statsState = statsState;
 		this.currentInputState = currentInputState;
+		this.scramblers = scramblers;
 	}
 
 	public Vector3 Position
@@ -93,6 +103,14 @@ public class PlayerState
 			return currentInputState;
 		}
 	}
+
+	public List<InputScrambler> InputScramblers
+	{
+		get
+		{
+			return scramblers;
+		}
+	}
 }
 
 public class PlayerStatus
@@ -107,6 +125,30 @@ public class PlayerStatus
 		}
 
 		return true;
+	}
+}
+
+public class InputScrambler
+{
+	private Vector2 rotation;
+	private bool flipX;
+
+	public InputScrambler(Vector2 rotation, bool flipX)
+	{
+		this.rotation = rotation.normalized;
+		this.flipX = flipX;
+	}
+
+	public Vector2 Scramble(Vector2 input)
+	{
+		Vector2 result = new Vector2(input.x * rotation.x - input.y * rotation.y, input.y * rotation.x + input.x * rotation.y);
+
+		if (flipX)
+		{
+			result.x *= -1.0f;
+		}
+
+		return result;
 	}
 }
 
@@ -155,6 +197,8 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	private bool isWallSliding;
 
 	private PlayerState lastState;
+
+	private List<InputScrambler> inputScramblers = new List<InputScrambler>();
 
 	public static readonly int SPELL_COUNT = 3;
 	private static int firstTeamLayer = 8;
@@ -484,6 +528,15 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		inputSource.FrameStart(currentInputState);
 		currentInputState = inputSource.State;
 
+		Vector2 direction = new Vector2(currentInputState.AimDirection.x, currentInputState.AimDirection.y);
+
+		foreach (InputScrambler scrambler in inputScramblers)
+		{
+			direction = scrambler.Scramble(direction);
+		}
+
+		currentInputState = currentInputState.WithNewAim(direction.x, new Vector3(direction.x, direction.y, currentInputState.AimDirection.z));
+
 		stateMachine.Update(timestep);
 
 		if (visualAnimator != null)
@@ -557,7 +610,15 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	{
 		EnsureInitialized();
 		object animationState = animatorStateSaver == null ? null : animatorStateSaver.GetCurrentState();
-		lastState = new PlayerState(transform.position, velocity, damageable.CurrentHealth, null, animationState, stateMachine.GetCurrentState(), stats.GetCurrentState(), currentInputState);
+		lastState = new PlayerState(transform.position, 
+		                            velocity, 
+		                            damageable.CurrentHealth, 
+		                            null, 
+		                            animationState, 
+		                            stateMachine.GetCurrentState(), 
+		                            stats.GetCurrentState(), 
+		                            currentInputState,
+		                            new List<InputScrambler>(inputScramblers));
 		return lastState;
 	}
 
@@ -602,6 +663,8 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 			stateMachine.RewindToState(lastState.StateMachineState);
 
 			currentInputState = lastState.CurrentInputState;
+
+			inputScramblers = new List<InputScrambler>(lastState.InputScramblers);
 		}
 	}
 
@@ -654,5 +717,15 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		parameters["delegate"] = rootDeletate;
 		
 		stateMachine.SetNextState("Rooted", parameters, 2);
+	}
+
+	public void AddScrambler(InputScrambler scrambler)
+	{
+		inputScramblers.Add(scrambler);
+	}
+
+	public void RemoveScrambler(InputScrambler scrambler)
+	{
+		inputScramblers.Remove(scrambler);
 	}
 }

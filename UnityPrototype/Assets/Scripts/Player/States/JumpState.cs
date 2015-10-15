@@ -24,8 +24,10 @@ public class JumpState : MonoBehaviour, IState {
 
 	private void CalcJumpValues()
 	{
-		float maxJumpHeight = player.Stats.GetNumberStat("maxJumpHeight");
-		float minJumpHeight = Mathf.Min(player.Stats.GetNumberStat("minJumpHeight"), maxJumpHeight);
+		float trajectoryJumpHeight = player.Velocity.y > 0.0f ? PathingMath.HeightForJump(player.Velocity.y, Physics.gravity.y) : 0.0f;
+
+		float maxJumpHeight = Mathf.Max(player.Stats.GetNumberStat("maxJumpHeight") - trajectoryJumpHeight, 0.0f);
+		float minJumpHeight = Mathf.Max(Mathf.Min(player.Stats.GetNumberStat("minJumpHeight"), maxJumpHeight), 0.0f);
 
 		jumpHeightControlWindow = player.Stats.GetNumberStat("jumpHeightControlWindow");
 		jumpHeightControlWindow = Mathf.Ceil(jumpHeightControlWindow / Time.fixedDeltaTime) * Time.fixedDeltaTime;
@@ -69,7 +71,7 @@ public class JumpState : MonoBehaviour, IState {
 		player.Move(player.Velocity * timestep + 0.5f * timestep * timestep * (Physics.gravity + Vector3.up * jumpAcceration));
 		player.ApplyGravity(timestep);
 		player.HandleKnockback();
-		player.Velocity += Vector3.up * jumpAcceration * timestep 
+		player.Velocity += player.JumpNormal * jumpAcceration * timestep 
 			+ horizontalMovement * Vector3.right * player.Stats.GetNumberStat("airAcceleration") * timestep;
 		FreeFallState.HandleHorizontalControl(player, timestep);
 

@@ -24,16 +24,18 @@ public class TimeSnapshot
 	private int frame;
 	private float time;
 	private int currentID;
+	private object updateState;
 
-	private TimeSnapshot(List<object> objectData, int frame, float time, int currentID)
+	private TimeSnapshot(List<object> objectData, int frame, float time, int currentID, object updateState)
 	{
 		this.objectData = objectData;
 		this.frame = frame;
 		this.time = time;
 		this.currentID = currentID;
+		this.updateState = updateState;
 	}
 
-	public static TimeSnapshot Generate(IList<ITimeTravelable> timeObjects, int frame, float time, int currentID)
+	public static TimeSnapshot Generate(IList<ITimeTravelable> timeObjects, int frame, float time, int currentID, object updateState)
 	{
 		List<object> objectData = new List<object>();
 
@@ -42,7 +44,7 @@ public class TimeSnapshot
 			objectData.Add(timeTravelable.GetCurrentState());
 		}
 
-		return new TimeSnapshot(objectData, frame, time, currentID);
+		return new TimeSnapshot(objectData, frame, time, currentID, updateState);
 	}
 
 	public int Frame
@@ -74,6 +76,14 @@ public class TimeSnapshot
 		get
 		{
 			return objectData.Count;
+		}
+	}
+
+	public object UpdateState
+	{
+		get
+		{
+			return updateState;
 		}
 	}
 
@@ -140,7 +150,7 @@ public class TimeManager : MonoBehaviour, IFixedUpdate {
 		{
 			++currentSnapshotIndex;
 			savedObjects.UnionWith(timeObjects);
-			snapShots.Add(TimeSnapshot.Generate(timeObjects, currentFrame, currentTime, currentObjectId));
+			snapShots.Add(TimeSnapshot.Generate(timeObjects, currentFrame, currentTime, currentObjectId, updateManager.ModifierState()));
 		}
 		else
 		{
@@ -159,6 +169,7 @@ public class TimeManager : MonoBehaviour, IFixedUpdate {
 			currentFrame = snapShot.Frame;
 			currentTime = snapShot.Time;
 			currentObjectId = snapShot.CurrentID;
+			updateManager.RestoreModifierState(snapShot.UpdateState);
 		}
 		else
 		{

@@ -33,48 +33,58 @@ public class CancelEventEffect : EffectObject
 	}
 }
 
-public class DelayEffect : EffectObject, IFixedUpdate, ITimeTravelable
+public interface IDelayEffect : IFixedUpdate
 {
+	float RemainingTime { get; }
+	bool IsPersistant();
+}
+
+public class DelayEffectCommon : ITimeTravelable
+{
+	private EffectInstance instance;
 	private float remainingTime;
 	private bool addedToUpdateManager;
 	private UpdateManager updateManager;
 	private TimeManager timeManager;
+	private IDelayEffect delayEffect;
 
 	private void AddToUpdate()
 	{
 		if (!addedToUpdateManager)
 		{
-			this.AddToUpdateManager(updateManager);
+			delayEffect.AddToUpdateManager(updateManager);
 			addedToUpdateManager = true;
 		}
 	}
-
+	
 	private void RemoveFromUpdate()
 	{
 		if (addedToUpdateManager)
 		{
-			this.RemoveFromUpdateManager(updateManager);
+			delayEffect.RemoveFromUpdateManager(updateManager);
 			addedToUpdateManager = false;
 		}
+		
 	}
-
-	public override void StartEffect(EffectInstance instance) {
-		base.StartEffect(instance);
+	
+	public void StartEffect(EffectInstance instance, IDelayEffect delayEffect) {
+		this.instance = instance;
+		this.delayEffect = delayEffect;
 		updateManager = instance.GetContextValue<UpdateManager>("updateManager", null);
 		timeManager = instance.GetContextValue<TimeManager>("timeManager", null);
 		timeManager.AddTimeTraveler(this);
 		
 		remainingTime = instance.GetValue<float>("duration", 0.0f);
-
+		
 		AddToUpdate();
 	}
-
+	
 	public void FixedUpdateTick(float dt)
 	{
 		if (remainingTime > 0.0f)
 		{
 			remainingTime -= dt;
-
+			
 			if (remainingTime <= 0.0f)
 			{
 				instance.TriggerEvent("timeout", null);
@@ -82,7 +92,7 @@ public class DelayEffect : EffectObject, IFixedUpdate, ITimeTravelable
 			}
 		}
 	}
-
+	
 	public float RemainingTime
 	{
 		get
@@ -105,7 +115,7 @@ public class DelayEffect : EffectObject, IFixedUpdate, ITimeTravelable
 		else
 		{
 			remainingTime = (float)state;
-
+			
 			if (remainingTime > 0.0f)
 			{
 				AddToUpdate();
@@ -116,6 +126,73 @@ public class DelayEffect : EffectObject, IFixedUpdate, ITimeTravelable
 	public TimeManager GetTimeManager()
 	{
 		return timeManager;
+	}
+}
+
+public class DelayEffect : EffectObject, IDelayEffect, IFixedUpdate
+{
+	private DelayEffectCommon delayCommon = new DelayEffectCommon();
+
+	public override void StartEffect(EffectInstance instance) {
+		base.StartEffect(instance);
+		delayCommon.StartEffect(instance, this);
+	}
+	
+	public void FixedUpdateTick(float dt)
+	{
+		delayCommon.FixedUpdateTick(dt);
+	}
+
+	public float RemainingTime
+	{
+		get
+		{
+			return delayCommon.RemainingTime;
+		}
+	}
+
+	public bool IsPersistant()
+	{
+		return delayCommon.IsPersistant();
+	}
+}
+
+public class DelayGameObjectEffect : EffectGameObject, IDelayEffect, IFixedUpdate
+{
+	private DelayEffectCommon delayCommon = new DelayEffectCommon();
+	
+	public override void StartEffect(EffectInstance instance) {
+		base.StartEffect(instance);
+		delayCommon.StartEffect(instance, this);
+
+		float radius = instance.GetValue<float>("radius", 0.0f);
+
+		if (gameObject.GetComponent<Collider>() == null && radius > 0.0f)
+		{
+			CapsuleCollider capsule = gameObject.GetOrAddComponent<CapsuleCollider>();
+
+			capsule.radius = radius;
+			capsule.height = instance.GetValue<float>("height", 0.0f);
+			capsule.center = instance.GetValue<Vector3>("center", Vector3.zero);
+		}
+	}
+
+	public void FixedUpdateTick(float dt)
+	{
+		delayCommon.FixedUpdateTick(dt);
+	}
+	
+	public float RemainingTime
+	{
+		get
+		{
+			return delayCommon.RemainingTime;
+		}
+	}
+	
+	public bool IsPersistant()
+	{
+		return delayCommon.IsPersistant();
 	}
 }
 
@@ -484,6 +561,17 @@ public class SetPositionEffect : EffectObject {
 			GameObject parent = instance.GetValue<GameObject>("parent", target.GetParent());
 			target.transform.parent = parent ? parent.transform : null;
 			target.transform.position = instance.GetValue<Vector3>("position", target.transform.position);
+		}
+	}
+}
+
+public class SetLayerEffect : EffectObject {
+	public override void StartEffect(EffectInstance instance) {
+		base.StartEffect(instance);
+		GameObject target = instance.GetValue<GameObject>("target", null);
+		
+		if (target != null) {
+			target.layer = instance.GetValue<int>("layer", target.layer);
 		}
 	}
 }

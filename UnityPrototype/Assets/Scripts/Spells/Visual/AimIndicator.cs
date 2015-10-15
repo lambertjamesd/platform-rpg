@@ -7,8 +7,12 @@ public class AimIndicatorUpdate : EffectObject
 	{
 		base.StartEffect(instance);
 		AimIndicator target = instance.GetValue<AimIndicator>("target", null);
-		target.InitialVelocity = instance.GetValue<Vector3>("direction", Vector3.zero).normalized * instance.GetValue<float>("speed", 0.0f);
-		target.ChargeAmount = instance.GetValue<float>("normalizedHoldTime", 0.0f);
+
+		if (target != null)
+		{
+			target.InitialVelocity = instance.GetValue<Vector3>("direction", Vector3.zero).normalized * instance.GetValue<float>("speed", 0.0f);
+			target.ChargeAmount = instance.GetValue<float>("normalizedHoldTime", 0.0f);
+		}
 	}
 }
 

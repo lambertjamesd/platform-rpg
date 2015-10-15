@@ -12,7 +12,7 @@ using UnityEngine;
 
 public class CountdownTimer : EffectGameObject
 {
-	private DelayEffect targetDelay;
+	private IDelayEffect targetDelay;
 
 	public CustomFontRenderer fontRenderer;
 	public Color color = Color.red;
@@ -23,7 +23,7 @@ public class CountdownTimer : EffectGameObject
 	public override void StartEffect (EffectInstance instance)
 	{
 		base.StartEffect (instance);
-		targetDelay = instance.GetValue<DelayEffect>("target");
+		targetDelay = instance.GetValue<IDelayEffect>("target");
 	}
 
 	public AnimationCurve perSecondGrow = new AnimationCurve(new Keyframe[]{

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public interface IFixedUpdate {
 	void FixedUpdateTick(float timestep);
@@ -25,6 +26,24 @@ public static class UpdateManagerHelper
 	}
 }
 
+public class UpdateSpeedModifier
+{
+	private float updateScalar;
+
+	public UpdateSpeedModifier(float scalar)
+	{
+		this.updateScalar = scalar;
+	}
+
+	public float TimeScalar
+	{
+		get
+		{
+			return updateScalar;
+		}
+	}
+}
+
 public class UpdateManager : MonoBehaviour {
 
 	public float fixedFrameRate = 120.0f;
@@ -34,6 +53,8 @@ public class UpdateManager : MonoBehaviour {
 	private List<IFixedUpdate> updateList = new List<IFixedUpdate>();
 	private List<IFixedUpdate> lateUpdateList = new List<IFixedUpdate>();
 	private float accumulatedTime;
+
+	private Dictionary<IFixedUpdate, List<UpdateSpeedModifier>> speedModifiers = new Dictionary<IFixedUpdate, List<UpdateSpeedModifier>>();
 
 	private int loopIndex = -1;
 	private int lateLoopIndex = -1;
@@ -45,18 +66,31 @@ public class UpdateManager : MonoBehaviour {
 		fixedTimestep = 1.0f / fixedFrameRate;
 	}
 
+	private void UpdateForTarget(IFixedUpdate target, float dt)
+	{
+		if (speedModifiers.ContainsKey(target))
+		{
+			foreach (UpdateSpeedModifier modifier in speedModifiers[target])
+			{
+				dt *= modifier.TimeScalar;
+			}
+		}
+
+		target.FixedUpdateTick(dt);
+	}
+
 	private void FixedUpdateInternal(float timestep)
 	{
 		// loopIndex is used to allow adding and removing recievers inside
 		// this loop. See RemoveReciever below to see why its needed
 		for (loopIndex = 0; loopIndex < updateList.Count; ++loopIndex)
 		{
-			updateList[loopIndex].FixedUpdateTick(timestep);
+			UpdateForTarget(updateList[loopIndex], timestep);
 		}
 
 		for (lateLoopIndex = 0; lateLoopIndex < lateUpdateList.Count; ++lateLoopIndex)
 		{
-			lateUpdateList[lateLoopIndex].FixedUpdateTick(timestep);
+			UpdateForTarget(lateUpdateList[lateLoopIndex], timestep);
 		}
 		
 		loopIndex = -1;
@@ -146,6 +180,50 @@ public class UpdateManager : MonoBehaviour {
 			
 			lateUpdateList.RemoveAt(index);
 		}
+	}
+
+	public void AddUpdateModifier(IFixedUpdate target, UpdateSpeedModifier modifier)
+	{
+		if (speedModifiers.ContainsKey(target))
+		{
+			speedModifiers[target].Add(modifier);
+		}
+		else
+		{
+			List<UpdateSpeedModifier> modifierList = new List<UpdateSpeedModifier>();
+			modifierList.Add(modifier);
+			speedModifiers.Add(target, modifierList);
+		}
+	}
+
+	public void RemoveUpdateModifier(IFixedUpdate target, UpdateSpeedModifier modifier)
+	{
+		if (speedModifiers.ContainsKey(target))
+		{
+			speedModifiers[target].Remove(modifier);
+		}
+	}
+
+	private static Dictionary<IFixedUpdate, List<UpdateSpeedModifier>> Clone(Dictionary<IFixedUpdate, List<UpdateSpeedModifier>> input)
+	{
+		Dictionary<IFixedUpdate, List<UpdateSpeedModifier>> result = new Dictionary<IFixedUpdate, List<UpdateSpeedModifier>>();
+		
+		foreach (IFixedUpdate key in input.Keys)
+		{
+			result.Add(key, new List<UpdateSpeedModifier>(input[key]));
+		}
+		
+		return result;
+	}
+
+	public object ModifierState()
+	{
+		return Clone(speedModifiers);
+	}
+
+	public void RestoreModifierState(object input)
+	{
+		speedModifiers = Clone((Dictionary<IFixedUpdate, List<UpdateSpeedModifier>>)input);
 	}
 
 	public bool Paused

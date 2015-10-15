@@ -36,6 +36,11 @@ public class InputState
 		this.aimDirection = aimDirection;
 	}
 
+	public InputState WithNewAim(float newHorizontalControl, Vector3 newAimDirection)
+	{
+		return new InputState(previousState, newHorizontalControl, jumpButton, fireButtons, newAimDirection);
+	}
+
 	public float HorizontalControl
 	{
 		get

@@ -9,7 +9,7 @@ public static class Extentions
 		return gameObject.GetComponent(typeof(I)) as I;
 	}
 
-	public static IList<I> GetInterfaceComponents<I>(this GameObject gameObject) where I : class
+	public static List<I> GetInterfaceComponents<I>(this GameObject gameObject) where I : class
 	{
 		MonoBehaviour[] monoBehaviours = gameObject.GetComponents<MonoBehaviour>();
 		List<I> result = new List<I>();

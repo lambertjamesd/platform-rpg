@@ -2,6 +2,13 @@
 <effect-settings>
 	<input-configuration name="projectile-in" parent="game-object-in">
 		<parameter>
+			<name>collideWith</name>
+			<type>bitMask</type>
+			<description>
+				The layers the projectiile collides with
+			</description>
+		</parameter>
+		<parameter>
 			<name>direction</name>
 			<type>Vector3</type>
 			<description>

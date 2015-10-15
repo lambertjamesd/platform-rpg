@@ -111,38 +111,6 @@
 			Sends a knockback message to any IKnockbackReciever components on the game object
 		</description>
 	</effect>
-	
-	<input-configuration name="delay-in">
-		<parameter>
-			<name>duration</name>
-			<type>float</type>
-			<description>
-				The time in seconds to delay
-			</description>
-		</parameter>
-	</input-configuration>
-	
-	<output-configuration name="delay-out">
-		<parameter>
-			<name>effect</name>
-			<type>IEffect</type>
-			<description>
-				A reference to the delay effect
-			</description>
-		</parameter>
-		<event name="on-timeout">
-			<description>
-Triggered after both duration and frames have passed,
-if you only need only duration set frames to 0
-			</description>
-		</event>
-	</output-configuration>
-	
-	<effect class="DelayEffect" alias="delay" namespace="control" input="delay-in" output="delay-out">
-		<description>
-			Deleys the firing of another event
-		</description>
-	</effect>
 
 	<input-configuration name="repeat-in">
 		<parameter>
@@ -425,6 +393,32 @@ Called if the teleport failed
 	<effect class="SetPositionEffect" alias="set-position" namespace="movement" input="set-position-in" output="set-position-out">
 		<description>
 			Sets the position of a game object
+		</description>
+	</effect>
+	
+	<input-configuration name="set-layer-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The object to change
+			</description>
+		</parameter>
+		<parameter>
+			<name>layer</name>
+			<type>int</type>
+			<description>
+				The layer to set to
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="set-layer-out">
+	</output-configuration>
+	
+	<effect class="SetLayerEffect" alias="set-layer" namespace="movement" input="set-layer-in" output="set-layer-out">
+		<description>
+			Sets the layer of a game object
 		</description>
 	</effect>
 	

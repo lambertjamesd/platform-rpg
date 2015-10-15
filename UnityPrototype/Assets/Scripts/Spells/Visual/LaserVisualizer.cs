@@ -13,6 +13,7 @@ public class LaserVisualizer : MonoBehaviour, ISelfDestruct {
 	public void SetRadius(float radius)
 	{
 		baseTransform.localScale = Vector3.one * radius;
+		this.radius = radius;
 	}
 
 	public void SetInnerLength(float innerLength)

@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System;
 
 public interface SpellcastFireListener
 {
@@ -355,6 +357,16 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 			spellStates[spellIndex].SpellFinish();
 		}
+	}
+
+	public float RandomFloat(int hashModifier)
+	{
+		MD5 rndGen = new MD5CryptoServiceProvider();
+		byte[] hashInput = BitConverter.GetBytes(timeManager.CurrentTime)
+			.Concat(BitConverter.GetBytes(GetHashCode()))
+			.Concat(BitConverter.GetBytes(hashModifier))
+			.ToArray();
+		return (float)BitConverter.ToInt32(rndGen.ComputeHash(hashInput), 0) / ((float)0x10000 * (float)0x10000);
 	}
 
 	public int GetSpellCount()

@@ -83,6 +83,27 @@
 		</description>
 	</function>
 	
+	<function name="RandomFloat" namespace="math">
+		<return-type>float</return-type>
+		<parameter>
+			<name>caster</name>
+			<type>GameObject</type>
+			<description>
+				The spell caster to generate the random number
+			</description>
+		</parameter>
+		<parameter>
+			<name>hashNumber</name>
+			<type>int</type>
+			<description>
+				Modifes the hash to ensure two random numbers are different
+			</description>
+		</parameter>
+		<description>
+			Produces a random number based on the caster, the time, and the given hashNumber
+		</description>
+	</function>
+	
 	<function name="RotateVector" namespace="vector">
 		<return-type>Vector3</return-type>
 		<parameter>
@@ -424,6 +445,20 @@
 		</parameter>
 		<description>
 			Gets the max parent of a GameObject
+		</description>
+	</function>
+	
+	<function name="GetObjectLayer" namespace="game object">
+		<return-type>int</return-type>
+		<parameter>
+			<name>input</name>
+			<type>GameObject</type>
+			<description>
+				The game object to get the position of
+			</description>
+		</parameter>
+		<description>
+			Gets the position of a GameObject
 		</description>
 	</function>
 	

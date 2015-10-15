@@ -30,9 +30,9 @@ public class ProjectilePropertySource : IEffectPropertySource
 
 public class CollisionPropertySource : IEffectPropertySource
 {
-	private ControllerColliderHit hit;
+	private RaycastHit hit;
 	
-	public CollisionPropertySource(ControllerColliderHit hit)
+	public CollisionPropertySource(RaycastHit hit)
 	{
 		this.hit = hit;
 	}
@@ -56,7 +56,7 @@ public class CollisionPropertySource : IEffectPropertySource
 public class Projectile : EffectGameObject, IFixedUpdate, ITimeTravelable {
 
 	private Vector3 velocity = Vector3.zero;
-	private CharacterController characterController;
+	private SphereCollider sphereCollider;
 	private UpdateManager updateManager;
 	private TimeManager timeManager;
 
@@ -64,6 +64,8 @@ public class Projectile : EffectGameObject, IFixedUpdate, ITimeTravelable {
 	private float bounceFactor = 1.0f;
 
 	private bool useGravity = false;
+
+	private int collideWith;
 	
 	public override void StartEffect(EffectInstance instance) {
 		base.StartEffect(instance);
@@ -71,11 +73,12 @@ public class Projectile : EffectGameObject, IFixedUpdate, ITimeTravelable {
 		radius = instance.GetValue<float>("radius", radius);
 		bounceFactor = instance.GetValue<float>("bounceFactor", bounceFactor);
 
-		characterController = gameObject.GetOrAddComponent<CharacterController>();
-		characterController.height = radius * 2.0f;
-		characterController.radius = radius;
+		sphereCollider = gameObject.GetOrAddComponent<SphereCollider>();
+		sphereCollider.radius = radius;
 
 		useGravity = instance.GetValue<bool>("useGravity", false);
+
+		collideWith = instance.GetValue<int>("collideWith", ~0);
 
 		updateManager = instance.GetContextValue<UpdateManager>("updateManager", null);
 		this.AddToUpdateManager(updateManager);
@@ -107,10 +110,41 @@ public class Projectile : EffectGameObject, IFixedUpdate, ITimeTravelable {
 			return velocity;
 		}
 	}
+
+	private const float minMoveDist = 0.0001f;
+	private const float skinThickness = 0.01f;
+
+	private void Move(Vector3 amount)
+	{
+		while (amount.sqrMagnitude > minMoveDist * minMoveDist)
+		{
+			Vector3 direction = amount.normalized;
+
+			RaycastHit hitInfo;
+
+			if (Physics.SphereCast(transform.position, radius - skinThickness, direction, out hitInfo, Vector3.Dot(direction, amount), collideWith))
+			{
+				transform.position += direction * (hitInfo.distance - skinThickness / Vector3.Dot(hitInfo.normal, -direction));
+				
+				instance.TriggerEvent("hit", new CollisionPropertySource(hitInfo));
+				
+				if (Vector3.Dot(velocity, hitInfo.normal) < 0)
+				{
+					amount -= Vector3.Project(amount, hitInfo.normal);
+					velocity = Vector3.Reflect(velocity, hitInfo.normal) * bounceFactor;
+				}
+			}
+			else
+			{
+				transform.position += amount;
+				amount = Vector3.zero;
+			}
+		}
+	}
 	
 	public void FixedUpdateTick (float dt) {
 		velocity.z = 0.0f;
-		characterController.Move(velocity * dt);
+		Move(velocity * dt);
 
 		if (useGravity)
 		{
@@ -121,16 +155,6 @@ public class Projectile : EffectGameObject, IFixedUpdate, ITimeTravelable {
 	public void OnDrawGizmos()
 	{
 		Gizmos.DrawSphere(transform.position, radius);
-	}
-
-	public void OnControllerColliderHit(ControllerColliderHit hit)
-	{
-		instance.TriggerEvent("hit", new CollisionPropertySource(hit));
-
-		if (Vector3.Dot(velocity, hit.normal) < 0)
-		{
-			velocity = Vector3.Reflect(velocity, hit.normal) * bounceFactor;
-		}
 	}
 	
 	public object GetCurrentState()

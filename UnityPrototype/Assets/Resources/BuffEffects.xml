@@ -67,4 +67,37 @@
 			Applies a buff, or debuff to a target
 		</description>
 	</effect>
+	
+	<input-configuration name="slow-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The object that will recieve the slow
+			</description>
+		</parameter>
+		<parameter>
+			<name>timeScale</name>
+			<type>float</type>
+			<description>
+				The amount time is modified by. Greater than 1 makes things move faster, less than 1 goes slower.
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="slow-out">
+		<parameter>
+			<name>effect</name>
+			<type>IEffect</type>
+			<description>
+				A reference to the slow effect. Use cancel to stop the slow effect.
+			</description>
+		</parameter>
+	</output-configuration>
+	
+	<effect class="TimeModifierEffect" alias="slow" namespace="buff" input="slow-in" output="slow-out">
+		<description>
+			Adjusts the rate of time passage
+		</description>
+	</effect>
 </effect-settings>

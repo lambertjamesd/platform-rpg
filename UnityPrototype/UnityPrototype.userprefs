@@ -1,20 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Effect\EffectFactory.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Spells\CircleAreaEffect.cs">
     <Files>
-      <File FileName="Assets\Scripts\Spells\LaserArea.cs" Line="1" Column="1" />
-      <File FileName="Assets\Resources\AreaEffects.xml" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CustomFont.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Spells\BasicEffects.cs" Line="269" Column="7" />
-      <File FileName="Assets\Scripts\TimeManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Resources\BasicEffects.xml" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Player\Player.cs" Line="165" Column="53" />
-      <File FileName="Assets\Scripts\Spells\SpellCaster.cs" Line="221" Column="18" />
-      <File FileName="Assets\Scripts\Spells\Projectile.cs" Line="70" Column="101" />
-      <File FileName="Assets\Scripts\Collision\ColliderMath.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Pathfinding\PathingMath.cs" Line="26" Column="2" />
-      <File FileName="Assets\Scripts\Effect\EffectFactory.cs" Line="67" Column="15" />
-      <File FileName="Assets\Resources\FunctionSettings.xml" Line="65" Column="27" />
+      <File FileName="Assets\Scripts\Spells\BasicEffects.cs" Line="170" Column="42" />
+      <File FileName="Assets\Resources\ControlEffects.xml" Line="66" Column="28" />
+      <File FileName="Assets\Scripts\Spells\AreaEffect.cs" Line="76" Column="52" />
+      <File FileName="Assets\Scripts\Spells\CircleAreaEffect.cs" Line="53" Column="18" />
+      <File FileName="Assets\Scripts\Spells\TimeModifierEffect.cs" Line="28" Column="3" />
+      <File FileName="Assets\Scripts\Spells\Projectile.cs" Line="73" Column="37" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

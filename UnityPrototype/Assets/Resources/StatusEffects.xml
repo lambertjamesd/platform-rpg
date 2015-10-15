@@ -1,0 +1,32 @@
+<effect-settings>
+	<input-configuration name="confuse-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>The target player to confuse</description>
+		</parameter>
+		<parameter>
+			<name>rotation</name>
+			<type>Vector3</type>
+			<description>Rotation of the scrambler</description>
+		</parameter>
+		<parameter>
+			<name>flipX</name>
+			<type>bool</type>
+			<description>Specifies if the the scrambler should flip x axis</description>
+		</parameter>
+	</input-configuration>
+	<output-configuration name="confuse-out">
+		<parameter>
+			<name>effect</name>
+			<type>IEffect</type>
+			<description>The effects object, used to cancel the confuse</description>
+		</parameter>
+	</output-configuration>
+	
+	<effect class="ConfuseEffect" alias="confuse" namespace="status-effects" input="confuse-in" output="confuse-out">
+		<description>
+			Creates a rectangular barrier that cannot be passed through
+		</description>
+	</effect>
+</effect-settings>

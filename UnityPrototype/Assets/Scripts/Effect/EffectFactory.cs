@@ -66,6 +66,32 @@ public static class BasicFunctions
 
 		return null;
 	}
+
+	public static object RandomFloat(object[] parameters)
+	{
+		if (parameters.Length == 2)
+		{
+			if (!(parameters[0] is GameObject))
+			{
+				Debug.LogError("RandomFloat expects the first parameter to be a GameObject");
+			}
+			else if (!(parameters[1] is int))
+			{
+				Debug.LogError("RandomFloat expects the second parameter to be a int");
+			}
+			else
+			{
+				SpellCaster caster = ((GameObject)parameters[0]).GetComponent<SpellCaster>();
+				return caster.RandomFloat((int)parameters[1]);
+			}
+		}
+		else
+		{
+			Debug.LogError("Pow requires two parameters");
+		}
+		
+		return null;
+	}
 }
 
 public static class VectorFunctions
@@ -331,6 +357,27 @@ public static class GameObjectFunctions
 		else
 		{
 			Debug.LogError("GetObjectParent expects 1 parameters");
+		}
+		
+		return null;
+	}
+
+	public static object GetObjectLayer(object[] parameters)
+	{
+		if (parameters.Length == 1)
+		{
+			if (!(parameters[0] is GameObject))
+			{
+				Debug.LogError("GetObjectLayer expects to get a game object");
+			}
+			else
+			{
+				return ((GameObject)parameters[0]).layer;
+			}
+		}
+		else
+		{
+			Debug.LogError("GetObjectLayer expects 1 parameters");
 		}
 		
 		return null;

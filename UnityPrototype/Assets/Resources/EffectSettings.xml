@@ -10,6 +10,8 @@
 	<include>ShieldEffects</include>
 	<include>StatEffects</include>
 	<include>Visual</include>
+	<include>StatusEffects</include>
+	<include>ControlEffects</include>
 
 	<include>FunctionSettings</include>
 		

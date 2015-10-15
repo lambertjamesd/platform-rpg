@@ -1,0 +1,79 @@
+<effect-settings>	
+	<input-configuration name="delay-in">
+		<parameter>
+			<name>duration</name>
+			<type>float</type>
+			<description>
+				The time in seconds to delay
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="delay-out">
+		<parameter>
+			<name>effect</name>
+			<type>IEffect</type>
+			<description>
+				A reference to the delay effect
+			</description>
+		</parameter>
+		<event name="on-timeout">
+			<description>
+Triggered after both duration and frames have passed,
+if you only need only duration set frames to 0
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="DelayEffect" alias="delay" namespace="control" input="delay-in" output="delay-out">
+		<description>
+			Deleys the firing of another event
+		</description>
+	</effect>
+	
+	<input-configuration name="delay-object-in" parent="game-object-in">
+		<parameter>
+			<name>duration</name>
+			<type>float</type>
+			<description>
+				The time in seconds to delay
+			</description>
+		</parameter>
+		<parameter>
+			<name>radius</name>
+			<type>float</type>
+			<description>
+				The radius of the delay collider
+			</description>
+		</parameter>
+		<parameter>
+			<name>height</name>
+			<type>float</type>
+			<description>
+				The height of the delay controller
+			</description>
+		</parameter>
+		<parameter>
+			<name>center</name>
+			<type>Vector3</type>
+			<description>
+				The center of the collider
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="delay-object-out" parent="game-object-out">
+		<event name="on-timeout">
+			<description>
+Triggered after both duration and frames have passed,
+if you only need only duration set frames to 0
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="DelayGameObjectEffect" alias="delay-object" namespace="control" input="delay-object-in" output="delay-object-out">
+		<description>
+			Delays the firing of another event. This delay timer recieves a collider that allows it to trigger collision events.
+		</description>
+	</effect>
+</effect-settings>

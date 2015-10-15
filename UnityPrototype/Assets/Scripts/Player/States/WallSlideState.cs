@@ -44,7 +44,7 @@ public class WallSlideState : MonoBehaviour, IState {
 
 		if (player.CurrentInputState.JumpButtonDown)
 		{
-			player.JumpNormal = player.WallNormal + Vector3.up;
+			player.JumpNormal = (player.WallNormal * 0.6f + Vector3.up * 0.85f);
 			stateMachine.SetNextState("Jump");
 		}
 		else if (stickTimer <= 0.0f || !player.IsWallSliding)

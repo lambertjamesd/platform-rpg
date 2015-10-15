@@ -13,7 +13,7 @@
 	SubShader {
 		Tags { "RenderType"="Opaque" }
 		Cull Off
-		ZWrite Off
+		ZWrite On
 		ZTest Always
 		LOD 200
 		
