@@ -166,6 +166,12 @@ public class SpellAttributeBuilder : EffectPropertyVisitor {
 		case "!=":
 			nodeName = "not-equal";
 			break;
+		case "&&":
+			nodeName = "and";
+			break;
+		case "||":
+			nodeName = "or";
+			break;
 		}
 		
 		SpellNodeType operatorType = xmlLoader.GetBuiltInType(nodeName);

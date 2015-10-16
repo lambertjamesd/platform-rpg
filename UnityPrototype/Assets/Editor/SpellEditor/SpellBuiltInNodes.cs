@@ -21,6 +21,9 @@ public class SpellBuiltInNodes
 		BuildBinaryOperator("equal", "==", "Return true of a is equal to b", "bool");
 		BuildBinaryOperator("not-equal", "!=", "Return true of a is not equal to b", "bool");
 		
+		BuildBinaryOperator("and", "&&", "Return true of a and b are true", "bool");
+		BuildBinaryOperator("or", "||", "Return true of a and b are true", "bool");
+		
 		BuildUnaryOperator("negate", "-", "negates the input", "Any");
 		BuildUnaryOperator("not", "!", "returns true if given false", "bool");
 	}

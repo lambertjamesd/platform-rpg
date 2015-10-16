@@ -382,6 +382,48 @@ public static class GameObjectFunctions
 		
 		return null;
 	}
+	
+	public static object IsPlayer(object[] parameters)
+	{
+		if (parameters.Length == 1)
+		{
+			if (!(parameters[0] is GameObject))
+			{
+				Debug.LogError("IsPlayer expects to get a game object");
+			}
+			else
+			{
+				return ((GameObject)parameters[0]).GetComponent<Player>() != null;
+			}
+		}
+		else
+		{
+			Debug.LogError("IsPlayer expects 1 parameters");
+		}
+		
+		return null;
+	}
+	
+	public static object IsDamageable(object[] parameters)
+	{
+		if (parameters.Length == 1)
+		{
+			if (!(parameters[0] is GameObject))
+			{
+				Debug.LogError("IsDamageable expects to get a game object");
+			}
+			else
+			{
+				return ((GameObject)parameters[0]).GetComponent<Damageable>() != null;
+			}
+		}
+		else
+		{
+			Debug.LogError("IsDamageable expects 1 parameters");
+		}
+		
+		return null;
+	}
 
 	public static object GetMaxHealth(object [] parameters)
 	{

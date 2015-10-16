@@ -30,6 +30,9 @@ public enum EffectTokenType
 	OpEqual,
 	OpNotEqual,
 
+	OpAnd,
+	OpOr,
+
 	OpNot,
 
 	EOF,
@@ -57,7 +60,7 @@ public struct EffectToken
 	public bool IsBinaryOperator()
 	{
 		return tokenType >= EffectTokenType.OpAdd &&
-			tokenType <= EffectTokenType.OpNotEqual;
+			tokenType <= EffectTokenType.OpOr;
 	}
 }
 
@@ -270,13 +273,13 @@ public class EffectPropertyTokenizer
 	private static State OpEqualFinish(char currentChar, ref EffectTokenType tokenType)
 	{
 		tokenType = EffectTokenType.OpEqual;
-		return ErrorState;
+		return DefaultState(currentChar);
 	}
 	
 	private static State OpNotEqual(char currentChar, ref EffectTokenType tokenType)
 	{
 		tokenType = EffectTokenType.OpNotEqual;
-		return ErrorState;
+		return DefaultState(currentChar);
 	}
 	
 	private static State OpNot(char currentChar, ref EffectTokenType tokenType)
@@ -288,8 +291,46 @@ public class EffectPropertyTokenizer
 		else
 		{
 			tokenType = EffectTokenType.OpNot;
+			return DefaultState(currentChar);
+		}
+	}
+
+	private static State OpAnd(char currentChar, ref EffectTokenType tokenType)
+	{
+		if (currentChar == '&')
+		{
+			return OpAndAnd;
+		}
+		else
+		{
+			tokenType = EffectTokenType.Error;
 			return ErrorState;
 		}
+	}
+	
+	private static State OpAndAnd(char currentChar, ref EffectTokenType tokenType)
+	{
+		tokenType = EffectTokenType.OpAnd;
+		return DefaultState(currentChar);
+	}
+	
+	private static State OpOr(char currentChar, ref EffectTokenType tokenType)
+	{
+		if (currentChar == '&')
+		{
+			return OpOrOr;
+		}
+		else
+		{
+			tokenType = EffectTokenType.Error;
+			return ErrorState;
+		}
+	}
+	
+	private static State OpOrOr(char currentChar, ref EffectTokenType tokenType)
+	{
+		tokenType = EffectTokenType.OpOr;
+		return DefaultState(currentChar);
 	}
 
 	private static State StringState(char currentChar, ref EffectTokenType tokenType)
@@ -437,6 +478,14 @@ public class EffectPropertyTokenizer
 		else if (currentChar == '!')
 		{
 			return OpNot;
+		}
+		else if (currentChar == '&')
+		{
+			return OpAnd;
+		}
+		else if (currentChar == '|')
+		{
+			return OpOr;
 		}
 		else if (currentChar == ',')
 		{
@@ -805,7 +854,7 @@ public class EffectPropertyParser {
 		}
 	}
 
-	private EffectProperty ParseBinaryOperator(EffectOperatorPrecedence minPrecedence = EffectOperatorPrecedence.Compare)
+	private EffectProperty ParseBinaryOperator(EffectOperatorPrecedence minPrecedence = EffectOperatorPrecedence.MinPrecedence)
 	{
 		EffectProperty operandA = ParseUnaryOperator();
 

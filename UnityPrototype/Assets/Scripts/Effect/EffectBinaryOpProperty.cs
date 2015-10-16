@@ -13,6 +13,8 @@ using UnityEngine;
 public enum EffectOperatorPrecedence
 {
 	MinPrecedence,
+	Or,
+	And,
 	Equality,
 	Compare,
 	Addition,
@@ -86,6 +88,10 @@ public abstract class EffectBinaryOpProperty : EffectProperty
 			return new EffectEqualProperty(operandA, operandB);
 		case "!=":
 			return new EffectNotEqualProperty(operandA, operandB);
+		case "&&":
+			return new EffectAndProperty(operandA, operandB);
+		case "||":
+			return new EffectOrProperty(operandA, operandB);
 		}
 		
 		return null;
@@ -109,6 +115,10 @@ public abstract class EffectBinaryOpProperty : EffectProperty
 		case "==":
 		case "!=":
 			return EffectOperatorPrecedence.Equality;
+		case "&&":
+			return EffectOperatorPrecedence.And;
+		case "||":
+			return EffectOperatorPrecedence.Or;
 		}
 
 		return EffectOperatorPrecedence.MinPrecedence;
@@ -396,12 +406,19 @@ public class EffectEqualProperty : EffectBinaryOpProperty
 	
 	public override object GetObjectValue(EffectPropertyChain chain)
 	{
-		return operandA.GetObjectValue(chain).Equals(operandB.GetObjectValue(chain));
+		return AreEqual(operandA, operandB, chain);
 	}
 	
 	public override void Accept (EffectPropertyVisitor visitor)
 	{
 		visitor.Visit(this);
+	}
+
+	public static bool AreEqual(EffectProperty a, EffectProperty b, EffectPropertyChain chain)
+	{
+		object aValue = a.GetObjectValue(chain);
+		object bValue = b.GetObjectValue(chain);
+		return (aValue == null && bValue == null) || (aValue !=  null && bValue != null && aValue.Equals(bValue));
 	}
 }
 
@@ -414,7 +431,63 @@ public class EffectNotEqualProperty : EffectBinaryOpProperty
 	
 	public override object GetObjectValue(EffectPropertyChain chain)
 	{
-		return !operandA.GetObjectValue(chain).Equals(operandB.GetObjectValue(chain));
+		return !EffectEqualProperty.AreEqual(operandA, operandB, chain);
+	}
+	
+	public override void Accept (EffectPropertyVisitor visitor)
+	{
+		visitor.Visit(this);
+	}
+}
+
+public class EffectAndProperty : EffectBinaryOpProperty
+{
+	public EffectAndProperty(EffectProperty operandA, EffectProperty operandB) : base(operandA, operandB, "&&")
+	{
+		
+	}
+	
+	public override object GetObjectValue(EffectPropertyChain chain)
+	{
+		return AsBoolean(operandA.GetObjectValue(chain)) && AsBoolean(operandB.GetObjectValue(chain));
+	}
+	
+	public override void Accept (EffectPropertyVisitor visitor)
+	{
+		visitor.Visit(this);
+	}
+
+	public static bool AsBoolean(object value)
+	{
+		if (value is bool)
+		{
+			return (bool)value;
+		}
+		else if (value is float)
+		{
+			return (float)value != 0.0f;
+		}
+		else if (value is int)
+		{
+			return (int)value != 0;
+		}
+		else 
+		{
+			return value != null;
+		}
+	}
+}
+
+public class EffectOrProperty : EffectBinaryOpProperty
+{
+	public EffectOrProperty(EffectProperty operandA, EffectProperty operandB) : base(operandA, operandB, "||")
+	{
+		
+	}
+	
+	public override object GetObjectValue(EffectPropertyChain chain)
+	{
+		return EffectAndProperty.AsBoolean(operandA.GetObjectValue(chain)) || EffectAndProperty.AsBoolean(operandB.GetObjectValue(chain));
 	}
 	
 	public override void Accept (EffectPropertyVisitor visitor)

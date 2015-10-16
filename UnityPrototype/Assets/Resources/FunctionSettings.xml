@@ -462,6 +462,34 @@
 		</description>
 	</function>
 	
+	<function name="IsPlayer" namespace="game object">
+		<return-type>bool</return-type>
+		<parameter>
+			<name>input</name>
+			<type>GameObject</type>
+			<description>
+				The game object to check is a player
+			</description>
+		</parameter>
+		<description>
+			Checks to see if the game object is player
+		</description>
+	</function>
+	
+	<function name="IsDamageable" namespace="game object">
+		<return-type>bool</return-type>
+		<parameter>
+			<name>input</name>
+			<type>GameObject</type>
+			<description>
+				The game object to check is damageable
+			</description>
+		</parameter>
+		<description>
+			Checks to see if the game object is damageable
+		</description>
+	</function>
+	
 	<function name="GetMaxHealth" namespace="game object">
 		<return-type>float</return-type>
 		<parameter>
