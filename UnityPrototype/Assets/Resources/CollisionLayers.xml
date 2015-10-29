@@ -1,0 +1,72 @@
+<effect-settings>
+	<function name="AllyLayerMask" namespace="collision">
+		<return-type>bitMask</return-type>
+		<parameter>
+			<name>layer</name>
+			<type>int</type>
+			<description>
+				The layer of the character
+			</description>
+		</parameter>
+		<description>
+			Turns a layer number into a bitmask that collides with ally characters
+		</description>
+	</function>
+	
+	<function name="EnemyLayerMask" namespace="collision">
+		<return-type>bitMask</return-type>
+		<parameter>
+			<name>layer</name>
+			<type>int</type>
+			<description>
+				The layer of the character
+			</description>
+		</parameter>
+		<description>
+			Turns a layer number into a bitmask that collides with enemy characters
+		</description>
+	</function>
+	
+	<function name="CharacterLayerMask" namespace="collision">
+		<return-type>bitMask</return-type>
+		<description>
+			Gets a bitmask that collides with all characters
+		</description>
+	</function>
+	
+	<function name="ObstacleLayerMask" namespace="collision">
+		<return-type>bitMask</return-type>
+		<description>
+			Gets a bitmask that collides with obstacles
+		</description>
+	</function>
+	
+	<function name="IsBlocked" namespace="collision">
+		<return-type>bool</return-type>
+		<parameter>
+			<name>start</name>
+			<type>Vector3</type>
+			<description>The start of the ray to cast</description>
+		</parameter>
+		<parameter>
+			<name>end</name>
+			<type>Vector3</type>
+			<description>The end of the ray to cast to</description>
+		</parameter>
+		<parameter>
+			<name>collisionLayers</name>
+			<type>bitMask</type>
+			<description>The collision layers that block this raycast</description> 
+		</parameter>
+		<parameter>
+			<name>radius</name>
+			<type>float</type>
+			<description>The raduis of the raycast</description>
+		</parameter>
+		<parameter>
+			<name>debugDraw</name>
+			<type>bool</type>
+			<description>Debug draw the raycast</description>
+		</parameter>
+	</function>
+</effect-settings>

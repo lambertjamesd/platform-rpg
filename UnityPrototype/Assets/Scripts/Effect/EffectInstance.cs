@@ -132,5 +132,10 @@ public class EffectInstance
 	{
 		return new EffectInstance(effectDefinition, new EffectPropertyChain(propertyChain, propertySource), context);
 	}
+
+	public EffectInstance NewContext()
+	{
+		return new EffectInstance(effectDefinition, propertyChain, new Dictionary<string, object>(context));
+	}
 }
 

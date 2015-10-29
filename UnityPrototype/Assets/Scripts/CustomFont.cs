@@ -19,9 +19,19 @@ public class CustomFont : ScriptableObject {
 			this.character = character;
 			this.sprite = sprite;
 		}
+
+		public float WorldWidth
+		{
+			get
+			{
+				return sprite.rect.width / sprite.pixelsPerUnit;
+			}
+		}
 	}
 	
 	public List<FontCharacter> characters = new List<FontCharacter>();
+
+	public bool upperCaseOnly = false;
 
 	private Dictionary<char, FontCharacter> characterMapping;
 
@@ -60,6 +70,21 @@ public class CustomFont : ScriptableObject {
 		}
 	}
 
+	public float Height
+	{
+		get
+		{
+			if (characters.Count > 0)
+			{
+				return characters[0].sprite.rect.height / characters[0].sprite.pixelsPerUnit;
+			}
+			else
+			{
+				return 0.0f;
+			}
+		}
+	}
+
 	public FontCharacter GetCharacter(char character)
 	{
 		CheckMapping();
@@ -81,7 +106,7 @@ public class CustomFont : ScriptableObject {
 		int index = 0;
 		foreach (char character in text)
 		{
-			FontCharacter glyph = GetCharacter(character);
+			FontCharacter glyph = GetCharacter(upperCaseOnly ? char.ToUpper(character) : character);
 			
 			if (glyph != null)
 			{
@@ -94,6 +119,15 @@ public class CustomFont : ScriptableObject {
 
 			++index;
 		}
+	}
+
+	public float MeasureWidth(string text)
+	{
+		float result = 0.0f;
+
+		ForeachGlyph(text, (glyph, index) => result += glyph.sprite.rect.width / glyph.sprite.pixelsPerUnit);
+
+		return result;
 	}
 
 

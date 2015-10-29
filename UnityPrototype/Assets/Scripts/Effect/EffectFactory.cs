@@ -486,6 +486,37 @@ public static class GameObjectFunctions
 		
 		return null;
 	}
+
+	public static object GetTimeLeftInTurn(object[] parameters)
+	{
+		if (parameters.Length == 1)
+		{
+			if (!(parameters[0] is GameObject))
+			{
+				Debug.LogError("GetTimeLeftInTurn expects to get a game object");
+			}
+			else
+			{
+				GameObject gameObject = (GameObject)parameters[0];
+				Player player = gameObject.GetComponent<Player>();
+				
+				if (player == null)
+				{
+					return 0.0f;
+				}
+				else
+				{
+					return player.Players.RemainingTime;
+				}
+			}
+		}
+		else
+		{
+			Debug.LogError("GetTimeLeftInTurn expects 1 parameters");
+		}
+		
+		return null;
+	}
 }
 
 public class GameObjectEffectConstructor<I> : EffectConstructor where I : EffectGameObject

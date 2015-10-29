@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 using UnityEngine;
+using System.Linq;
 
 public class InputState
 {
@@ -114,6 +115,37 @@ public class InputState
 		{
 			return aimDirection;
 		}
+	}
+
+	public static InputState Deserialize(SimpleJSON.JSONNode source, InputState prev)
+	{
+		return new InputState(prev, 
+			source["horizontalControl"].AsFloat,
+			source["jumpButton"].AsBool,
+			source["fireButtons"].AsArray.Childs.Select(value => value.AsBool).ToArray(),
+			new Vector3(
+				source["aimX"].AsFloat,
+				source["aimY"].AsFloat,
+				source["aimZ"].AsFloat
+			)
+		 );
+	}
+
+	public SimpleJSON.JSONNode Serialize()
+	{
+		SimpleJSON.JSONNode result = new SimpleJSON.JSONNode();
+		result.Add("horizontalControl", new SimpleJSON.JSONData(horizontalControl));
+		result.Add("jumpButton", new SimpleJSON.JSONData(jumpButton));
+		SimpleJSON.JSONArray fireButtons = new SimpleJSON.JSONArray();
+		foreach (bool fireButton in fireButtons)
+		{
+			fireButtons.Add(new SimpleJSON.JSONData(fireButton));
+		}
+		result.Add("fireButtons", fireButtons);
+		result.Add("aimX", new SimpleJSON.JSONData(aimDirection.x)); 
+		result.Add("aimY", new SimpleJSON.JSONData(aimDirection.y));
+		result.Add("aimZ", new SimpleJSON.JSONData(aimDirection.z));
+		return result;
 	}
 }
 

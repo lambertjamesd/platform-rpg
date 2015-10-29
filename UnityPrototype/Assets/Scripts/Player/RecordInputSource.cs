@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 
 public class InputRecording
@@ -38,6 +39,32 @@ public class InputRecording
 	{
 		return inputStateHistory[index];
 	}
+
+	public static InputRecording Deserialize(SimpleJSON.JSONNode input)
+	{
+		InputState prev = null;
+
+		InputRecording result = new InputRecording();
+
+		foreach (SimpleJSON.JSONNode state in input.AsArray.Childs)
+		{
+			InputState current = InputState.Deserialize(state, prev);
+			result.LogInput(current);
+			prev = current;
+		}
+
+		return result;
+	}
+
+	public SimpleJSON.JSONNode Serialize()
+	{
+		SimpleJSON.JSONArray result = new SimpleJSON.JSONArray();
+		foreach (InputState state in inputStateHistory)
+		{
+			result.Add(state.Serialize());
+		}
+		return result;
+	}
 }
 
 public class RecordInputSource : IInputSource
@@ -46,7 +73,7 @@ public class RecordInputSource : IInputSource
 	private IInputSource inputSource;
 	private InputRecording target;
 
-	public RecordInputSource (InputRecording target, IInputSource inputSource)
+	public RecordInputSource(InputRecording target, IInputSource inputSource)
 	{
 		this.target = target;
 		this.inputSource = inputSource;

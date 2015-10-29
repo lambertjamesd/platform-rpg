@@ -225,9 +225,9 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 			return new LambdaPropertySource(name => {
 				switch (name) {
 				case "enclosedObjects":
-					return enclosedObjects.ToList();
+					return enclosedObjects.Cast<object>().ToList();
 				case "alreadyCollided":
-					return alreadyCollided.ToList();
+					return alreadyCollided.Cast<object>().ToList();
 				}
 
 				return baseSource.GetObject(name);

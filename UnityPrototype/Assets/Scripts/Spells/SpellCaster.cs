@@ -109,9 +109,10 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 	{
 		public float cooldownTime;
 		public float startTime;
-		public bool isFiring;
 		public List<SpellcastFireListener> fireListeners;
 		public int loopIndex;
+		
+		private EffectInstance castInstance;
 
 		public SpellState Copy()
 		{
@@ -119,18 +120,34 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 			result.cooldownTime = cooldownTime;
 			result.startTime = startTime;
-			result.isFiring = isFiring;
 			result.fireListeners = fireListeners.GetRange(0, fireListeners.Count);
 			result.loopIndex = loopIndex;
+			result.castInstance = castInstance;
 
 			return result;
 		}
 
-		public void SpellStart(float timestamp, float cooldown)
+		public bool IsFiring
+		{
+			get
+			{
+				return castInstance != null;
+			}
+		}
+
+		public EffectInstance Instance
+		{
+			get
+			{
+				return castInstance;
+			}
+		}
+
+		public void SpellStart(float timestamp, float cooldown, EffectInstance instance)
 		{
 			startTime = timestamp;
 			cooldownTime = timestamp + cooldown;
-			isFiring = true;
+			castInstance = instance;
 		}
 
 		public bool CanUse(float timestamp)
@@ -140,7 +157,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 		public void SpellFinish()
 		{
-			isFiring = false;
+			castInstance = null;
 		}
 
 		public void AddListener(SpellcastFireListener listener)
@@ -250,7 +267,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 	public void CastSpellHold(int spellIndex, Vector3 direction, float timestamp)
 	{
 		IEffectPropertySource aimSource = HoldSource(spellIndex, direction, timestamp);
-		rootInstances[spellIndex].TriggerEvent("aim", aimSource);
+		spellStates[spellIndex].Instance.TriggerEvent("aim", aimSource);
 
 		foreach (SpellcastFireListener listener in spellStates[spellIndex].fireListeners)
 		{
@@ -262,7 +279,9 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 	{
 		if (spellStates[spellIndex].CanUse(timestamp))
 		{
-			rootInstances[spellIndex].TriggerEvent("begin", new LambdaPropertySource(name => {
+			EffectInstance newInstance = rootInstances[spellIndex].NewContext();
+
+			newInstance.TriggerEvent("begin", new LambdaPropertySource(name => {
 				switch (name)
 				{
 				case "direction":
@@ -276,7 +295,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 				return null;
 			}));
 
-			spellStates[spellIndex].SpellStart(timestamp, spells[spellIndex].cooldown);
+			spellStates[spellIndex].SpellStart(timestamp, spells[spellIndex].cooldown, newInstance);
 		}
 	}
 
@@ -294,7 +313,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 	{
 		for (int i = 0; i < spells.Length; ++i)
 		{
-			if (spellStates[i].isFiring)
+			if (spellStates[i].IsFiring)
 			{
 				if (timestamp - spellStates[i].startTime > spells[i].maxHoldTime)
 				{
@@ -310,7 +329,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 	public void CastSpellFire(int spellIndex, Vector3 direction, float timestamp)
 	{
-		if (spellStates[spellIndex].isFiring)
+		if (spellStates[spellIndex].IsFiring)
 		{
 			IEffectPropertySource propertySource = HoldSource(spellIndex, direction, timestamp);
 
@@ -338,7 +357,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 			if (minPriority <= 0)
 			{
-				rootInstances[spellIndex].TriggerEvent("fire", propertySource);
+				spellStates[spellIndex].Instance.TriggerEvent("fire", propertySource);
 			}
 			
 			while (currentIndex < fireListeners.Count && fireListeners[currentIndex].Priority >= minPriority)

@@ -1,39 +1,4 @@
 <effect-settings>
-	<function name="AllyLayerMask" namespace="collision">
-		<return-type>bitMask</return-type>
-		<parameter>
-			<name>layer</name>
-			<type>int</type>
-			<description>
-				The layer of the character
-			</description>
-		</parameter>
-		<description>
-			Turns a layer number into a bitmask that collides with ally characters
-		</description>
-	</function>
-	
-	<function name="EnemyLayerMask" namespace="collision">
-		<return-type>bitMask</return-type>
-		<parameter>
-			<name>layer</name>
-			<type>int</type>
-			<description>
-				The layer of the character
-			</description>
-		</parameter>
-		<description>
-			Turns a layer number into a bitmask that collides with enemy characters
-		</description>
-	</function>
-	
-	<function name="CharacterLayerMask" namespace="collision">
-		<return-type>bitMask</return-type>
-		<description>
-			Gets a bitmask that collides with all characters
-		</description>
-	</function>
-	
 	<function name="Select" namespace="math">
 		<return-type>Any</return-type>
 		<parameter>
@@ -293,6 +258,62 @@
 		</description>
 	</function>
 	
+	<function name="GetListElement" namespace="convert">
+		<return-type>Any</return-type>
+		<parameter>
+			<name>list</name>
+			<type>List</type>
+			<description>
+				The list to retrieve the element from
+			</description>
+		</parameter>
+		<parameter>
+			<name>index</name>
+			<type>int</type>
+			<description>
+				The index to retrieve
+			</description>
+		</parameter>
+		<description>
+			Gets an element from a list
+		</description>
+	</function>
+
+	<function name="DoesListContain" namespace="convert">
+		<return-type>bool</return-type>
+		<parameter>
+			<name>list</name>
+			<type>List</type>
+			<description>
+				The list to retrieve the element from
+			</description>
+		</parameter>
+		<parameter>
+			<name>item</name>
+			<type>Any</type>
+			<description>
+				The item to search for
+			</description>
+		</parameter>
+		<description>
+			Check to see if an element is in a list
+		</description>
+	</function>
+			
+	<function name="GetListLength" namespace="convert">
+		<return-type>int</return-type>
+		<parameter>
+			<name>list</name>
+			<type>List</type>
+			<description>
+				The list to check
+			</description>
+		</parameter>
+		<description>
+			Gets the length of a list
+		</description>
+	</function>
+	
 	<function name="Int" namespace="convert">
 		<return-type>int</return-type>
 		<parameter>
@@ -515,6 +536,20 @@
 		</parameter>
 		<description>
 			Gets the current health of a GameObject
+		</description>
+	</function>
+	
+	<function name="GetTimeLeftInTurn" namespace="game object">
+		<return-type>float</return-type>
+		<parameter>
+			<name>input</name>
+			<type>GameObject</type>
+			<description>
+				The palyer game object
+			</description>
+		</parameter>
+		<description>
+			Gets the time left in the current turn
 		</description>
 	</function>
 	

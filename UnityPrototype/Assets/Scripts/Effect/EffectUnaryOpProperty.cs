@@ -78,14 +78,14 @@ public class EffectNegateOpProperty : EffectUnaryOpProperty
 
 public class EffectBooleanNotProperty : EffectUnaryOpProperty
 {
-	public EffectBooleanNotProperty(EffectProperty operand) : base (operand, "-")
+	public EffectBooleanNotProperty(EffectProperty operand) : base (operand, "!")
 	{
 		
 	}
 	
 	public override object GetObjectValue(EffectPropertyChain chain)
 	{
-		return !(bool)EffectCastingFunctions.Bool(new object[]{operand.GetObjectValue(chain)});
+		return !EffectAndProperty.AsBoolean(operand.GetObjectValue(chain));
 	}
 	
 	public override void Accept (EffectPropertyVisitor visitor)

@@ -13,6 +13,7 @@
 	<include>StatusEffects</include>
 	<include>ControlEffects</include>
 
+	<include>CollisionLayers</include>
 	<include>FunctionSettings</include>
 		
 	<output-configuration name="caster-spell-event">

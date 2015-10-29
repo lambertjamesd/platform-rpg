@@ -117,7 +117,7 @@ public class TimeManager : MonoBehaviour, IFixedUpdate {
 	private int currentObjectId = 1;
 	private UpdateManager updateManager;
 	
-	public void Start()
+	public void Awake()
 	{
 		updateManager = GetComponent<UpdateManager>();
 		updateManager.AddLateReciever(this);

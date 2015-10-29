@@ -71,6 +71,46 @@ public class CustomFontRenderer : MonoBehaviour {
 
 	}
 
+	public Vector3 DrawMultilineText(Vector3 worldPosition, float maxWidth, string text, float horizontalAnchor = 0.0f, VariationCallback variationCallback = null)
+	{
+		Camera currentCamera = Camera.main;
+		Quaternion cameraRotation = currentCamera.transform.rotation;
+		Vector3 currentPosition = worldPosition;
+		Vector3 right = currentCamera.transform.right;
+
+		float scale = renderScale;
+		
+		if (screenSpaceUnits)
+		{
+			Vector3 offset = currentCamera.WorldToScreenPoint(currentPosition + right) - currentCamera.WorldToScreenPoint(currentPosition);
+			scale *= font.PixelsPerUnit / offset.x;
+		}
+
+		CustomFont.FontCharacter spaceCharacter = font.GetCharacter(' ');
+
+		string[] words = text.Split(' ');
+
+		Vector3 horizontalPos = currentPosition;
+		int currentIndex = 0;
+
+		foreach (string word in words)
+		{
+			float wordWidth = font.MeasureWidth(word) * scale;
+
+			if (wordWidth + horizontalPos.x - currentPosition.x > maxWidth) {
+				horizontalPos.x = currentPosition.x;
+				horizontalPos.y -= font.Height;
+			}
+			
+			horizontalPos = DrawText(horizontalPos, word, 0.0f, (index) => variationCallback == null ? GlyphVariation.Default() : variationCallback(index + currentIndex));
+			horizontalPos.x += spaceCharacter.WorldWidth * scale;
+
+			currentIndex += word.Length + 1;
+		}
+
+		return horizontalPos;
+	}
+
 	public Vector3 DrawText(Vector3 worldPosition, string text, float horizontalAnchor = 0.0f, VariationCallback variationCallback = null)
 	{
 		Camera currentCamera = Camera.main;

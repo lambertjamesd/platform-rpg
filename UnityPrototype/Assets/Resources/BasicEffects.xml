@@ -279,6 +279,43 @@ Called for each element in the input list
 		</description>
 	</effect>
 	
+	<input-configuration name="debug-line-in">
+		<parameter>
+			<name>start</name>
+			<type>Vector3</type>
+			<description>
+				The start of the line
+			</description>
+		</parameter>
+		<parameter>
+			<name>end</name>
+			<type>Vector3</type>
+			<description>
+				The end of the line
+			</description>
+		</parameter>
+		<parameter>
+			<name>color</name>
+			<type>Color</type>
+			<description>
+				The color of the line
+			</description>
+		</parameter>
+		<parameter>
+			<name>duration</name>
+			<type>float</type>
+			<description>
+				How long to show the line for
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<effect class="DebugLineEffect" alias="debug-line" namespace="debug" input="debug-line-in">
+		<description>
+			Outputs a line
+		</description>
+	</effect>
+	
 	<input-configuration name="teleport-in">
 		<parameter>
 			<name>target</name>
@@ -520,6 +557,13 @@ Called if the teleport failed
 			<type>Any</type>
 			<description>
 				Object to add to the counter
+			</description>
+		</parameter>
+		<parameter>
+			<name>decrement</name>
+			<type>bool</type>
+			<description>
+				Causes the counter to count backwards
 			</description>
 		</parameter>
 	</input-configuration>

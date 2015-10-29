@@ -24,6 +24,9 @@ public class SpellDescription : ScriptableObject {
 	public bool blockedWhenRooted;
 
 	public List<SpellDescriptionParameter> parameters = new List<SpellDescriptionParameter>();
+
+	public SpellPreview spellPreview;
+
 	private Dictionary<string, SpellDescriptionParameter> parameterMapping;
 
 	public Dictionary<string, SpellDescriptionParameter> ParameterMapping

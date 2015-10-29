@@ -41,16 +41,26 @@ public class ValueStoreEffect :  EffectObject, ITimeTravelable {
 	{
 		SetValue(null);
 	}
+
+	private static bool AreEqual(object a, object b)
+	{
+		return a == b ||
+			(a != null && b != null &&
+			 a.Equals(b));
+	}
 	
 	public void SetValue(object newValue)
 	{
-		GenericPropertySource propertySource = new GenericPropertySource();
-		propertySource.AddValue("newValue", newValue);
-		propertySource.AddValue("oldValue", currentValue);
+		if (!AreEqual(newValue, currentValue))
+		{
+			GenericPropertySource propertySource = new GenericPropertySource();
+			propertySource.AddValue("newValue", newValue);
+			propertySource.AddValue("oldValue", currentValue);
 
-		instance.TriggerEvent("change", propertySource);
+			instance.TriggerEvent("change", propertySource);
 
-		currentValue = newValue;
+			currentValue = newValue;
+		}
 	}
 	
 	public object GetCurrentState()

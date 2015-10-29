@@ -386,6 +386,20 @@ public class DebugLogEffect : EffectObject
 	}
 }
 
+public class DebugLineEffect : EffectObject
+{
+	public override void StartEffect(EffectInstance instance) {
+		base.StartEffect(instance);
+
+		Debug.DrawLine(
+			instance.GetValue<Vector3>("start", Vector3.zero),
+			instance.GetValue<Vector3>("end",Vector3.zero),
+			instance.GetValue<Color>("color", Color.green),
+			instance.GetValue<float>("duration", 0.0f)
+		);
+	}
+}
+
 public class GetAncestorEffect : EffectObject
 {
 	private GameObject result;
@@ -450,7 +464,17 @@ public class CaptureValueEffect : EffectObject {
 public class CountEffect : EffectObject {
 	public override void StartEffect(EffectInstance instance) {
 		base.StartEffect(instance);
-		instance.GetValue<CounterEffect>("target", null).Increment(instance.GetValue<object>("element", null));
+		CounterEffect target = instance.GetValue<CounterEffect>("target", null);
+		object value = instance.GetValue<object>("element", null);
+
+		if (instance.GetValue<bool>("decrement", false))
+		{
+			target.Decrement(value);
+		}
+		else
+		{
+			target.Increment(value);
+		}
 	}
 
 }
@@ -464,7 +488,7 @@ public class CounterEffect : EffectObject, ITimeTravelable {
 
 	public override void StartEffect(EffectInstance instance) {
 		base.StartEffect(instance);
-		countTo = instance.GetValue<int>("countTo", 0);
+		countTo = instance.GetValue<int>("countTo", int.MaxValue);
 		timeManager = instance.GetContextValue<TimeManager>("timeManager", null);
 		timeManager.AddTimeTraveler(this);
 	}
@@ -519,6 +543,17 @@ public class CounterEffect : EffectObject, ITimeTravelable {
 				instance.TriggerEvent("completed", null);
 				instance.TriggerEvent("ended", null);
 			}
+		}
+	}
+	
+	public void Decrement(object element)
+	{
+		if (!cancelled)
+		{
+			--currentValue;
+			elements.Remove(element);
+			
+			instance.TriggerEvent("count", null);
 		}
 	}
 	

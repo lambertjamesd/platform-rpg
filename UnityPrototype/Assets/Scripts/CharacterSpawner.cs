@@ -29,7 +29,6 @@ public class CharacterSpawner : MonoBehaviour {
 			playerInstance.gameObject.SetActive(wasActive);
 
 			Destroy(gameObject);
-
 		}
 	}
 

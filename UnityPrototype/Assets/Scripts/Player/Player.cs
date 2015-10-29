@@ -163,7 +163,9 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 
 	private int team;
 	private int turnOrder;
-
+	
+	[Multiline]
+	public string description;
 	public PlayerSettings settings;
 	private PlayerStats stats;
 
@@ -337,6 +339,11 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		{
 			return turnOrder;
 		}
+	}
+
+	public PlayerManager Players
+	{
+		get; set;
 	}
 
 	public void StartTurn(int turnOrder)

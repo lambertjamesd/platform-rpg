@@ -160,6 +160,80 @@ public static class EffectCastingFunctions
 		
 		return null;
 	}
+	
+	public static object GetListElement(object[] parameters)
+	{
+		if (parameters.Length == 2)
+		{
+			if (!(parameters[0] is List<object>))
+			{
+				Debug.LogError("GetListElement expects first argument to be a list");
+			}
+			if (!(parameters[1] is int))
+			{
+				Debug.LogError("GetListElement expects second argument to be an int");
+			}
+			
+			List<object> list = (List<object>)parameters[0];
+			int index = (int)parameters[1];
+
+			if (index < list.Count)
+			{
+				return list[index];
+			}
+			else
+			{
+				return null;
+			}
+		}
+		else
+		{
+			Debug.LogError("GetListElement expects two arguments");
+		}
+		
+		return null;
+	}
+	
+	
+	public static object DoesListContain(object[] parameters)
+	{
+		if (parameters.Length == 2)
+		{
+			if (!(parameters[0] is List<object>))
+			{
+				Debug.LogError("GetListElement expects first argument to be a list");
+			}
+			
+			List<object> list = (List<object>)parameters[0];
+			return list.Contains(parameters[1]);
+		}
+		else
+		{
+			Debug.LogError("GetListElement expects two arguments");
+		}
+		
+		return null;
+	}
+	
+	public static object GetListLength(object[] parameters)
+	{
+		if (parameters.Length == 1)
+		{
+			if (!(parameters[0] is List<object>))
+			{
+				Debug.LogError("DoesListContain expects first argument to be a list");
+			}
+			
+			List<object> list = (List<object>)parameters[0];
+			return list.Count;
+		}
+		else
+		{
+			Debug.LogError("DoesListContain expects one arguments");
+		}
+		
+		return null;
+	}
 
 	
 	public static object CreateVector3(object[] parameters)

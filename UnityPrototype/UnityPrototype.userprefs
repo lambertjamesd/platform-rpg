@@ -1,10 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Effect\EffectBinaryOpProperty.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Menu\CharacterDescription.cs">
     <Files>
-      <File FileName="Assets\Scripts\Effect\EffectBinaryOpProperty.cs" Line="412" Column="16" />
-      <File FileName="Assets\Scripts\Effect\EffectFunctionProperty.cs" Line="25" Column="1" />
-      <File FileName="Assets\Scripts\Effect\EffectDefinition.cs" Line="25" Column="1" />
+      <File FileName="Assets\Scripts\Spells\SpellDescription.cs" Line="13" Column="26" />
+      <File FileName="Assets\Scripts\Player\PlayerHUD.cs" Line="21" Column="46" />
+      <File FileName="Assets\Scripts\Menu\CharacterDescription.cs" Line="43" Column="4" />
+      <File FileName="Assets\Scripts\Menu\CharacterSelection.cs" Line="143" Column="3" />
+      <File FileName="Assets\Scripts\CustomFontRenderer.cs" Line="102" Column="22" />
+      <File FileName="Assets\Scripts\CustomFont.cs" Line="92" Column="32" />
+      <File FileName="Assets\Scripts\Player\Player.cs" Line="172" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
