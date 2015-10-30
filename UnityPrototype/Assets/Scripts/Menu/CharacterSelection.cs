@@ -98,6 +98,22 @@ public class CharacterSelection : MonoBehaviour {
 		if (Input.GetButtonDown("Select"))
 		{
 			ChooseSelectedTile();
+
+			if (currentTeamSelection == 2 * teamSize)
+			{
+				FightSetup fightSetup = Object.FindObjectOfType<FightSetup>();
+
+				fightSetup.SetTeamSize(2, teamSize);
+
+				for (int i = 0; i < teamSize; ++i)
+				{
+					fightSetup.SetPlayer(0, i, teamASelection[i].DisplayedCharacter);
+					fightSetup.SetPlayer(1, i, teamBSelection[i].DisplayedCharacter);
+				}
+
+				Object.DontDestroyOnLoad(fightSetup);
+				Application.LoadLevel("FightScene");
+			}
 		}
 
 		if (currentPreviewDuration > 0.0f && activeSpellPreview != null)

@@ -105,6 +105,8 @@
     <Compile Include="Assets\Scripts\Menu\CharacterDescription.cs" />
     <Compile Include="Assets\Scripts\Menu\CharacterSelection.cs" />
     <Compile Include="Assets\Scripts\Menu\CharacterSelectionTile.cs" />
+    <Compile Include="Assets\Scripts\Menu\FightSetup.cs" />
+    <Compile Include="Assets\Scripts\Menu\FightStarter.cs" />
     <Compile Include="Assets\Scripts\Menu\SpellPreview.cs" />
     <Compile Include="Assets\Scripts\Pathfinding\NodeEdgeFinder.cs" />
     <Compile Include="Assets\Scripts\Pathfinding\PathingEdgeFactory.cs" />

@@ -10,6 +10,13 @@ public class CharacterSpawner : MonoBehaviour {
 	public int team;
 
 	public void Awake () {
+		FightSetup fightSetup = Object.FindObjectOfType<FightSetup>();
+
+		if (fightSetup != null && fightSetup.IsStarted)
+		{
+			playerInstance = fightSetup.NextPlayer(team);
+		}
+
 		if (playerInstance != null)
 		{
 			PlayerManager manager = gameObject.GetComponentWithAncestors<PlayerManager>();
