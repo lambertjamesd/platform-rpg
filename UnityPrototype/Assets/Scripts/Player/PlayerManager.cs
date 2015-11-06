@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 public enum PlayerManagerMode {
 	Fight,
-	Preview
+	Preview,
+	RecordPreview
 };
 
 public class PlayerManager : MonoBehaviour, IFixedUpdate {
@@ -19,6 +21,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 	public PlayerManWaitForTurn waitTurnState;
 
 	public PlayerManagerMode mode = PlayerManagerMode.Fight;
+	public TextAsset recording;
 
 	private PlayerHUD playerHUD;
 
@@ -49,7 +52,10 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
 	private void UpdateHUD()
 	{
-		playerHUD.CurrentPlayer = CurrentPlayer;
+		if (playerHUD != null)
+		{
+			playerHUD.CurrentPlayer = CurrentPlayer;
+		}
 	}
 	
 	public Player CurrentPlayer
@@ -136,24 +142,53 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
 		isSelectingPlayer = false;
 		remainingTime = turnLength;
-		playerHUD.showSpellDescriptions = false;
+
+		if (playerHUD != null)
+		{
+			playerHUD.showSpellDescriptions = false;
+		}
+	}
+
+	private void SaveRecording()
+	{
+		SimpleJSON.JSONArray result = new SimpleJSON.JSONArray();
+
+		foreach (Player player in players) {
+			if (player.LastRecording == null)
+			{
+				result.Add(new SimpleJSON.JSONArray());
+			}
+			else
+			{
+				result.Add(player.LastRecording.Serialize());
+			}
+		}
+
+		StreamWriter file = File.CreateText("input-recording.json");
+		file.Write(result.ToString());
+		file.Close();
 	}
 
 	private void ChangeTeams()
 	{	
 		for (int i = 0; i < players.Count; ++i)
 		{
-			if (players[i].Team == currentTurn)
+			if (players[i].Team == currentTurn || mode != PlayerManagerMode.Fight)
 			{
 				players[i].EndTurn();
 			}
+		}
+
+		if (mode == PlayerManagerMode.RecordPreview)
+		{
+			SaveRecording();
 		}
 
 		currentTurn = (currentTurn + 1) % teamCount;
 		
 		for (int i = 0; i < hasPlayerGone.Length; ++i)
 		{
-			hasPlayerGone[i] = !players[i].gameObject.activeSelf || players[i].Team != currentTurn;
+			hasPlayerGone[i] = !players[i].gameObject.activeSelf || (players[i].Team != currentTurn && mode == PlayerManagerMode.Fight);
 		}
 		
 		timeManager.TakeSnapshot();
@@ -167,7 +202,11 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		if (AllPlayersHaveGone)
 		{
 			ChangeTeams();
-			playerHUD.showSpellDescriptions = true;
+
+			if (playerHUD != null)
+			{
+				playerHUD.showSpellDescriptions = true;
+			}
 		}
 		else
 		{
@@ -185,7 +224,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		
 		updateManager.AddLateReciever(this);
 
-		if (mode == PlayerManagerMode.Fight)
+		if (mode == PlayerManagerMode.Fight || mode == PlayerManagerMode.RecordPreview)
 		{
 			playerHUD = GetComponent<PlayerHUD>();
 			cameraAI = Camera.main.GetComponent<FollowCamera>();
@@ -206,10 +245,17 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 				switch (stateName)
 				{
 				case "Start":
-					textState.text = "TEAM " + (currentTurn + 1) + " START";
-					textState.color = TeamColors.GetColor(currentTurn);
-					textState.nextState = "WaitForTurn";
-					return textState;
+					if (textState == null)
+					{
+						return new IdleState();
+					}
+					else
+					{
+						textState.text = "TEAM " + (currentTurn + 1) + " START";
+						textState.color = TeamColors.GetColor(currentTurn);
+						textState.nextState = "WaitForTurn";
+						return textState;
+					}
 				case "WaitForTurn":
 					waitTurnState.nextState = "Start";
 					return waitTurnState;
@@ -219,13 +265,23 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		}
 		else if (mode == PlayerManagerMode.Preview)
 		{
+			if (recording != null)
+			{
+				SimpleJSON.JSONArray recordingData = SimpleJSON.JSON.Parse(recording.text).AsArray;
 
+				for (int i = 0; i < recordingData.Count && i < players.Count; ++i)
+				{
+					players[i].Playback(InputRecording.Deserialize(recordingData[i]));
+				}
+			}
+
+			updateManager.Paused = false;
 		}
 	}
 
 	public void Update()
 	{
-		if (mode == PlayerManagerMode.Fight)
+		if (mode == PlayerManagerMode.Fight || mode == PlayerManagerMode.RecordPreview)
 		{
 			if (isFreeCamera)
 			{
@@ -240,9 +296,12 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 						cameraAI.transform.up * Input.GetAxis("Vertical") +
 						cameraAI.transform.right * Input.GetAxis("Horizontal")
 						);
-					
-					fontRenderer.renderScale = 0.5f;
-					fontRenderer.DrawTextScreen(new Vector3(0.5f, 0.25f, 0.5f), "PRESS LEFT CTRL TO RETURN", CustomFontRenderer.CenterAlign);
+
+					if (fontRenderer != null)
+					{
+						fontRenderer.renderScale = 0.5f;
+						fontRenderer.DrawTextScreen(new Vector3(0.5f, 0.25f, 0.5f), "PRESS LEFT CTRL TO RETURN", CustomFontRenderer.CenterAlign);
+					}
 				}
 			}
 			else if (isSelectingPlayer)
@@ -275,25 +334,38 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 					{
 						SelectNextPlayer();
 					}
-					
-					selectionCursor.position = players[currentSelection].transform.position;
+
+					if (selectionCursor != null)
+					{
+						selectionCursor.position = players[currentSelection].transform.position;
+					}
 					
 					if (Input.GetButtonDown("Select"))
 					{
-						selectionCursor.transform.position = new Vector3(10000.0f, 0.0f, 0.0f);
+						if (selectionCursor != null)
+						{
+							selectionCursor.transform.position = new Vector3(10000.0f, 0.0f, 0.0f);
+						}
+
 						StartSelectedPlayer();
 					}
 
-					fontRenderer.renderScale = 0.5f;
-					fontRenderer.DrawTextScreen(new Vector3(0.5f, 0.25f, 0.5f), "PRESS LEFT CTRL FOR FREE CAMERA", CustomFontRenderer.CenterAlign);
+					if (fontRenderer != null)
+					{
+						fontRenderer.renderScale = 0.5f;
+						fontRenderer.DrawTextScreen(new Vector3(0.5f, 0.25f, 0.5f), "PRESS LEFT CTRL FOR FREE CAMERA", CustomFontRenderer.CenterAlign);
+					}
 
 					lastHorizontal = horizontal;
 				}
 			}
 			else
 			{
-				fontRenderer.renderScale = 1.0f;
-				fontRenderer.DrawTextScreen(new Vector3(0.75f, 0.25f, 0.5f), remainingTime.ToString("0.0"), CustomFontRenderer.CenterAlign);
+				if (fontRenderer != null)
+				{
+					fontRenderer.renderScale = 1.0f;
+					fontRenderer.DrawTextScreen(new Vector3(0.75f, 0.25f, 0.5f), remainingTime.ToString("0.0"), CustomFontRenderer.CenterAlign);
+				}
 			}
 
 			stateMachine.Update(Time.deltaTime);
@@ -302,7 +374,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
 	public void FixedUpdateTick(float dt)
 	{
-		if (!isSelectingPlayer && mode == PlayerManagerMode.Fight)
+		if (!isSelectingPlayer && (mode == PlayerManagerMode.Fight || mode == PlayerManagerMode.RecordPreview))
 		{
 			if (remainingTime > 0.0f)
 			{

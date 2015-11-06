@@ -111,8 +111,15 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 		public float startTime;
 		public List<SpellcastFireListener> fireListeners;
 		public int loopIndex;
+		public int chargeCount;
 		
 		private EffectInstance castInstance;
+
+		public void Init(int chargeCount, float timestamp, float cooldown)
+		{
+			this.chargeCount = chargeCount;
+			cooldownTime = timestamp + cooldown;
+		}
 
 		public SpellState Copy()
 		{
@@ -123,6 +130,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 			result.fireListeners = fireListeners.GetRange(0, fireListeners.Count);
 			result.loopIndex = loopIndex;
 			result.castInstance = castInstance;
+			result.chargeCount = chargeCount;
 
 			return result;
 		}
@@ -143,16 +151,50 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 			}
 		}
 
-		public void SpellStart(float timestamp, float cooldown, EffectInstance instance)
+		public void SpellStart(float timestamp, int maxCharges, float cooldown, EffectInstance instance)
 		{
 			startTime = timestamp;
-			cooldownTime = timestamp + cooldown;
+
+			if (chargeCount == maxCharges)
+			{
+				cooldownTime = timestamp + cooldown;
+			}
+			
+			--chargeCount;
+
 			castInstance = instance;
 		}
 
-		public bool CanUse(float timestamp)
+		public int ChargeCount
 		{
-			return timestamp >= cooldownTime;
+			get
+			{
+				return chargeCount;
+			}
+		}
+
+		public void AddCharge()
+		{
+			++chargeCount;
+		}
+
+		public void ReduceCooldown(float amount)
+		{
+			cooldownTime -= amount;
+		}
+
+		public bool CanUse()
+		{
+			return chargeCount > 0;
+		}
+
+		public void CheckCookdown(float timestep, int maxCharges, float cooldown)
+		{
+			if (timestep >= cooldownTime && chargeCount < maxCharges)
+			{
+				++chargeCount;
+				cooldownTime += cooldown;
+			}
 		}
 
 		public void SpellFinish()
@@ -222,6 +264,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 		context["playerManager"] = gameObject.GetComponentWithAncestors<PlayerManager>();
 		context["casterTeam"] = Player.LayerToTeam(gameObject.layer);
 		context["gameObject"] = gameObject;
+		context["caster"] = this;
 
 		for (int i = 0; i < spells.Length; ++i)
 		{
@@ -233,6 +276,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 			rootInstances[i] = new EffectInstance(effectDefinitions[i], propertySource, spellContext);
 			spellStates[i].fireListeners = new List<SpellcastFireListener>();
+			spellStates[i].Init(spells[i].startingCharges, timeManager.CurrentTime, spells[i].cooldown);
 		}
 	}
 	
@@ -277,9 +321,11 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 	public void CastSpellBegin(int spellIndex, Vector3 direction, float timestamp)
 	{
-		if (spellStates[spellIndex].CanUse(timestamp))
+		if (spellStates[spellIndex].CanUse())
 		{
 			EffectInstance newInstance = rootInstances[spellIndex].NewContext();
+			
+			spellStates[spellIndex].SpellStart(timestamp, spells[spellIndex].maxCharges, spells[spellIndex].cooldown, newInstance);
 
 			newInstance.TriggerEvent("begin", new LambdaPropertySource(name => {
 				switch (name)
@@ -294,8 +340,6 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 				return null;
 			}));
-
-			spellStates[spellIndex].SpellStart(timestamp, spells[spellIndex].cooldown, newInstance);
 		}
 	}
 
@@ -324,6 +368,8 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 					CastSpellHold(i, direction, timestamp);
 				}
 			}
+
+			spellStates[i].CheckCookdown(timestamp, spells[i].maxCharges, spells[i].cooldown);
 		}
 	}
 
@@ -388,6 +434,21 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 		return (float)BitConverter.ToInt32(rndGen.ComputeHash(hashInput), 0) / ((float)0x10000 * (float)0x10000);
 	}
 
+	public void ResetCooldown(int spellIndex, float time)
+	{
+		if (time == 0.0f)
+		{
+			if (spellStates[spellIndex].ChargeCount < spells[spellIndex].maxCharges)
+			{
+				spellStates[spellIndex].AddCharge();
+			}
+		}
+		else
+		{
+			spellStates[spellIndex].ReduceCooldown(time);
+		}
+	}
+
 	public int GetSpellCount()
 	{
 		return spells.Length;
@@ -401,6 +462,11 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 	public float GetSpellCooldown(int index)
 	{
 		return spellStates[index].cooldownTime;
+	}
+
+	public int GetChargeCount(int index)
+	{
+		return spellStates[index].ChargeCount;
 	}
 	
 	public object GetCurrentState()

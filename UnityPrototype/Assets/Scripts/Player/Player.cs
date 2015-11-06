@@ -516,6 +516,11 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		return Mathf.Max(0.0f, spellCaster.GetSpellCooldown(index) - timeManager.CurrentTime);
 	}
 
+	public int GetChargeCount(int index)
+	{
+		return spellCaster.GetChargeCount(index);
+	}
+
 	public void OnEnable()
 	{	
 		updateManager = updateManager ?? gameObject.GetComponentWithAncestors<UpdateManager>();
@@ -610,6 +615,24 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		{
 			wallNormal = hit.normal;
 			isWallSliding = true;
+		}
+	}
+
+	public void Playback(InputRecording recording)
+	{
+		if (lastState != null)
+		{
+			lastState.InputRecord = recording;
+		}
+
+		inputSource = new ReplayInputSource(recording);
+	}
+
+	public InputRecording LastRecording
+	{
+		get
+		{
+			return lastState == null ? null : lastState.InputRecord;
 		}
 	}
 

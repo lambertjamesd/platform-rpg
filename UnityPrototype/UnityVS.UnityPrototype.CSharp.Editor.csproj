@@ -203,11 +203,14 @@
     <None Include="Assets\Resources\BuffEffects.xml" />
     <None Include="Assets\Resources\CollisionLayers.xml" />
     <None Include="Assets\Resources\ControlEffects.xml" />
+    <None Include="Assets\Resources\DamageableEffects.xml" />
     <None Include="Assets\Resources\EffectSettings.xml" />
     <None Include="Assets\Resources\FunctionSettings.xml" />
     <None Include="Assets\Resources\GameObjectEffectBase.xml" />
+    <None Include="Assets\Resources\MathFunctions.xml" />
     <None Include="Assets\Resources\ProjectileEffect.xml" />
     <None Include="Assets\Resources\ShieldEffects.xml" />
+    <None Include="Assets\Resources\SpellEffects.xml" />
     <None Include="Assets\Resources\StatEffects.xml" />
     <None Include="Assets\Resources\StatusEffects.xml" />
     <None Include="Assets\Resources\TimeEffects.xml" />

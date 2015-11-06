@@ -110,7 +110,9 @@
      <None Include="Assets\Resources\EffectSettings.xml" />
      <None Include="Assets\Resources\BarrierEffects.xml" />
      <None Include="Assets\Effects\Wall.xml" />
+     <None Include="Assets\Resources\MathFunctions.xml" />
      <None Include="Assets\Resources\StatusEffects.xml" />
+     <None Include="Assets\Resources\DamageableEffects.xml" />
      <None Include="Assets\Resources\GameObjectEffectBase.xml" />
      <None Include="Assets\ThirdParty\Spriter2Unity\Example\Spriter Project\GreyGuy\Copyright_Information_Please_Read.txt" />
      <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\HOW TO USE THE SKINS.txt" />
@@ -125,6 +127,7 @@
      <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\Credits.txt" />
      <None Include="Assets\Resources\Visual.xml" />
      <None Include="Assets\Effects\Shaders\HealthBar.shader" />
+     <None Include="Assets\Resources\SpellEffects.xml" />
      <None Include="Assets\Resources\ShieldEffects.xml" />
      <None Include="Assets\Resources\CollisionLayers.xml" />
      <None Include="Assets\JSON Tests\TroubleShoot.txt" />

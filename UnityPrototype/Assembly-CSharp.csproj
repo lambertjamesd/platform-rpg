@@ -113,6 +113,7 @@
      <Compile Include="Assets\Scripts\Player\States\DashState.cs" />
      <Compile Include="Assets\Scripts\Player\States\FreeFallState.cs" />
      <Compile Include="Assets\Scripts\Player\States\IState.cs" />
+     <Compile Include="Assets\Scripts\Player\States\IdleState.cs" />
      <Compile Include="Assets\Scripts\Player\States\JumpState.cs" />
      <Compile Include="Assets\Scripts\Player\States\MoveState.cs" />
      <Compile Include="Assets\Scripts\Player\States\RootedState.cs" />
@@ -133,11 +134,13 @@
      <Compile Include="Assets\Scripts\Spells\DashEffect.cs" />
      <Compile Include="Assets\Scripts\Spells\DefaultTimeTravelerEffect.cs" />
      <Compile Include="Assets\Scripts\Spells\LaserArea.cs" />
+     <Compile Include="Assets\Scripts\Spells\MathFunctions.cs" />
      <Compile Include="Assets\Scripts\Spells\Projectile.cs" />
      <Compile Include="Assets\Scripts\Spells\RootEffect.cs" />
      <Compile Include="Assets\Scripts\Spells\ShieldEffect.cs" />
      <Compile Include="Assets\Scripts\Spells\SpellCaster.cs" />
      <Compile Include="Assets\Scripts\Spells\SpellDescription.cs" />
+     <Compile Include="Assets\Scripts\Spells\SpellEffects.cs" />
      <Compile Include="Assets\Scripts\Spells\StatFunctions.cs" />
      <Compile Include="Assets\Scripts\Spells\SwingEffect.cs" />
      <Compile Include="Assets\Scripts\Spells\TeleportEffect.cs" />
@@ -181,7 +184,9 @@
      <None Include="Assets\Resources\EffectSettings.xml" />
      <None Include="Assets\Resources\BarrierEffects.xml" />
      <None Include="Assets\Effects\Wall.xml" />
+     <None Include="Assets\Resources\MathFunctions.xml" />
      <None Include="Assets\Resources\StatusEffects.xml" />
+     <None Include="Assets\Resources\DamageableEffects.xml" />
      <None Include="Assets\Resources\GameObjectEffectBase.xml" />
      <None Include="Assets\ThirdParty\Spriter2Unity\Example\Spriter Project\GreyGuy\Copyright_Information_Please_Read.txt" />
      <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\HOW TO USE THE SKINS.txt" />
@@ -196,6 +201,7 @@
      <None Include="Assets\Animations\AdventurePlatfortmerPack_FULL\Credits.txt" />
      <None Include="Assets\Resources\Visual.xml" />
      <None Include="Assets\Effects\Shaders\HealthBar.shader" />
+     <None Include="Assets\Resources\SpellEffects.xml" />
      <None Include="Assets\Resources\ShieldEffects.xml" />
      <None Include="Assets\Resources\CollisionLayers.xml" />
      <None Include="Assets\JSON Tests\TroubleShoot.txt" />

@@ -120,31 +120,31 @@ public class InputState
 	public static InputState Deserialize(SimpleJSON.JSONNode source, InputState prev)
 	{
 		return new InputState(prev, 
-			source["horizontalControl"].AsFloat,
-			source["jumpButton"].AsBool,
-			source["fireButtons"].AsArray.Childs.Select(value => value.AsBool).ToArray(),
+			source["hc"].AsFloat,
+			source["jump"].AsBool,
+			source["fire"].AsArray.Childs.Select(value => value.AsBool).ToArray(),
 			new Vector3(
-				source["aimX"].AsFloat,
-				source["aimY"].AsFloat,
-				source["aimZ"].AsFloat
+				source["x"].AsFloat,
+				source["y"].AsFloat,
+				source["z"].AsFloat
 			)
 		 );
 	}
 
 	public SimpleJSON.JSONNode Serialize()
 	{
-		SimpleJSON.JSONNode result = new SimpleJSON.JSONNode();
-		result.Add("horizontalControl", new SimpleJSON.JSONData(horizontalControl));
-		result.Add("jumpButton", new SimpleJSON.JSONData(jumpButton));
-		SimpleJSON.JSONArray fireButtons = new SimpleJSON.JSONArray();
+		SimpleJSON.JSONNode result = new SimpleJSON.JSONClass();
+		result.Add("hc", new SimpleJSON.JSONData(horizontalControl));
+		result.Add("jump", new SimpleJSON.JSONData(jumpButton));
+		SimpleJSON.JSONArray fireJson = new SimpleJSON.JSONArray();
 		foreach (bool fireButton in fireButtons)
 		{
-			fireButtons.Add(new SimpleJSON.JSONData(fireButton));
+			fireJson.Add(new SimpleJSON.JSONData(fireButton));
 		}
-		result.Add("fireButtons", fireButtons);
-		result.Add("aimX", new SimpleJSON.JSONData(aimDirection.x)); 
-		result.Add("aimY", new SimpleJSON.JSONData(aimDirection.y));
-		result.Add("aimZ", new SimpleJSON.JSONData(aimDirection.z));
+		result.Add("fire", fireJson);
+		result.Add("x", new SimpleJSON.JSONData(aimDirection.x)); 
+		result.Add("y", new SimpleJSON.JSONData(aimDirection.y));
+		result.Add("z", new SimpleJSON.JSONData(aimDirection.z));
 		return result;
 	}
 }

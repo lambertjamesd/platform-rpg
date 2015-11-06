@@ -14,6 +14,8 @@ public class SpellDescription : ScriptableObject {
 	[Multiline]
 	public string description;
 	private string formattedDescription;
+	public int startingCharges = 1;
+	public int maxCharges = 1;
 	public float cooldown;
 	public float maxHoldTime;
 	public EffectAsset effect;

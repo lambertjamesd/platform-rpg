@@ -12,9 +12,12 @@
 	<include>Visual</include>
 	<include>StatusEffects</include>
 	<include>ControlEffects</include>
+	<include>DamageableEffects</include>
 
 	<include>CollisionLayers</include>
 	<include>FunctionSettings</include>
+	<include>MathFunctions</include>
+	<include>SpellEffects</include>
 		
 	<output-configuration name="caster-spell-event">
 		<parameter>

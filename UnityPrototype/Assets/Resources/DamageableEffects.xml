@@ -1,0 +1,32 @@
+<effect-settings>
+	<input-configuration name="damageable-in">
+		<parameter>
+			<name>target</name>
+			<type>GameObject</type>
+			<description>
+				The game object to add the damageable to
+			</description>
+		</parameter>
+		<parameter>
+			<name>maxHealth</name>
+			<type>float</type>
+			<description>
+				The health of the damageable
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="damageable-out">
+		<event name="on-die">
+			<description>
+				Trigger when the target dies
+			</description>
+		</event>
+	</output-configuration>
+	
+	<effect class="DamageableEffect" alias="damageable" namespace="damageable" input="damageable-in" output="damageable-out">
+		<description>
+			Creates a damageable game object
+		</description>
+	</effect>
+</effect-settings>

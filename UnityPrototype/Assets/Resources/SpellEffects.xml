@@ -1,0 +1,27 @@
+<effect-settings>
+	<input-configuration name="reset-cooldown-in">
+		<parameter>
+			<name>spellIndex</name>
+			<type>int</type>
+			<description>
+				The spell to reset the cooldown for
+			</description>
+		</parameter>
+		<parameter>
+			<name>cooldownRedux</name>
+			<type>float</type>
+			<description>
+				The amount to reduce the cooldown by, if set to 0 then a single charge is returned
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="reset-cooldown-out">
+	</output-configuration>
+	
+	<effect class="ResetSpellCooldown" alias="reset-cooldown" namespace="spell" input="reset-cooldown-in" output="reset-cooldown-out">
+		<description>
+			Reset spell cooldown
+		</description>
+	</effect>
+</effect-settings>

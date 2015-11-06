@@ -1,0 +1,15 @@
+<effect-settings>
+	<function name="Floor" namespace="math">
+		<return-type>float</return-type>
+		<parameter>
+			<name>input</name>
+			<type>float</type>
+			<description>
+				The value to floor
+			</description>
+		</parameter>
+		<description>
+			Returns the floor value of the input
+		</description>
+	</function>
+</effect-settings>

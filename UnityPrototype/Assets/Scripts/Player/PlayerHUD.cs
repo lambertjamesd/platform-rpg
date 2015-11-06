@@ -111,16 +111,30 @@ public class PlayerHUD : MonoBehaviour {
 
 			for (int i = 0; i < currentPlayer.GetSpellCount(); ++i)
 			{
-				GUI.DrawTexture(currentSpellIconRect, currentPlayer.GetSpell(i).icon);
+				SpellDescription spell = currentPlayer.GetSpell(i);
+				GUI.DrawTexture(currentSpellIconRect, spell.icon);
 
 				float cooldown = currentPlayer.GetSpellCooldown(i);
+				int chargeCount = currentPlayer.GetChargeCount(i);
 
-				if (cooldown > 0)
+				if (cooldown > 0 && chargeCount < spell.maxCharges)
 				{
-					SolidRect(currentSpellIconRect, new Color(0.0f, 0.0f, 0.0f,0.5f));
+					if (chargeCount == 0)
+					{
+						SolidRect(currentSpellIconRect, new Color(0.0f, 0.0f, 0.0f,0.5f));
+					}
+
 					GUI.color = Color.white;
 					string cooldownString = cooldown < 1.0f ? cooldown.ToString("0.0") : cooldown.ToString("0");
 					GUI.Label(currentSpellIconRect, cooldownString, centeredStyle);
+				}
+
+				if (spell.maxCharges > 1)
+				{
+					Rect chargeRect = currentSpellIconRect;
+					chargeRect.width *= 0.5f;
+					chargeRect.height *= 0.5f;
+					GUI.Label(chargeRect, chargeCount.ToString(), centeredStyle);
 				}
 
 				if (hoverSpellIndex < Player.SPELL_COUNT && hoverSpellIndex != i)

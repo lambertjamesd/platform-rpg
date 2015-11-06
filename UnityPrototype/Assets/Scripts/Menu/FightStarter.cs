@@ -3,7 +3,13 @@ using System.Collections;
 
 public class FightStarter : MonoBehaviour {
 	void Start () {
-		Object.FindObjectOfType<FightSetup>().StartGame();
+		FightSetup setup = Object.FindObjectOfType<FightSetup>();
+
+		if (setup != null)
+		{
+			setup.StartGame();
+		}
+
 		Destroy(gameObject);
 	}
 }

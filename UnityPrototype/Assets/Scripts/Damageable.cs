@@ -3,6 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+public class DamageableEffect : EffectObject
+{
+	public override void StartEffect(EffectInstance instance) {
+		base.StartEffect(instance);
+
+		GameObject target = instance.GetValue<GameObject>("target", null);
+
+		Damageable damageable = target.GetOrAddComponent<Damageable>();
+		damageable.SetMaxHealth(instance.GetFloatValue("maxHealth", damageable.maxHealth));
+
+		damageable.SetDeathCallback(delegate {
+			instance.TriggerEvent("die", new LambdaPropertySource(name => null));
+		});
+	}
+}
+
 public class Damageable : MonoBehaviour, ITimeTravelable {
 
 	public List<Shield> shields = new List<Shield>();
@@ -10,11 +26,26 @@ public class Damageable : MonoBehaviour, ITimeTravelable {
 	private float currentHealth;
 	private TimeManager timeManager;
 
+	public delegate void DeathCallback();
+
+	private DeathCallback deathCallback;
+
 	// Use this for initialization
 	void Awake () {
 		currentHealth = maxHealth;
 		timeManager = gameObject.GetComponentWithAncestors<TimeManager>();
 		timeManager.AddTimeTraveler(this);
+	}
+
+	public void SetDeathCallback(DeathCallback value)
+	{
+		deathCallback = value;
+	}
+
+	public void SetMaxHealth(float value)
+	{
+		currentHealth = value * HealthPercentage;
+		maxHealth = value;
 	}
 
 	public float CurrentHealth
@@ -86,6 +117,11 @@ public class Damageable : MonoBehaviour, ITimeTravelable {
 
 			currentHealth -= amount;
 
+			if (IsDead && deathCallback != null)
+			{
+				deathCallback();
+			}
+
 			return IsDead;
 		}
 
@@ -139,12 +175,19 @@ public class Damageable : MonoBehaviour, ITimeTravelable {
 	
 	public void RewindToState(object state)
 	{
-		object[] objectArray = (object[])state;
-		maxHealth = (float)objectArray[0];
-		currentHealth = (float)objectArray[1];
+		if (state == null)
+		{
+			Destroy(gameObject);
+		}
+		else
+		{
+			object[] objectArray = (object[])state;
+			maxHealth = (float)objectArray[0];
+			currentHealth = (float)objectArray[1];
 
-		object[] shieldStates = (object[])objectArray[2];
-		shields = shieldStates.Select(shieldState => Shield.RewindToState(shieldState)).ToList();
+			object[] shieldStates = (object[])objectArray[2];
+			shields = shieldStates.Select(shieldState => Shield.RewindToState(shieldState)).ToList();
+		}
 	}
 	
 	public TimeManager GetTimeManager()
