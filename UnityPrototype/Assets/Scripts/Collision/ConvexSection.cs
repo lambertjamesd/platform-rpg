@@ -7,8 +7,9 @@ public class ConvexSection {
 	[SerializeField]
 	private Vector2[] points;
 	private Vector2[] normals;
-	[SerializeField]
 	private Connection[] connections;
+	[SerializeField]
+	private ConnectionSerialData[] connectionSerialData;
 	
 	private BoundingBox boundingBox;
 	private bool initialized = false;
@@ -41,18 +42,22 @@ public class ConvexSection {
 	}
 	
 	[System.Serializable]
+	private class ConnectionSerialData
+	{
+		public int adjacentSectionIndex = -1;
+		public int adjacentIndex;
+	}
+
 	private class Connection
 	{
 		public Connection()
 		{
 			adjacent = null;
-			adjacentIndex = -1;
 		}
 		
 		public Connection(ConvexSection adjacentSection)
 		{
 			this.adjacent = adjacentSection;
-			adjacentIndex = -1;
 		}
 		
 		public ConvexSection Adjacent
@@ -61,23 +66,41 @@ public class ConvexSection {
 			{
 				return adjacent;
 			}
-			
-			set
-			{
-				adjacent = value;
-			}
 		}
 		
 		private ConvexSection adjacent;
-		public int adjacentSectionIndex = -1;
-		public int adjacentIndex;
+	}
+
+	
+	public void ReconnectSections(ConcaveCollider collider)
+	{
+		RecalcNormals();
+		RecalcBoundingBox();
+
+		if (connectionSerialData != null)
+		{
+			connections = new Connection[connectionSerialData.Length];
+			
+			for (int i = 0; i < connectionSerialData.Length; ++i)
+			{
+				if (connectionSerialData[i].adjacentSectionIndex != -1)
+				{
+					connections[i] = new Connection(collider.GetSection(connectionSerialData[i].adjacentSectionIndex));
+				}
+				else
+				{
+					connections[i] = new Connection();
+				}
+			}
+		}
 	}
 	
 	public bool HasAdjacentSection(int index)
 	{
-		return connections[index] != null &&
+		return connections != null &&
+			connections[index] != null &&
 			connections[index].Adjacent != null &&
-				connections[index].adjacentIndex != -1;
+				connectionSerialData[index].adjacentIndex != -1;
 	}
 
 	public ConvexSection GetAdjacentSection(int index)
@@ -87,7 +110,7 @@ public class ConvexSection {
 
 	public int GetAdjacentSectionIndex(int index)
 	{
-		return connections[index] == null ? -1 : connections[index].adjacentIndex;
+		return connections[index] == null ? -1 : connectionSerialData[index].adjacentIndex;
 	}
 	
 	private void RecalcBoundingBox()
@@ -112,37 +135,13 @@ public class ConvexSection {
 		}
 	}
 	
-	private void Initialize(ConcaveCollider collider)
-	{
-		RecalcNormals();
-		RecalcBoundingBox();
-		
-		for (int i = 0; i < connections.Length; ++i)
-		{
-			if (connections[i] != null && connections[i].adjacentSectionIndex != -1)
-			{
-				connections[i].Adjacent = collider.GetSection(connections[i].adjacentSectionIndex);
-			}
-		}
-		
-		initialized = true;
-	}
-	
-	public void EnsureInitialized(ConcaveCollider collider)
-	{
-		if (!initialized)
-		{
-			Initialize(collider);
-		}
-	}
-	
 	public void SaveAdjacentIndices(ConcaveCollider collider)
 	{
 		for (int i = 0; i < connections.Length; ++i)
 		{
 			if (connections[i] != null && connections[i].Adjacent != null)
 			{
-				connections[i].adjacentSectionIndex = collider.GetIndex(connections[i].Adjacent);
+				connectionSerialData[i].adjacentSectionIndex = collider.GetIndex(connections[i].Adjacent);
 			}
 		}
 	}
@@ -153,6 +152,12 @@ public class ConvexSection {
 		{
 			this.points = points;
 			this.connections = new Connection[adjacentSections.Length];
+			this.connectionSerialData = new ConnectionSerialData[adjacentSections.Length];
+
+			for (int i = 0; i < adjacentSections.Length; ++i)
+			{
+				this.connectionSerialData[i] = new ConnectionSerialData();
+			}
 			
 			boundingBox.min = points[0];
 			boundingBox.max = points[0];
@@ -170,8 +175,6 @@ public class ConvexSection {
 			
 			RecalcNormals();
 		}
-		
-		initialized = true;
 	}
 	
 	public int PointCount
@@ -212,10 +215,10 @@ public class ConvexSection {
 		if (otherIndex != -1)
 		{
 			connections[index] = new Connection(otherSection);
-			connections[index].adjacentIndex = otherIndex;
+			connectionSerialData[index].adjacentIndex = otherIndex;
 			
 			otherSection.connections[otherIndex] = new Connection(this);
-			otherSection.connections[otherIndex].adjacentIndex = index;
+			otherSection.connectionSerialData[otherIndex].adjacentIndex = index;
 		}
 	}
 	
@@ -225,7 +228,7 @@ public class ConvexSection {
 		
 		if (HasAdjacentSection(nextIndex))
 		{
-			return connections[nextIndex].Adjacent.GetNextNormal(connections[nextIndex].adjacentIndex);
+			return connections[nextIndex].Adjacent.GetNextNormal(connectionSerialData[nextIndex].adjacentIndex);
 		}
 		else
 		{
@@ -239,7 +242,7 @@ public class ConvexSection {
 		
 		if (HasAdjacentSection(prevIndex))
 		{
-			return connections[prevIndex].Adjacent.GetPrevNormal(connections[prevIndex].adjacentIndex);
+			return connections[prevIndex].Adjacent.GetPrevNormal(connectionSerialData[prevIndex].adjacentIndex);
 		}
 		else
 		{

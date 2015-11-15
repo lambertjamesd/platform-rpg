@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.68.0 r58537</authoring_tool>
+    </contributor>
+    <created>2015-11-07T21:02:43</created>
+    <modified>2015-11-07T21:02:43</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_cameras>
+    <camera id="Camera-camera" name="Camera">
+      <optics>
+        <technique_common>
+          <perspective>
+            <xfov sid="xfov">49.13434</xfov>
+            <aspect_ratio>1.777778</aspect_ratio>
+            <znear sid="znear">0.1</znear>
+            <zfar sid="zfar">100</zfar>
+          </perspective>
+        </technique_common>
+      </optics>
+    </camera>
+  </library_cameras>
+  <library_lights>
+    <light id="Lamp-light" name="Lamp">
+      <technique_common>
+        <point>
+          <color sid="color">1 1 1</color>
+          <constant_attenuation>1</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0.00111109</quadratic_attenuation>
+        </point>
+      </technique_common>
+      <extra>
+        <technique profile="blender">
+          <adapt_thresh>0.000999987</adapt_thresh>
+          <area_shape>1</area_shape>
+          <area_size>0.1</area_size>
+          <area_sizey>0.1</area_sizey>
+          <area_sizez>1</area_sizez>
+          <atm_distance_factor>1</atm_distance_factor>
+          <atm_extinction_factor>1</atm_extinction_factor>
+          <atm_turbidity>2</atm_turbidity>
+          <att1>0</att1>
+          <att2>1</att2>
+          <backscattered_light>1</backscattered_light>
+          <bias>1</bias>
+          <blue>1</blue>
+          <buffers>1</buffers>
+          <bufflag>0</bufflag>
+          <bufsize>2880</bufsize>
+          <buftype>2</buftype>
+          <clipend>30.002</clipend>
+          <clipsta>1.000799</clipsta>
+          <compressthresh>0.04999995</compressthresh>
+          <dist sid="blender_dist">29.99998</dist>
+          <energy sid="blender_energy">1</energy>
+          <falloff_type>2</falloff_type>
+          <filtertype>0</filtertype>
+          <flag>0</flag>
+          <gamma sid="blender_gamma">1</gamma>
+          <green>1</green>
+          <halo_intensity sid="blnder_halo_intensity">1</halo_intensity>
+          <horizon_brightness>1</horizon_brightness>
+          <mode>8192</mode>
+          <ray_samp>1</ray_samp>
+          <ray_samp_method>1</ray_samp_method>
+          <ray_samp_type>0</ray_samp_type>
+          <ray_sampy>1</ray_sampy>
+          <ray_sampz>1</ray_sampz>
+          <red>1</red>
+          <samp>3</samp>
+          <shadhalostep>0</shadhalostep>
+          <shadow_b sid="blender_shadow_b">0</shadow_b>
+          <shadow_g sid="blender_shadow_g">0</shadow_g>
+          <shadow_r sid="blender_shadow_r">0</shadow_r>
+          <shadspotsize>45</shadspotsize>
+          <sky_colorspace>0</sky_colorspace>
+          <sky_exposure>1</sky_exposure>
+          <skyblendfac>1</skyblendfac>
+          <skyblendtype>1</skyblendtype>
+          <soft>3</soft>
+          <spotblend>0.15</spotblend>
+          <spotsize>75</spotsize>
+          <spread>1</spread>
+          <sun_brightness>1</sun_brightness>
+          <sun_effect_type>0</sun_effect_type>
+          <sun_intensity>1</sun_intensity>
+          <sun_size>1</sun_size>
+          <type>0</type>
+        </technique>
+      </extra>
+    </light>
+  </library_lights>
+  <library_images/>
+  <library_effects>
+    <effect id="Tileset-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color sid="emission">1 1 1 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0 0 0 1</color>
+            </diffuse>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </lambert>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided>1</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+      <extra><technique profile="MAX3D"><double_sided>1</double_sided></technique></extra>
+    </effect>
+  </library_effects>
+  <library_materials>
+    <material id="Tileset-material" name="Tileset">
+      <instance_effect url="#Tileset-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="InteriorTileBackground-mesh" name="InteriorTileBackground">
+      <mesh>
+        <source id="InteriorTileBackground-mesh-positions">
+          <float_array id="InteriorTileBackground-mesh-positions-array" count="12">-3.5 6.41732e-7 -1.5 3.5 -4.15238e-7 -1.5 -3.5 4.15238e-7 1.5 3.5 -6.41732e-7 1.5</float_array>
+          <technique_common>
+            <accessor source="#InteriorTileBackground-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="InteriorTileBackground-mesh-normals">
+          <float_array id="InteriorTileBackground-mesh-normals-array" count="6">1.50996e-7 1 0 1.50996e-7 1 0</float_array>
+          <technique_common>
+            <accessor source="#InteriorTileBackground-mesh-normals-array" count="2" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="InteriorTileBackground-mesh-map-0">
+          <float_array id="InteriorTileBackground-mesh-map-0-array" count="12">0 0.625 0.875 0.625 0 1 0.875 0.625 0.875 1 0 1</float_array>
+          <technique_common>
+            <accessor source="#InteriorTileBackground-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="InteriorTileBackground-mesh-vertices">
+          <input semantic="POSITION" source="#InteriorTileBackground-mesh-positions"/>
+        </vertices>
+        <polylist material="Tileset-material" count="2">
+          <input semantic="VERTEX" source="#InteriorTileBackground-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#InteriorTileBackground-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#InteriorTileBackground-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 </vcount>
+          <p>1 0 0 0 0 1 3 0 2 0 1 3 2 1 4 3 1 5</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+    <geometry id="BarrierCenter-mesh" name="BarrierCenter">
+      <mesh>
+        <source id="BarrierCenter-mesh-positions">
+          <float_array id="BarrierCenter-mesh-positions-array" count="12">-2.5 4.15238e-7 -0.4999995 2.5 -3.39741e-7 -0.4999995 -2.5 3.39741e-7 0.4999995 2.5 -4.15238e-7 0.4999995</float_array>
+          <technique_common>
+            <accessor source="#BarrierCenter-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BarrierCenter-mesh-normals">
+          <float_array id="BarrierCenter-mesh-normals-array" count="6">1.50996e-7 1 0 1.50996e-7 1 0</float_array>
+          <technique_common>
+            <accessor source="#BarrierCenter-mesh-normals-array" count="2" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BarrierCenter-mesh-map-0">
+          <float_array id="BarrierCenter-mesh-map-0-array" count="12">0.125 0.5 0.75 0.5 0.125 0.625 0.75 0.5 0.75 0.625 0.125 0.625</float_array>
+          <technique_common>
+            <accessor source="#BarrierCenter-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="BarrierCenter-mesh-vertices">
+          <input semantic="POSITION" source="#BarrierCenter-mesh-positions"/>
+        </vertices>
+        <polylist material="Tileset-material" count="2">
+          <input semantic="VERTEX" source="#BarrierCenter-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#BarrierCenter-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#BarrierCenter-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 </vcount>
+          <p>1 0 0 0 0 1 3 0 2 0 1 3 2 1 4 3 1 5</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+    <geometry id="BarrierCapLeft-mesh" name="BarrierCapLeft">
+      <mesh>
+        <source id="BarrierCapLeft-mesh-positions">
+          <float_array id="BarrierCapLeft-mesh-positions-array" count="12">-0.5 0 -0.4999995 0.5 0 -0.4999995 -0.5 0 0.4999995 0.5 0 0.4999995</float_array>
+          <technique_common>
+            <accessor source="#BarrierCapLeft-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BarrierCapLeft-mesh-normals">
+          <float_array id="BarrierCapLeft-mesh-normals-array" count="6">1.50996e-7 1 0 1.50996e-7 1 0</float_array>
+          <technique_common>
+            <accessor source="#BarrierCapLeft-mesh-normals-array" count="2" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BarrierCapLeft-mesh-map-0">
+          <float_array id="BarrierCapLeft-mesh-map-0-array" count="12">0 0.5 0.125 0.5 0 0.625 0.125 0.5 0.125 0.625 0 0.625</float_array>
+          <technique_common>
+            <accessor source="#BarrierCapLeft-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="BarrierCapLeft-mesh-vertices">
+          <input semantic="POSITION" source="#BarrierCapLeft-mesh-positions"/>
+        </vertices>
+        <polylist material="Tileset-material" count="2">
+          <input semantic="VERTEX" source="#BarrierCapLeft-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#BarrierCapLeft-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#BarrierCapLeft-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 </vcount>
+          <p>1 0 0 0 0 1 3 0 2 0 1 3 2 1 4 3 1 5</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+    <geometry id="BarrierRightCap-mesh" name="BarrierRightCap">
+      <mesh>
+        <source id="BarrierRightCap-mesh-positions">
+          <float_array id="BarrierRightCap-mesh-positions-array" count="12">-0.5 0 -0.4999995 0.5 0 -0.4999995 -0.5 0 0.4999995 0.5 0 0.4999995</float_array>
+          <technique_common>
+            <accessor source="#BarrierRightCap-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BarrierRightCap-mesh-normals">
+          <float_array id="BarrierRightCap-mesh-normals-array" count="6">1.50996e-7 1 0 1.50996e-7 1 0</float_array>
+          <technique_common>
+            <accessor source="#BarrierRightCap-mesh-normals-array" count="2" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BarrierRightCap-mesh-map-0">
+          <float_array id="BarrierRightCap-mesh-map-0-array" count="12">0.75 0.5 0.875 0.5 0.75 0.625 0.875 0.5 0.875 0.625 0.75 0.625</float_array>
+          <technique_common>
+            <accessor source="#BarrierRightCap-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="BarrierRightCap-mesh-vertices">
+          <input semantic="POSITION" source="#BarrierRightCap-mesh-positions"/>
+        </vertices>
+        <polylist material="Tileset-material" count="2">
+          <input semantic="VERTEX" source="#BarrierRightCap-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#BarrierRightCap-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#BarrierRightCap-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 </vcount>
+          <p>1 0 0 0 0 1 3 0 2 0 1 3 2 1 4 3 1 5</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+    <geometry id="BarrierCorner-mesh" name="BarrierCorner">
+      <mesh>
+        <source id="BarrierCorner-mesh-positions">
+          <float_array id="BarrierCorner-mesh-positions-array" count="12">-0.5 0 -0.4999995 0.5 0 -0.4999995 -0.5 0 0.4999995 0.5 0 0.4999995</float_array>
+          <technique_common>
+            <accessor source="#BarrierCorner-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BarrierCorner-mesh-normals">
+          <float_array id="BarrierCorner-mesh-normals-array" count="6">1.50996e-7 1 0 1.50996e-7 1 0</float_array>
+          <technique_common>
+            <accessor source="#BarrierCorner-mesh-normals-array" count="2" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BarrierCorner-mesh-map-0">
+          <float_array id="BarrierCorner-mesh-map-0-array" count="12">0.875 0.5 1 0.5 0.875 0.625 1 0.5 1 0.625 0.875 0.625</float_array>
+          <technique_common>
+            <accessor source="#BarrierCorner-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="BarrierCorner-mesh-vertices">
+          <input semantic="POSITION" source="#BarrierCorner-mesh-positions"/>
+        </vertices>
+        <polylist material="Tileset-material" count="2">
+          <input semantic="VERTEX" source="#BarrierCorner-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#BarrierCorner-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#BarrierCorner-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 </vcount>
+          <p>1 0 0 0 0 1 3 0 2 0 1 3 2 1 4 3 1 5</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+    <geometry id="Pipe1-mesh" name="Pipe1">
+      <mesh>
+        <source id="Pipe1-mesh-positions">
+          <float_array id="Pipe1-mesh-positions-array" count="12">-0.5 0 -0.4999995 0.5 0 -0.4999995 -0.5 0 0.4999995 0.5 0 0.4999995</float_array>
+          <technique_common>
+            <accessor source="#Pipe1-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Pipe1-mesh-normals">
+          <float_array id="Pipe1-mesh-normals-array" count="6">1.50996e-7 1 0 1.50996e-7 1 0</float_array>
+          <technique_common>
+            <accessor source="#Pipe1-mesh-normals-array" count="2" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Pipe1-mesh-map-0">
+          <float_array id="Pipe1-mesh-map-0-array" count="12">0 0.375 0.125 0.375 0 0.5 0.125 0.375 0.125 0.5 0 0.5</float_array>
+          <technique_common>
+            <accessor source="#Pipe1-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Pipe1-mesh-vertices">
+          <input semantic="POSITION" source="#Pipe1-mesh-positions"/>
+        </vertices>
+        <polylist material="Tileset-material" count="2">
+          <input semantic="VERTEX" source="#Pipe1-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Pipe1-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Pipe1-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 </vcount>
+          <p>1 0 0 0 0 1 3 0 2 0 1 3 2 1 4 3 1 5</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+    <geometry id="Pipe2-mesh" name="Pipe2">
+      <mesh>
+        <source id="Pipe2-mesh-positions">
+          <float_array id="Pipe2-mesh-positions-array" count="12">-0.5 0 -0.4999995 0.5 0 -0.4999995 -0.5 0 0.4999995 0.5 0 0.4999995</float_array>
+          <technique_common>
+            <accessor source="#Pipe2-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Pipe2-mesh-normals">
+          <float_array id="Pipe2-mesh-normals-array" count="6">1.50996e-7 1 0 1.50996e-7 1 0</float_array>
+          <technique_common>
+            <accessor source="#Pipe2-mesh-normals-array" count="2" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Pipe2-mesh-map-0">
+          <float_array id="Pipe2-mesh-map-0-array" count="12">0 0.25 0.125 0.25 0 0.375 0.125 0.25 0.125 0.375 0 0.375</float_array>
+          <technique_common>
+            <accessor source="#Pipe2-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Pipe2-mesh-vertices">
+          <input semantic="POSITION" source="#Pipe2-mesh-positions"/>
+        </vertices>
+        <polylist material="Tileset-material" count="2">
+          <input semantic="VERTEX" source="#Pipe2-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Pipe2-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Pipe2-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 </vcount>
+          <p>1 0 0 0 0 1 3 0 2 0 1 3 2 1 4 3 1 5</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+    <geometry id="Pipe3-mesh" name="Pipe3">
+      <mesh>
+        <source id="Pipe3-mesh-positions">
+          <float_array id="Pipe3-mesh-positions-array" count="12">-0.5 0 -0.4999995 0.5 0 -0.4999995 -0.5 0 0.4999995 0.5 0 0.4999995</float_array>
+          <technique_common>
+            <accessor source="#Pipe3-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Pipe3-mesh-normals">
+          <float_array id="Pipe3-mesh-normals-array" count="6">1.50996e-7 1 0 1.50996e-7 1 0</float_array>
+          <technique_common>
+            <accessor source="#Pipe3-mesh-normals-array" count="2" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Pipe3-mesh-map-0">
+          <float_array id="Pipe3-mesh-map-0-array" count="12">0 0.125 0.125 0.125 0 0.25 0.125 0.125 0.125 0.25 0 0.25</float_array>
+          <technique_common>
+            <accessor source="#Pipe3-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Pipe3-mesh-vertices">
+          <input semantic="POSITION" source="#Pipe3-mesh-positions"/>
+        </vertices>
+        <polylist material="Tileset-material" count="2">
+          <input semantic="VERTEX" source="#Pipe3-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Pipe3-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Pipe3-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 </vcount>
+          <p>1 0 0 0 0 1 3 0 2 0 1 3 2 1 4 3 1 5</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+    <geometry id="PipeCorner-mesh" name="PipeCorner">
+      <mesh>
+        <source id="PipeCorner-mesh-positions">
+          <float_array id="PipeCorner-mesh-positions-array" count="12">-0.5 0 -0.4999995 0.5 0 -0.4999995 -0.5 0 0.4999995 0.5 0 0.4999995</float_array>
+          <technique_common>
+            <accessor source="#PipeCorner-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="PipeCorner-mesh-normals">
+          <float_array id="PipeCorner-mesh-normals-array" count="6">1.50996e-7 1 0 1.50996e-7 1 0</float_array>
+          <technique_common>
+            <accessor source="#PipeCorner-mesh-normals-array" count="2" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="PipeCorner-mesh-map-0">
+          <float_array id="PipeCorner-mesh-map-0-array" count="12">0 0 0.125 0 0 0.125 0.125 0 0.125 0.125 0 0.125</float_array>
+          <technique_common>
+            <accessor source="#PipeCorner-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="PipeCorner-mesh-vertices">
+          <input semantic="POSITION" source="#PipeCorner-mesh-positions"/>
+        </vertices>
+        <polylist material="Tileset-material" count="2">
+          <input semantic="VERTEX" source="#PipeCorner-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#PipeCorner-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#PipeCorner-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 </vcount>
+          <p>1 0 0 0 0 1 3 0 2 0 1 3 2 1 4 3 1 5</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+    <geometry id="PipeCap-mesh" name="PipeCap">
+      <mesh>
+        <source id="PipeCap-mesh-positions">
+          <float_array id="PipeCap-mesh-positions-array" count="12">-0.5 0 -0.4999995 0.5 0 -0.4999995 -0.5 0 0.4999995 0.5 0 0.4999995</float_array>
+          <technique_common>
+            <accessor source="#PipeCap-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="PipeCap-mesh-normals">
+          <float_array id="PipeCap-mesh-normals-array" count="6">1.50996e-7 1 0 1.50996e-7 1 0</float_array>
+          <technique_common>
+            <accessor source="#PipeCap-mesh-normals-array" count="2" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="PipeCap-mesh-map-0">
+          <float_array id="PipeCap-mesh-map-0-array" count="12">0.125 0 0.25 0 0.125 0.125 0.25 0 0.25 0.125 0.125 0.125</float_array>
+          <technique_common>
+            <accessor source="#PipeCap-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="PipeCap-mesh-vertices">
+          <input semantic="POSITION" source="#PipeCap-mesh-positions"/>
+        </vertices>
+        <polylist material="Tileset-material" count="2">
+          <input semantic="VERTEX" source="#PipeCap-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#PipeCap-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#PipeCap-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 </vcount>
+          <p>1 0 0 0 0 1 3 0 2 0 1 3 2 1 4 3 1 5</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+    <geometry id="Pipe4-mesh" name="Pipe4">
+      <mesh>
+        <source id="Pipe4-mesh-positions">
+          <float_array id="Pipe4-mesh-positions-array" count="12">-0.5 0 -0.4999995 0.5 0 -0.4999995 -0.5 0 0.4999995 0.5 0 0.4999995</float_array>
+          <technique_common>
+            <accessor source="#Pipe4-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Pipe4-mesh-normals">
+          <float_array id="Pipe4-mesh-normals-array" count="6">1.50996e-7 1 0 1.50996e-7 1 0</float_array>
+          <technique_common>
+            <accessor source="#Pipe4-mesh-normals-array" count="2" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Pipe4-mesh-map-0">
+          <float_array id="Pipe4-mesh-map-0-array" count="12">0.125 0.125 0.25 0.125 0.125 0.25 0.25 0.125 0.25 0.25 0.125 0.25</float_array>
+          <technique_common>
+            <accessor source="#Pipe4-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Pipe4-mesh-vertices">
+          <input semantic="POSITION" source="#Pipe4-mesh-positions"/>
+        </vertices>
+        <polylist material="Tileset-material" count="2">
+          <input semantic="VERTEX" source="#Pipe4-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Pipe4-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Pipe4-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 </vcount>
+          <p>1 0 0 0 0 1 3 0 2 0 1 3 2 1 4 3 1 5</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+  </library_geometries>
+  <library_controllers/>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="Camera" name="Camera" type="NODE">
+        <matrix sid="transform">0.6858805 -0.3173701 0.6548619 7.481132 0.7276338 0.3124686 -0.6106656 -6.50764 -0.01081678 0.8953432 0.4452454 5.343665 0 0 0 1</matrix>
+        <instance_camera url="#Camera-camera"/>
+      </node>
+      <node id="Lamp" name="Lamp" type="NODE">
+        <matrix sid="transform">-0.2908646 -0.7711008 0.5663932 0.8207693 0.9551712 -0.1998834 0.2183912 2.543907 -0.05518906 0.6045247 0.7946723 5.903862 0 0 0 1</matrix>
+        <instance_light url="#Lamp-light"/>
+      </node>
+      <node id="InteriorTileBackground" name="InteriorTileBackground" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <instance_geometry url="#InteriorTileBackground-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Tileset-material" target="#Tileset-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="BarrierCenter" name="BarrierCenter" type="NODE">
+        <matrix sid="transform">1 0 0 1.04216e-14 0 1 0 1.19209e-7 0 0 1 -2 0 0 0 1</matrix>
+        <instance_geometry url="#BarrierCenter-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Tileset-material" target="#Tileset-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="BarrierLeftCap" name="BarrierLeftCap" type="NODE">
+        <matrix sid="transform">1 0 0 3 0 1 0 -1.43059e-7 0 0 1 -2 0 0 0 1</matrix>
+        <instance_geometry url="#BarrierCapLeft-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Tileset-material" target="#Tileset-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="BarrierRightCap" name="BarrierRightCap" type="NODE">
+        <matrix sid="transform">1 0 0 -3 0 1 0 3.81478e-7 0 0 1 -2 0 0 0 1</matrix>
+        <instance_geometry url="#BarrierRightCap-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Tileset-material" target="#Tileset-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="BarrierCorner" name="BarrierCorner" type="NODE">
+        <matrix sid="transform">1 0 0 -4 0 1 0 4.689e-7 0 0 1 -2 0 0 0 1</matrix>
+        <instance_geometry url="#BarrierCorner-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Tileset-material" target="#Tileset-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="Pipe1" name="Pipe1" type="NODE">
+        <matrix sid="transform">1 0 0 3 0 1 0 -1.43059e-7 0 0 1 -3 0 0 0 1</matrix>
+        <instance_geometry url="#Pipe1-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Tileset-material" target="#Tileset-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="Pipe2" name="Pipe2" type="NODE">
+        <matrix sid="transform">1 0 0 3 0 1 0 -1.43059e-7 0 0 1 -4 0 0 0 1</matrix>
+        <instance_geometry url="#Pipe2-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Tileset-material" target="#Tileset-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="Pipe3" name="Pipe3" type="NODE">
+        <matrix sid="transform">1 0 0 3 0 1 0 -1.43059e-7 0 0 1 -5 0 0 0 1</matrix>
+        <instance_geometry url="#Pipe3-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Tileset-material" target="#Tileset-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="PipeCorner" name="PipeCorner" type="NODE">
+        <matrix sid="transform">1 0 0 3 0 1 0 -1.43059e-7 0 0 1 -6 0 0 0 1</matrix>
+        <instance_geometry url="#PipeCorner-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Tileset-material" target="#Tileset-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="PipeCap" name="PipeCap" type="NODE">
+        <matrix sid="transform">1 0 0 2 0 1 0 -1.43059e-7 0 0 1 -6 0 0 0 1</matrix>
+        <instance_geometry url="#PipeCap-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Tileset-material" target="#Tileset-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="Pipe4" name="Pipe4" type="NODE">
+        <matrix sid="transform">1 0 0 2 0 1 0 -1.43059e-7 0 0 1 -5 0 0 0 1</matrix>
+        <instance_geometry url="#Pipe4-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Tileset-material" target="#Tileset-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>

@@ -347,7 +347,10 @@ public class VoxelMapEditor : Editor
 		if (!serializedObject.FindProperty("isBaked").boolValue)
 		{
 			EditorGUILayout.Space();
-
+			
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("tileOrigin"));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("tileOriginRelative"));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("faceRotation"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("bakeCeilings"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("simplifyColliderMesh"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("simplifyVisualMesh"));

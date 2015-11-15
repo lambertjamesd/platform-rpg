@@ -33,7 +33,7 @@ public struct TileDefinition
 	{
 		get
 		{
-			return groupName != null;
+			return groupName != null && groupName.Length > 0;
 		}
 	}
 
@@ -208,7 +208,11 @@ public class TileType {
 		for (int i = randomTileCount; i < tiles.Count; ++i)
 		{
 			Tile tile = tiles[i];
-			UpdateTileGroupSize(tile.largeTileGroup, tile.groupX, tile.groupY);
+
+			if (tile.largeTileGroup != null && tile.largeTileGroup.Length > 0)
+			{
+				UpdateTileGroupSize(tile.largeTileGroup, tile.groupX, tile.groupY);
+			}
 		}
 
 		tileGroups.RemoveRange(0, tileGroups.Count);
@@ -322,6 +326,11 @@ public class TileType {
 		int groupHeight;
 
 		TileGroupSize(group, out groupWidth, out groupHeight);
+
+		if (groupWidth == 0 || groupHeight == 0)
+		{
+			return null;
+		}
 
 		x %= groupWidth;
 		y %= groupHeight;

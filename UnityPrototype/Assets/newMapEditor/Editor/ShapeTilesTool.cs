@@ -123,7 +123,7 @@ public class ShapeTilesTool : VoxelMapTool {
 								if (adjacentVoxel != null)
 								{
 									Tile drawTile = selectedVoxel.GetFace(selectedSide).TileInstance;
-									adjacentVoxel.SetTile(selectedSide, drawTile == null ? selectedTile : drawTile.GetTileDefinition());
+									adjacentVoxel.SetTile(selectedSide, drawTile == null ? selectedTile : drawTile.GetTileDefinition(), voxelMap.faceRotation);
 									toResolve.Add(adjacentVoxel);
 									
 									nextVoxels.Add(adjacentVoxel);
@@ -156,7 +156,7 @@ public class ShapeTilesTool : VoxelMapTool {
 								if (adjacentVoxel != null && adjacentVoxel.IsSolid)
 								{
 									Tile drawTile = selectedVoxel.GetFace(selectedSide).TileInstance;
-									adjacentVoxel.SetTile(selectedSide, drawTile == null ? selectedTile : drawTile.GetTileDefinition());
+									adjacentVoxel.SetTile(selectedSide, drawTile == null ? selectedTile : drawTile.GetTileDefinition(), voxelMap.faceRotation);
 									nextVoxels.Add(adjacentVoxel);
 									toResolve.Add(adjacentVoxel);
 								}

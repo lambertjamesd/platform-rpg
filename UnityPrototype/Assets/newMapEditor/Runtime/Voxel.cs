@@ -39,6 +39,7 @@ public class VoxelFace
 	private Tile tile;
 	private Voxel parentVoxel;
 	private VoxelSide side;
+	private int rotationInterval;
 	
 	private Transform parentTransform;
 	
@@ -46,6 +47,11 @@ public class VoxelFace
 	private Vector3 center;
 
 	private int replaceTileCount = 0;
+
+	public static Quaternion FaceRotation(int amount)
+	{
+		return Quaternion.AngleAxis(90.0f * amount, Vector3.up);
+	}
 	
 	public static Quaternion SideSpin(TileSide side)
 	{
@@ -347,12 +353,12 @@ public class VoxelFace
 		}
 	}
 
-	public void SetTile(string tileType)
+	public void SetTile(string tileType, int rotationInterval)
 	{
-		SetTile(new TileDefinition(tileType));
+		SetTile(new TileDefinition(tileType), rotationInterval);
 	}
 	
-	public void SetTile(TileDefinition tileDef)
+	public void SetTile(TileDefinition tileDef, int rotationInterval)
 	{
 		bool isVariableTile = !tileDef.IsNullTile && parentVoxel.Map.currentTileset.GetNumberOfType(tileDef.typeName) > 1;
 		
@@ -373,10 +379,11 @@ public class VoxelFace
 
 				if (tileTemplate != null)
 				{
+					this.rotationInterval = rotationInterval;
 					tile = (Tile)parentVoxel.Map.InstantiateCallback(tileTemplate);
 					tile.transform.parent = parentTransform;
 					tile.transform.localPosition = center;
-					tile.transform.localRotation = rotation;
+					tile.transform.localRotation = rotation * FaceRotation(rotationInterval);
 					tile.transform.localScale = Vector3.one;
 				}
 			}
@@ -643,9 +650,9 @@ public class Voxel
 		}
 	}
 	
-	public void SetTile(VoxelSide side, string tileType)
+	public void SetTile(VoxelSide side, string tileType, int rotationInterval)
 	{
-		faces[(int)side].SetTile(tileType);
+		faces[(int)side].SetTile(tileType, rotationInterval);
 		
 		if (tileType != null)
 		{
@@ -653,9 +660,9 @@ public class Voxel
 		}
 	}
 
-	public void SetTile(VoxelSide side, TileDefinition tileDef)
+	public void SetTile(VoxelSide side, TileDefinition tileDef, int rotationInterval)
 	{
-		faces[(int)side].SetTile(tileDef);
+		faces[(int)side].SetTile(tileDef, rotationInterval);
 
 		if (!tileDef.IsNullTile)
 		{

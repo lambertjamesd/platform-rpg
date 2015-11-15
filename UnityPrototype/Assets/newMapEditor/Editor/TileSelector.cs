@@ -142,6 +142,8 @@ public class TileSelector : EditorWindow {
 			{
 				scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 				EditorGUILayout.BeginVertical(GUILayout.Width(position.width));
+
+				selectedCategoryIndex = Mathf.Min(selectedCategoryIndex, tileGroupNames.Count - 1);
 				
 				selectedCategoryIndex = CategoryList(new GUIContent("Category"), tileGroupNames, selectedCategoryIndex, position.width);
 				string selectedGroup = tileGroupNames[selectedCategoryIndex];

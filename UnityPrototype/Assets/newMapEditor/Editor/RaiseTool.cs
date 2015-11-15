@@ -119,7 +119,7 @@ public class RaiseTool : VoxelMapTool {
 				{
 					placedVoxels.Add(voxelToDraw);
 
-					voxelToDraw.SetTile(selectedSide, selectedTileDefinition);
+					voxelToDraw.SetTile(selectedSide, selectedTileDefinition, voxelMap.faceRotation);
 					voxelMap.ResolveVoxel(voxelToDraw, selectedTileDefinition);
 				}
 			}

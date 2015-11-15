@@ -1,6 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Spells\LaserArea.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Spells\Visual\LaserVisualizer.cs" Line="22" Column="24" />
+      <File FileName="Assets\Scripts\Spells\LaserArea.cs" Line="27" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="C:\Users\James\Documents\PRPG\UnityPrototype\Assets\Scripts\AreaEffect.cs" line="27" />
@@ -8,5 +13,6 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
     <Watch file="Assets\Scripts\TilemapOverlapCorrecter.cs" line="278" offsetX="1054" offsetY="4432" expression="convexSection" liveUpdate="False" />
+    <Watch file="Assets\newMapEditor\Runtime\Tileset.cs" line="494" offsetX="438" offsetY="7888" expression="tileTypes[type].TileGroups" liveUpdate="False" />
   </MonoDevelop.Ide.DebuggingService.PinnedWatches>
 </Properties>

@@ -1,0 +1,161 @@
+fileFormatVersion: 2
+guid: 266c26d175b21704aadb1c3d687d6c7c
+timeCreated: 1446787579
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: BarrierCenter
+    100002: BarrierCorner
+    100004: BarrierLeftCap
+    100006: BarrierRightCap
+    100008: Camera
+    100010: InteriorTileBackground
+    100012: Lamp
+    100014: //RootNode
+    100016: BarrierLeftCap_001
+    100018: BarrierLeftCap_002
+    100020: BarrierLeftCap_003
+    100022: BarrierLeftCap_004
+    100024: BarrierLeftCap_005
+    100026: BarrierLeftCap_006
+    100028: Pipe1
+    100030: Pipe2
+    100032: Pipe3
+    100034: Pipe4
+    100036: PipeCap
+    100038: PipeCorner
+    400000: BarrierCenter
+    400002: BarrierCorner
+    400004: BarrierLeftCap
+    400006: BarrierRightCap
+    400008: Camera
+    400010: InteriorTileBackground
+    400012: Lamp
+    400014: //RootNode
+    400016: BarrierLeftCap_001
+    400018: BarrierLeftCap_002
+    400020: BarrierLeftCap_003
+    400022: BarrierLeftCap_004
+    400024: BarrierLeftCap_005
+    400026: BarrierLeftCap_006
+    400028: Pipe1
+    400030: Pipe2
+    400032: Pipe3
+    400034: Pipe4
+    400036: PipeCap
+    400038: PipeCorner
+    2300000: BarrierCenter
+    2300002: BarrierCorner
+    2300004: BarrierLeftCap
+    2300006: BarrierRightCap
+    2300008: InteriorTileBackground
+    2300010: BarrierLeftCap_001
+    2300012: BarrierLeftCap_002
+    2300014: BarrierLeftCap_003
+    2300016: BarrierLeftCap_004
+    2300018: BarrierLeftCap_005
+    2300020: BarrierLeftCap_006
+    2300022: Pipe1
+    2300024: Pipe2
+    2300026: Pipe3
+    2300028: Pipe4
+    2300030: PipeCap
+    2300032: PipeCorner
+    3300000: BarrierCenter
+    3300002: BarrierCorner
+    3300004: BarrierLeftCap
+    3300006: BarrierRightCap
+    3300008: InteriorTileBackground
+    3300010: BarrierLeftCap_001
+    3300012: BarrierLeftCap_002
+    3300014: BarrierLeftCap_003
+    3300016: BarrierLeftCap_004
+    3300018: BarrierLeftCap_005
+    3300020: BarrierLeftCap_006
+    3300022: Pipe1
+    3300024: Pipe2
+    3300026: Pipe3
+    3300028: Pipe4
+    3300030: PipeCap
+    3300032: PipeCorner
+    4300000: InteriorTileBackground
+    4300002: BarrierCenter
+    4300004: BarrierLeftCap
+    4300006: BarrierRightCap
+    4300008: BarrierCorner
+    4300010: BarrierLeftCap_001
+    4300012: BarrierLeftCap_002
+    4300014: BarrierLeftCap_003
+    4300016: BarrierLeftCap_004
+    4300018: BarrierLeftCap_005
+    4300020: BarrierLeftCap_006
+    4300022: Pipe1
+    4300024: Pipe2
+    4300026: Pipe3
+    4300028: PipeCorner
+    4300030: PipeCap
+    4300032: Pipe4
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

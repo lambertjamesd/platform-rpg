@@ -172,20 +172,25 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 		});
 	}
 
-	public virtual object GetCurrentState()
+	public static Dictionary<GameObject,List<IOnExitDelegate>> DuplicateListeners(Dictionary<GameObject,List<IOnExitDelegate>> source)
 	{
-		Dictionary<GameObject,List<IOnExitDelegate>> listenerCopy = new Dictionary<GameObject,List<IOnExitDelegate>>(exitListeners.Count);
-
-		foreach (KeyValuePair<GameObject,List<IOnExitDelegate>> keypair in exitListeners)
+		Dictionary<GameObject,List<IOnExitDelegate>> listenerCopy = new Dictionary<GameObject,List<IOnExitDelegate>>(source.Count);
+		
+		foreach (KeyValuePair<GameObject,List<IOnExitDelegate>> keypair in source)
 		{
 			listenerCopy.Add(keypair.Key, new List<IOnExitDelegate>(keypair.Value));
 		}
 
+		return listenerCopy;
+	}
+
+	public virtual object GetCurrentState()
+	{
 		return new object[]{
 			new HashSet<GameObject>(enclosedObjects),
 			new HashSet<GameObject>(alreadyCollided),
 			TimeGameObject.GetCurrentState(gameObject),
-			listenerCopy
+			DuplicateListeners(exitListeners)
 		};
 	}
 
@@ -201,7 +206,7 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 			enclosedObjects = new HashSet<GameObject>((HashSet<GameObject>)stateArray[0]);
 			alreadyCollided = new HashSet<GameObject>((HashSet<GameObject>)stateArray[1]);
 			TimeGameObject.RewindToState(gameObject, stateArray[2]);
-			exitListeners = (Dictionary<GameObject,List<IOnExitDelegate>>)stateArray[3];
+			exitListeners = DuplicateListeners((Dictionary<GameObject,List<IOnExitDelegate>>)stateArray[3]);
 		}
 	}
 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
-public class ConcaveCollider {
+public class ConcaveCollider : ISerializationCallbackReceiver {
 	[SerializeField]
 	private ConvexSection[] sections;
 	private BoundingBox boundingBox;
@@ -58,7 +58,12 @@ public class ConcaveCollider {
 		return -1;
 	}
 	
-	public void EnsureInitialized()
+	public void OnBeforeSerialize()
+	{
+		
+	}
+	
+	public void OnAfterDeserialize()
 	{
 		if (sections.Length > 0)
 		{
@@ -68,8 +73,8 @@ public class ConcaveCollider {
 
 		foreach (ConvexSection section in sections)
 		{
-			section.EnsureInitialized(this);
 			boundingBox = boundingBox.Union(section.BB);
+			section.ReconnectSections(this);
 		}
 	}
 	

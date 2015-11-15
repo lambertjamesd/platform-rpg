@@ -499,10 +499,7 @@ public class TilemapOverlapCorrecter : MonoBehaviour {
 	public bool debugDrawPathing = false;
 
 	void Start () {
-		if (colliderGroup != null)
-		{
-			colliderGroup.EnsureInitialized();
-		}
+
 	}
 
 	public void Rebuild()

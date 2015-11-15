@@ -71,7 +71,7 @@ public class DrawTilesTool : VoxelMapTool {
 				{
 					if (currentEvent.type == EventType.MouseDown)
 					{
-						startDrawVoxelLocation = raycastHit.Voxel.Center;
+						startDrawVoxelLocation = voxelMap.tileOriginRelative ? voxelMap.tileOrigin + raycastHit.Voxel.Center : voxelMap.tileOrigin + Vector3.one * 0.5f;
 
 						VoxelFace face = raycastHit.Voxel.GetFace(raycastHit.Side);
 
@@ -112,7 +112,7 @@ public class DrawTilesTool : VoxelMapTool {
 
 					foreach (Voxel voxel in allVoxels)
 					{
-						voxel.SetTile(raycastHit.Side, selectedTileDefinition);
+						voxel.SetTile(raycastHit.Side, selectedTileDefinition, voxelMap.faceRotation);
 					}
 					
 					allVoxels = ExpandSelection(allVoxels);

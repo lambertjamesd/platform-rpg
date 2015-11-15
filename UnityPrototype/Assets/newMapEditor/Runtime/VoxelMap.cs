@@ -93,6 +93,10 @@ public class VoxelMap : MonoBehaviour
 
 	private InstantiateCallbackDelegate instantiateCallback;
 
+	public Vector3 tileOrigin = Vector3.zero;
+	public bool tileOriginRelative = false;
+	public int faceRotation = 0;
+
 	public UnityEngine.Object PrefabSaveTarget
 	{
 		get
@@ -645,18 +649,18 @@ public class VoxelMap : MonoBehaviour
 
 		if (voxel.IsSolid == adjacentSideSolid)
 		{
-			voxel.SetTile(side, null);
+			voxel.SetTile(side, null, 0);
 
 			if (adjacentVoxel != null)
 			{
-				adjacentVoxel.SetTile(Voxel.GetOpposite(side), null);
+				adjacentVoxel.SetTile(Voxel.GetOpposite(side), null, 0);
 			}
 		}
 		else if (voxel.IsSolid)
 		{
 			if (voxel.GetFace(side).TileInstance == null)
 			{
-				voxel.SetTile(side, fillType);
+				voxel.SetTile(side, fillType, faceRotation);
 			}
 
 			ResolveVoxelEdges(voxel.GetFace(side), fillType.groupOrigin);
@@ -665,7 +669,7 @@ public class VoxelMap : MonoBehaviour
 		{
 			if (adjacentVoxel.GetFace(Voxel.GetOpposite(side)).TileInstance == null)
 			{
-				adjacentVoxel.SetTile(Voxel.GetOpposite(side), fillType);
+				adjacentVoxel.SetTile(Voxel.GetOpposite(side), fillType, faceRotation);
 			}
 			
 			ResolveVoxelEdges(adjacentVoxel.GetFace(side), fillType.groupOrigin);
@@ -967,7 +971,7 @@ public class VoxelMap : MonoBehaviour
 			// cap the last tile in the hole
 			if (i == depth - 1 && nextVoxel != null && nextVoxel.IsSolid)
 			{
-				nextVoxel.SetTile(floorFace, endTile);
+				nextVoxel.SetTile(floorFace, endTile, faceRotation);
 			}
 
 			currentVoxel = nextVoxel;

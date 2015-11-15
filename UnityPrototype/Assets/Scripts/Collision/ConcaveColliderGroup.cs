@@ -15,14 +15,6 @@ public class ConcaveColliderGroup {
 		this.colliders = colliders;
 	}
 	
-	public void EnsureInitialized()
-	{
-		foreach (ConcaveCollider collider in colliders)
-		{
-			collider.EnsureInitialized();
-		}
-	}
-	
 	public void DebugDraw(Transform transform, bool showInteralEdges, Color edgeColor)
 	{
 		foreach (ConcaveCollider collider in colliders)
