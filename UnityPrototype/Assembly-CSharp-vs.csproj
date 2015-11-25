@@ -159,6 +159,8 @@
      <Compile Include="Assets\Scripts\Spells\Visual\TargetPointerEffect.cs" />
      <Compile Include="Assets\Scripts\Spells\Visual\TeamColors.cs" />
      <Compile Include="Assets\Scripts\Spells\Visual\TeleportVisualizer.cs" />
+     <Compile Include="Assets\Scripts\Tests\TimeManagerUnitTest.cs" />
+     <Compile Include="Assets\Scripts\Tests\UnitTest.cs" />
      <Compile Include="Assets\Scripts\TimeGameObject.cs" />
      <Compile Include="Assets\Scripts\TimeManager.cs" />
      <Compile Include="Assets\Scripts\UpdateManager.cs" />

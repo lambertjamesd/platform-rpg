@@ -471,19 +471,33 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 	
 	public object GetCurrentState()
 	{
-		List<SpellState> result = new List<SpellState>();
-
-		foreach (SpellState state in spellStates)
+		if (gameObject.activeSelf)
 		{
-			result.Add(state.Copy());
-		}
+			List<SpellState> result = new List<SpellState>();
 
-		return result;
+			foreach (SpellState state in spellStates)
+			{
+				result.Add(state.Copy());
+			}
+
+			return result;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	public void RewindToState(object state)
 	{
-		spellStates = ((List<SpellState>)state).ToArray();
+		if (state != null)
+		{
+			spellStates = ((List<SpellState>)state).ToArray();
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
 	}
 	
 	public TimeManager GetTimeManager()

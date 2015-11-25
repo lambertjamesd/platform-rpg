@@ -16,7 +16,7 @@ public class AimIndicatorUpdate : EffectObject
 	}
 }
 
-public class AimIndicator : EffectGameObject, ITimeTravelable 
+public class AimIndicator : EffectGameObject, ITimeTravelable
 {
 	public Gradient chargeColor = new Gradient();
 

@@ -15,14 +15,21 @@ public class ConfuseEffect : EffectObject
 		if (targetGameObject != null)
 		{
 			target = targetGameObject.GetComponent<Player>();
-			Vector3 direction = instance.GetValue<Vector3>("rotation", Vector3.right);
-			scrambler = new InputScrambler(new Vector2(direction.x, direction.y), instance.GetValue<bool>("flipX", false));
-			target.AddScrambler(scrambler);
+
+			if (target != null)
+			{
+				Vector3 direction = instance.GetValue<Vector3>("rotation", Vector3.right);
+				scrambler = new InputScrambler(new Vector2(direction.x, direction.y), instance.GetValue<bool>("flipX", false));
+				target.AddScrambler(scrambler);
+			}
 		}
 	}
 
 	public override void Cancel ()
 	{
-		target.RemoveScrambler(scrambler);
+		if (target != null)
+		{
+			target.RemoveScrambler(scrambler);
+		}
 	}
 }

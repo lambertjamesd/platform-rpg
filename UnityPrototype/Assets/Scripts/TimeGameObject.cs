@@ -38,7 +38,6 @@ public class TimeGameObject : MonoBehaviour, ITimeTravelable {
 	
 	private class GameObjectData
 	{
-		public bool active;
 		public Transform parent;
 		public Vector3 position;
 		public Quaternion rotation;
@@ -47,13 +46,19 @@ public class TimeGameObject : MonoBehaviour, ITimeTravelable {
 
 	public static object GetCurrentState(GameObject gameObject)
 	{
-		GameObjectData result = new GameObjectData();
-		result.active = gameObject.activeSelf;
-		result.parent = gameObject.transform.parent;
-		result.position = gameObject.transform.localPosition;
-		result.rotation = gameObject.transform.localRotation;
-		result.scale = gameObject.transform.localScale;
-		return result;
+		if (gameObject.activeSelf)
+		{
+			GameObjectData result = new GameObjectData();
+			result.parent = gameObject.transform.parent;
+			result.position = gameObject.transform.localPosition;
+			result.rotation = gameObject.transform.localRotation;
+			result.scale = gameObject.transform.localScale;
+			return result;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	public static void RewindToState(GameObject gameObject, object state)
@@ -61,8 +66,6 @@ public class TimeGameObject : MonoBehaviour, ITimeTravelable {
 		if (state != null)
 		{
 			GameObjectData data = (GameObjectData)state;
-			gameObject.SetActive(data.active);
-
 			gameObject.transform.parent = data.parent;
 			gameObject.transform.localPosition = data.position;
 			gameObject.transform.localRotation = data.rotation;

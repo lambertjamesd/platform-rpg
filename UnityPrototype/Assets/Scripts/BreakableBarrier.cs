@@ -71,7 +71,14 @@ public class BreakableBarrier : MonoBehaviour, IFixedUpdate, ITimeTravelable
 
 	public object GetCurrentState()
 	{
-		return new BarrierState(transform.position, transform.rotation, damageable.CurrentHealth);
+		if (gameObject.activeSelf)
+		{
+			return new BarrierState(transform.position, transform.rotation, damageable.CurrentHealth);
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	public void RewindToState(object state)

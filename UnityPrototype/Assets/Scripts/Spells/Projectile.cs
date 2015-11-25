@@ -159,10 +159,17 @@ public class Projectile : EffectGameObject, IFixedUpdate, ITimeTravelable {
 	
 	public object GetCurrentState()
 	{
-		return new object[]{
-			TimeGameObject.GetCurrentState(gameObject),
-			velocity
-		};
+		if (gameObject.activeSelf)
+		{
+			return new object[]{
+				TimeGameObject.GetCurrentState(gameObject),
+				velocity
+			};
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	public void RewindToState(object state)

@@ -95,7 +95,13 @@ public class TimeSnapshot
 
 			if (i < objectData.Count)
 			{
-				timeTraveler.RewindToState(objectData[i]);
+				// Time canonly rewind, an object that was dead in a previous
+				// snapshot is dead now. Sending null to RewindToState will
+				// destroy the object
+				if (objectData[i] != null)
+				{
+					timeTraveler.RewindToState(objectData[i]);
+				}
 			}
 			else
 			{
@@ -104,6 +110,28 @@ public class TimeSnapshot
 		}
 
 		timeObjects.RemoveRange(objectData.Count, timeObjects.Count - objectData.Count);
+	}
+
+	public void MarkNeededObjects(bool[] needed)
+	{
+		for (int i = 0; i < needed.Length && i < objectData.Count; ++i)
+		{
+			if (objectData[i] != null)
+			{
+				needed[i] = true;
+			}
+		}
+	}
+
+	public void CleanUpMarkedObjects(bool[] needed)
+	{
+		for (int i = Mathf.Min(needed.Length - 1, objectData.Count - 1); i >= 0; --i)
+		{
+			if (!needed[i])
+			{
+				objectData.RemoveAt(i);
+			}
+		}
 	}
 }
 
@@ -193,6 +221,50 @@ public class TimeManager : MonoBehaviour, IFixedUpdate {
 		}
 	}
 
+	public void CleanUpSnapshots(int startIndex, int endIndex)
+	{
+		if (startIndex < endIndex)
+		{
+			int startCount = startIndex == 0 ? 0 : snapShots[startIndex - 1].ObjectCount;
+			TimeSnapshot endSnapshop = snapShots[endIndex - 1];
+
+			bool[] needed = new bool[endSnapshop.ObjectCount];
+
+			for (int i = 0; i < startCount; ++i)
+			{
+				needed[i] = true;
+			}
+
+			endSnapshop.MarkNeededObjects(needed);
+		
+			snapShots.RemoveRange(startIndex, endIndex - startIndex);
+
+			if (currentSnapshotIndex >= endIndex)
+			{
+				currentSnapshotIndex -= endIndex - startIndex;
+			}
+			else if (currentSnapshotIndex > startIndex)
+			{
+				currentSnapshotIndex = startIndex;
+			}
+
+			for (int i = startIndex; i < snapShots.Count; ++i)
+			{
+				snapShots[i].CleanUpMarkedObjects(needed);
+			}
+
+			for (int i = Mathf.Min(needed.Length - 1, timeObjects.Count - 1); i >= 0; --i)
+			{
+				if (!needed[i])
+				{
+					timeObjects[i].RewindToState(null);
+					savedObjects.Remove(timeObjects[i]);
+					timeObjects.RemoveAt(i);
+				}
+			}
+		}
+	}
+
 	public void FixedUpdateTick(float dt)
 	{
 		if (currentSnapshotIndex < snapShots.Count - 1)
@@ -223,11 +295,11 @@ public class TimeManager : MonoBehaviour, IFixedUpdate {
 		}
 	}
 
-	public int SnapshotIndex
+	public int SnapshotCount
 	{
 		get
 		{
-			return currentSnapshotIndex;
+			return snapShots.Count;
 		}
 	}
 

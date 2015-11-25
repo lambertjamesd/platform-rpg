@@ -186,12 +186,19 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 
 	public virtual object GetCurrentState()
 	{
-		return new object[]{
-			new HashSet<GameObject>(enclosedObjects),
-			new HashSet<GameObject>(alreadyCollided),
-			TimeGameObject.GetCurrentState(gameObject),
-			DuplicateListeners(exitListeners)
-		};
+		if(gameObject.activeSelf)
+		{
+			return new object[]{
+				new HashSet<GameObject>(enclosedObjects),
+				new HashSet<GameObject>(alreadyCollided),
+				TimeGameObject.GetCurrentState(gameObject),
+				DuplicateListeners(exitListeners)
+			};
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	public virtual void RewindToState(object state)

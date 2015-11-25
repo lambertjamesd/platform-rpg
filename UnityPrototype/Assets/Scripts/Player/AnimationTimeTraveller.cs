@@ -14,7 +14,14 @@ public class AnimationTimeTraveller : MonoBehaviour, ITimeTravelable {
 	
 	public virtual object GetCurrentState()
 	{
-		return saver.GetCurrentState();
+		if (gameObject.activeSelf)
+		{
+			return saver.GetCurrentState();
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	public virtual void RewindToState(object state)

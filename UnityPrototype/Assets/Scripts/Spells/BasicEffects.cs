@@ -33,13 +33,12 @@ public class CancelEventEffect : EffectObject
 	}
 }
 
-public interface IDelayEffect : IFixedUpdate
+public interface IDelayEffect : IFixedUpdate, ITimeTravelable
 {
 	float RemainingTime { get; }
-	bool IsPersistant();
 }
 
-public class DelayEffectCommon : ITimeTravelable
+public class DelayEffectCommon
 {
 	private EffectInstance instance;
 	private float remainingTime;
@@ -72,11 +71,17 @@ public class DelayEffectCommon : ITimeTravelable
 		this.delayEffect = delayEffect;
 		updateManager = instance.GetContextValue<UpdateManager>("updateManager", null);
 		timeManager = instance.GetContextValue<TimeManager>("timeManager", null);
-		timeManager.AddTimeTraveler(this);
+		timeManager.AddTimeTraveler(delayEffect);
 		
 		remainingTime = instance.GetValue<float>("duration", 0.0f);
 		
 		AddToUpdate();
+	}
+
+	public void Cancel()
+	{
+		remainingTime = 0.0f;
+		RemoveFromUpdate();
 	}
 	
 	public void FixedUpdateTick(float dt)
@@ -103,7 +108,7 @@ public class DelayEffectCommon : ITimeTravelable
 	
 	public object GetCurrentState()
 	{
-		return remainingTime;
+		return remainingTime > 0.0f ? (object)remainingTime : null;
 	}
 	
 	public void RewindToState(object state)
@@ -129,7 +134,7 @@ public class DelayEffectCommon : ITimeTravelable
 	}
 }
 
-public class DelayEffect : EffectObject, IDelayEffect, IFixedUpdate
+public class DelayEffect : EffectObject, IDelayEffect, IFixedUpdate, ITimeTravelable
 {
 	private DelayEffectCommon delayCommon = new DelayEffectCommon();
 
@@ -142,6 +147,11 @@ public class DelayEffect : EffectObject, IDelayEffect, IFixedUpdate
 	{
 		delayCommon.FixedUpdateTick(dt);
 	}
+	
+	public override void Cancel ()
+	{
+		delayCommon.Cancel();
+	}
 
 	public float RemainingTime
 	{
@@ -151,13 +161,23 @@ public class DelayEffect : EffectObject, IDelayEffect, IFixedUpdate
 		}
 	}
 
-	public bool IsPersistant()
+	public object GetCurrentState()
 	{
-		return delayCommon.IsPersistant();
+		return delayCommon.GetCurrentState();
+	}
+
+	public void RewindToState(object value)
+	{
+		delayCommon.RewindToState(value);
+	}
+
+	public TimeManager GetTimeManager()
+	{
+		return delayCommon.GetTimeManager();
 	}
 }
 
-public class DelayGameObjectEffect : EffectGameObject, IDelayEffect, IFixedUpdate
+public class DelayGameObjectEffect : EffectGameObject, IDelayEffect, IFixedUpdate, ITimeTravelable
 {
 	private DelayEffectCommon delayCommon = new DelayEffectCommon();
 	
@@ -177,6 +197,11 @@ public class DelayGameObjectEffect : EffectGameObject, IDelayEffect, IFixedUpdat
 		}
 	}
 
+	public override void Cancel ()
+	{
+		delayCommon.Cancel();
+	}
+
 	public void FixedUpdateTick(float dt)
 	{
 		delayCommon.FixedUpdateTick(dt);
@@ -190,9 +215,26 @@ public class DelayGameObjectEffect : EffectGameObject, IDelayEffect, IFixedUpdat
 		}
 	}
 	
-	public bool IsPersistant()
+	public object GetCurrentState()
 	{
-		return delayCommon.IsPersistant();
+		return delayCommon.GetCurrentState();
+	}
+	
+	public void RewindToState(object value)
+	{
+		if (value == null)
+		{
+			Destroy(gameObject);
+		}
+		else
+		{
+			delayCommon.RewindToState(value);
+		}
+	}
+	
+	public TimeManager GetTimeManager()
+	{
+		return delayCommon.GetTimeManager();
 	}
 }
 
@@ -559,11 +601,17 @@ public class CounterEffect : EffectObject, ITimeTravelable {
 	
 	public object GetCurrentState()
 	{
-		return new object[]{
-			currentValue,
-			cancelled,
-			new List<object>(elements)
-		};
+		if (!cancelled)
+		{
+			return new object[]{
+				currentValue,
+				new List<object>(elements)
+			};
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	public void RewindToState(object state)
@@ -572,8 +620,7 @@ public class CounterEffect : EffectObject, ITimeTravelable {
 		{
 			object[] objectArray = (object[])state;
 			currentValue = (int)objectArray[0];
-			cancelled = (bool)objectArray[1];
-			elements = (List<object>)objectArray[2];
+			elements = (List<object>)objectArray[1];
 		}
 		else
 		{

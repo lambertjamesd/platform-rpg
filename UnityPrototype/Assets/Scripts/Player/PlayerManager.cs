@@ -192,6 +192,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		}
 		
 		timeManager.TakeSnapshot();
+		timeManager.CleanUpSnapshots(1, timeManager.SnapshotCount - 1);
 	}
 
 	private void StartTurn()

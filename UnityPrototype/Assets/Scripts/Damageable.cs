@@ -166,11 +166,18 @@ public class Damageable : MonoBehaviour, ITimeTravelable {
 	
 	public object GetCurrentState()
 	{
-		return new object[]{
-			maxHealth,
-			currentHealth,
-			shields.Select(shield => shield.GetCurrentState()).ToArray()
-		};
+		if (gameObject.activeSelf)
+		{
+			return new object[]{
+				maxHealth,
+				currentHealth,
+				shields.Select(shield => shield.GetCurrentState()).ToArray()
+			};
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	public void RewindToState(object state)

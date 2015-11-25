@@ -121,7 +121,7 @@ public class PlayerStatus
 	{
 		if (isRooted && description.blockedWhenRooted)
 		{
-			return false;
+			return true;//false;
 		}
 
 		return true;
@@ -638,18 +638,25 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 
 	public object GetCurrentState()
 	{
-		EnsureInitialized();
-		object animationState = animatorStateSaver == null ? null : animatorStateSaver.GetCurrentState();
-		lastState = new PlayerState(transform.position, 
-		                            velocity, 
-		                            damageable.CurrentHealth, 
-		                            null, 
-		                            animationState, 
-		                            stateMachine.GetCurrentState(), 
-		                            stats.GetCurrentState(), 
-		                            currentInputState,
-		                            new List<InputScrambler>(inputScramblers));
-		return lastState;
+		if (gameObject.activeSelf)
+		{
+			EnsureInitialized();
+			object animationState = animatorStateSaver == null ? null : animatorStateSaver.GetCurrentState();
+			lastState = new PlayerState(transform.position, 
+			                            velocity, 
+			                            damageable.CurrentHealth, 
+			                            null, 
+			                            animationState, 
+			                            stateMachine.GetCurrentState(), 
+			                            stats.GetCurrentState(), 
+			                            currentInputState,
+			                            new List<InputScrambler>(inputScramblers));
+			return lastState;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	public void RewindToState(object state)
