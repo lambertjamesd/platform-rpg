@@ -1,15 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Spells\ConfuseEffect.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Player\PlayerManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\Spells\BasicEffects.cs" Line="225" Column="21" />
-      <File FileName="Assets\Scripts\Spells\ConfuseEffect.cs" Line="11" Column="30" />
+      <File FileName="Assets\Scripts\Player\PlayerManager.cs" Line="189" Column="6" />
+      <File FileName="Assets\Scripts\Player\Player.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CharacterSpawner.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="C:\Users\James\Documents\PRPG\UnityPrototype\Assets\Scripts\AreaEffect.cs" line="27" />
-      <Breakpoint file="C:\Users\James\Documents\PRPG\UnityPrototype\Assets\Scripts\TimeGameObject.cs" line="68" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

@@ -186,18 +186,20 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 
 	public virtual object GetCurrentState()
 	{
-		if(gameObject.activeSelf)
+		object result = TimeGameObject.GetCurrentState(gameObject);
+
+		if(result == null)
+		{
+			return null;
+		}
+		else
 		{
 			return new object[]{
 				new HashSet<GameObject>(enclosedObjects),
 				new HashSet<GameObject>(alreadyCollided),
-				TimeGameObject.GetCurrentState(gameObject),
+				result,
 				DuplicateListeners(exitListeners)
 			};
-		}
-		else
-		{
-			return null;
 		}
 	}
 

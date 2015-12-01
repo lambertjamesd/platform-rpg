@@ -70,6 +70,7 @@ public class TimeGameObject : MonoBehaviour, ITimeTravelable {
 			gameObject.transform.localPosition = data.position;
 			gameObject.transform.localRotation = data.rotation;
 			gameObject.transform.localScale = data.scale;
+			gameObject.SetActive(true);
 		}
 		else
 		{

@@ -329,6 +329,14 @@ public class VoxelFace
 		}
 	}
 	
+	public int RotationInterval
+	{
+		get
+		{
+			return rotationInterval;
+		}
+	}
+	
 	public void SetTileDirect(Tile newValue)
 	{
 		tile = newValue;

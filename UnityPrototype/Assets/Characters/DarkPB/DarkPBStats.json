@@ -1,0 +1,9 @@
+{
+	"maxMoveSpeed": 10,
+	"moveAcceleration": 40,
+	"airAcceleration": 20.5,
+	
+	"minJumpHeight": 0.25,
+	"maxJumpHeight": 3.0,
+	"jumpHeightControlWindow": 0.15
+}

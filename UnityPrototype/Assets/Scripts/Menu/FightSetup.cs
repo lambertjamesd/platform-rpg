@@ -33,7 +33,7 @@ public class FightSetup : MonoBehaviour {
 	public void StartGame()
 	{
 		isStarted = true;
-		PlayerManager activeLevel = Instantiate<PlayerManager>(level);
+		Instantiate<PlayerManager>(level);
 		Object.FindObjectOfType<FollowCamera>();
 		Destroy(gameObject);
 	}

@@ -74,7 +74,6 @@ public class CustomFontRenderer : MonoBehaviour {
 	public Vector3 DrawMultilineText(Vector3 worldPosition, float maxWidth, string text, float horizontalAnchor = 0.0f, VariationCallback variationCallback = null)
 	{
 		Camera currentCamera = Camera.main;
-		Quaternion cameraRotation = currentCamera.transform.rotation;
 		Vector3 currentPosition = worldPosition;
 		Vector3 right = currentCamera.transform.right;
 

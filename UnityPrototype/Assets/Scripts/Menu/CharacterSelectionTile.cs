@@ -7,7 +7,7 @@ public class CharacterSelectionTile : MonoBehaviour {
 	private int selectionMaterialIndex = 2;
 
 	private Player displayedCharacter;
-	private Renderer renderer;
+	private Renderer tileRenderer;
 	private bool selected;
 	private bool disabled;
 
@@ -16,9 +16,9 @@ public class CharacterSelectionTile : MonoBehaviour {
 
 	public void Awake()
 	{
-		renderer = GetComponent<Renderer>();
+		tileRenderer = GetComponent<Renderer>();
 
-		Material[] materials = renderer.materials;
+		Material[] materials = tileRenderer.materials;
 		userTexture = materials[userMaterialIndex];
 		selectionMaterial = materials[selectionMaterialIndex];
 

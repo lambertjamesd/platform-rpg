@@ -178,10 +178,19 @@ public class CapsuleArea : AreaEffect, IFixedUpdate {
 	
 	public override object GetCurrentState()
 	{
-		return new object[]{
-			base.GetCurrentState(),
-			lastPosition
-		};
+		object result = base.GetCurrentState();
+
+		if (result == null)
+		{
+			return null;
+		}
+		else
+		{
+			return new object[]{
+				result,
+				lastPosition
+			};
+		}
 	}
 	
 	public override void RewindToState(object state)

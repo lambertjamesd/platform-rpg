@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public enum PlayerManagerMode {
 	Fight,
 	Preview,
@@ -149,11 +153,27 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		}
 	}
 
+	private static int ComparePlayers(Player a, Player b)
+	{
+		if (a.Team == b.Team)
+		{
+			return a.PlayerIndex.CompareTo(b.PlayerIndex);
+		}
+		else
+		{
+			return a.Team.CompareTo(b.Team);
+		}
+	}
+
 	private void SaveRecording()
 	{
 		SimpleJSON.JSONArray result = new SimpleJSON.JSONArray();
 
-		foreach (Player player in players) {
+		List<Player> sortedPlayers = new List<Player>(players);
+
+		sortedPlayers.Sort(ComparePlayers);
+
+		foreach (Player player in sortedPlayers) {
 			if (player.LastRecording == null)
 			{
 				result.Add(new SimpleJSON.JSONArray());
@@ -164,9 +184,16 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 			}
 		}
 
-		StreamWriter file = File.CreateText("input-recording.json");
+#if UNITY_EDITOR
+		string path = (recording == null) ? "input-recording.json" : AssetDatabase.GetAssetPath(recording) + ".new.json";
+#else
+		string path = "input-recording.json";
+#endif
+		StreamWriter file = File.CreateText(path);
 		file.Write(result.ToString());
 		file.Close();
+
+		Debug.Log("Input recording saved to " + path);
 	}
 
 	private void ChangeTeams()
@@ -270,9 +297,13 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 			{
 				SimpleJSON.JSONArray recordingData = SimpleJSON.JSON.Parse(recording.text).AsArray;
 
-				for (int i = 0; i < recordingData.Count && i < players.Count; ++i)
+				List<Player> sortedPlayers = new List<Player>(players);
+
+				sortedPlayers.Sort(ComparePlayers);
+
+				for (int i = 0; i < recordingData.Count && i < sortedPlayers.Count; ++i)
 				{
-					players[i].Playback(InputRecording.Deserialize(recordingData[i]));
+					sortedPlayers[i].Playback(InputRecording.Deserialize(recordingData[i]));
 				}
 			}
 

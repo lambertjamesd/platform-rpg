@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r4.1">
+    <folder id="0" name="Images">
+        <file id="0" name="Images/DarkPB.png" width="130" height="221" pivot_x="0" pivot_y="1"/>
+        <file id="1" name="Images/DarkPBHead.png" width="115" height="136" pivot_x="0" pivot_y="1"/>
+        <file id="2" name="Images/DarkPBTorso.png" width="74" height="79" pivot_x="0" pivot_y="1"/>
+        <file id="3" name="Images/DarkPBLeftUpperArm.png" width="30" height="74" pivot_x="0" pivot_y="1"/>
+        <file id="4" name="Images/DarkPBLeftLowerArmHalo.png" width="28" height="57" pivot_x="0" pivot_y="1"/>
+        <file id="5" name="Images/DarkPBLeftLowerArm.png" width="28" height="57" pivot_x="0" pivot_y="1"/>
+        <file id="6" name="Images/DarkPBRightUpperArm.png" width="25" height="71" pivot_x="0" pivot_y="1"/>
+        <file id="7" name="Images/DarkPBRightLowerArmHalo.png" width="31" height="61" pivot_x="0" pivot_y="1"/>
+        <file id="8" name="Images/DarkPBRightLowerArm.png" width="31" height="61" pivot_x="0" pivot_y="1"/>
+        <file id="9" name="Images/DarkPBRightUpperLeg.png" width="30" height="57" pivot_x="0" pivot_y="1"/>
+        <file id="10" name="Images/DarkPBRightUpperLegHalo.png" width="30" height="57" pivot_x="0" pivot_y="1"/>
+        <file id="11" name="Images/DarkPBRightLowerLeg.png" width="21" height="49" pivot_x="0" pivot_y="1"/>
+        <file id="12" name="Images/DarkPBRightFootHalo.png" width="31" height="16" pivot_x="0" pivot_y="1"/>
+        <file id="13" name="Images/DarkPBRightFoot.png" width="31" height="16" pivot_x="0" pivot_y="1"/>
+        <file id="14" name="Images/DarkPBLeftUpperLeg.png" width="32" height="53" pivot_x="0" pivot_y="1"/>
+        <file id="15" name="Images/DarkPBLeftUpperLegHalo.png" width="32" height="53" pivot_x="0" pivot_y="1"/>
+        <file id="16" name="Images/DarkPBLeftLowerLeg.png" width="21" height="49" pivot_x="0" pivot_y="1"/>
+        <file id="17" name="Images/DarkPBLeftFoot.png" width="30" height="16" pivot_x="0" pivot_y="1"/>
+        <file id="18" name="Images/DarkPBLeftFootHalo.png" width="30" height="16" pivot_x="0" pivot_y="1"/>
+    </folder>
+    <entity id="0" name="DarkPB">
+        <obj_info name="Torso" type="bone" w="53.5393" h="10"/>
+        <obj_info name="LeftUpperArm" type="bone" w="54.3617" h="10"/>
+        <obj_info name="LeftLowerArm" type="bone" w="26.4039" h="10"/>
+        <obj_info name="RightUpperArm" type="bone" w="47.5724" h="10"/>
+        <obj_info name="RightLowerArm" type="bone" w="43.9324" h="10"/>
+        <obj_info name="LeftUpperLeg" type="bone" w="35.2415" h="10"/>
+        <obj_info name="LeftLowerLeg" type="bone" w="28.1939" h="10"/>
+        <obj_info name="LeftFoot" type="bone" w="15.2236" h="10"/>
+        <obj_info name="RightUpperLeg" type="bone" w="36.5554" h="10"/>
+        <obj_info name="RightLowerLeg" type="bone" w="31.7748" h="10"/>
+        <obj_info name="RightFoot" type="bone" w="18.2816" h="10"/>
+        <obj_info name="Head" type="bone" w="30.8696" h="10"/>
+        <animation id="0" name="DarkPBTemplate" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <bone_ref id="0" timeline="18" key="0"/>
+                    <bone_ref id="1" parent="0" timeline="19" key="0"/>
+                    <bone_ref id="2" parent="1" timeline="20" key="0"/>
+                    <bone_ref id="3" parent="0" timeline="23" key="0"/>
+                    <bone_ref id="4" parent="3" timeline="24" key="0"/>
+                    <bone_ref id="5" parent="4" timeline="25" key="0"/>
+                    <bone_ref id="6" parent="0" timeline="26" key="0"/>
+                    <bone_ref id="7" parent="6" timeline="27" key="0"/>
+                    <bone_ref id="8" parent="7" timeline="28" key="0"/>
+                    <bone_ref id="9" parent="0" timeline="21" key="0"/>
+                    <bone_ref id="10" parent="9" timeline="22" key="0"/>
+                    <bone_ref id="11" parent="0" timeline="29" key="0"/>
+                    <object_ref id="0" parent="10" timeline="6" key="0" z_index="0"/>
+                    <object_ref id="1" parent="9" timeline="5" key="0" z_index="1"/>
+                    <object_ref id="2" parent="10" timeline="7" key="0" z_index="2"/>
+                    <object_ref id="3" parent="5" timeline="17" key="0" z_index="3"/>
+                    <object_ref id="4" parent="8" timeline="12" key="0" z_index="4"/>
+                    <object_ref id="5" parent="6" timeline="9" key="0" z_index="5"/>
+                    <object_ref id="6" parent="3" timeline="14" key="0" z_index="6"/>
+                    <object_ref id="7" parent="0" timeline="1" key="0" z_index="7"/>
+                    <object_ref id="8" parent="7" timeline="10" key="0" z_index="8"/>
+                    <object_ref id="9" parent="4" timeline="15" key="0" z_index="9"/>
+                    <object_ref id="10" parent="8" timeline="11" key="0" z_index="10"/>
+                    <object_ref id="11" parent="5" timeline="16" key="0" z_index="11"/>
+                    <object_ref id="12" parent="6" timeline="8" key="0" z_index="12"/>
+                    <object_ref id="13" parent="3" timeline="13" key="0" z_index="13"/>
+                    <object_ref id="14" parent="2" timeline="3" key="0" z_index="14"/>
+                    <object_ref id="15" parent="1" timeline="2" key="0" z_index="15"/>
+                    <object_ref id="16" parent="2" timeline="4" key="0" z_index="16"/>
+                    <object_ref id="17" parent="11" timeline="0" key="0" z_index="17"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="DarkPBHead">
+                <key id="0" spin="0">
+                    <object folder="0" file="1" x="-3.47269" y="3.683023" pivot_x="0.49619" pivot_y="0.19456" angle="269.751769"/>
+                </key>
+            </timeline>
+            <timeline id="1" name="DarkPBTorso">
+                <key id="0" spin="0">
+                    <object folder="0" file="2" x="4.008239" y="-1.309612" pivot_x="0.472414" pivot_y="0.223491" angle="270.329282"/>
+                </key>
+            </timeline>
+            <timeline id="2" name="DarkPBLeftUpperArm">
+                <key id="0" spin="0">
+                    <object folder="0" file="3" x="-0.018115" y="0.976815" pivot_x="0.516685" pivot_y="0.841609" angle="88.665261"/>
+                </key>
+            </timeline>
+            <timeline id="3" name="DarkPBLeftLowerArmHalo">
+                <key id="0" spin="0">
+                    <object folder="0" file="4" x="0.994143" y="1.550754" pivot_x="0.433413" pivot_y="0.824911" angle="88.464309"/>
+                </key>
+            </timeline>
+            <timeline id="4" name="DarkPBLeftLowerArm">
+                <key id="0" spin="0">
+                    <object folder="0" file="5" x="-0.140115" y="0.122407" pivot_x="0.409631" pivot_y="0.854637" angle="89.768567"/>
+                </key>
+            </timeline>
+            <timeline id="5" name="DarkPBRightUpperArm">
+                <key id="0" spin="0">
+                    <object folder="0" file="6" x="0.239733" y="0.039168" pivot_x="0.52321" pivot_y="0.820642" angle="90.55233"/>
+                </key>
+            </timeline>
+            <timeline id="6" name="DarkPBRightLowerArmHalo">
+                <key id="0" spin="0">
+                    <object folder="0" file="7" x="-0.370152" y="-0.14343" pivot_x="0.568593" pivot_y="0.855624" angle="92.355638"/>
+                </key>
+            </timeline>
+            <timeline id="7" name="DarkPBRightLowerArm">
+                <key id="0" spin="0">
+                    <object folder="0" file="8" x="0.083586" y="-0.396171" pivot_x="0.532866" pivot_y="0.858454" angle="91.470933"/>
+                </key>
+            </timeline>
+            <timeline id="8" name="DarkPBRightUpperLeg">
+                <key id="0" spin="0">
+                    <object folder="0" file="9" x="0.438711" y="0.338588" pivot_x="0.494438" pivot_y="0.783294" angle="89.171915"/>
+                </key>
+            </timeline>
+            <timeline id="9" name="DarkPBRightUpperLegHalo">
+                <key id="0" spin="0">
+                    <object folder="0" file="10" x="2.303879" y="0.294463" pivot_x="0.499287" pivot_y="0.770714" angle="89.182501"/>
+                </key>
+            </timeline>
+            <timeline id="10" name="DarkPBRightLowerLeg">
+                <key id="0" spin="0">
+                    <object folder="0" file="11" x="1.331795" y="0.005542" pivot_x="0.492947" pivot_y="0.817586" angle="87.381758"/>
+                </key>
+            </timeline>
+            <timeline id="11" name="DarkPBRightFoot">
+                <key id="0" spin="0">
+                    <object folder="0" file="13" x="1.688067" y="-0.239555" pivot_x="0.252694" pivot_y="0.422921" angle="358.742083"/>
+                </key>
+            </timeline>
+            <timeline id="12" name="DarkPBRightFootHalo">
+                <key id="0" spin="0">
+                    <object folder="0" file="12" x="-6.876282" y="9.031274" angle="358.742083"/>
+                </key>
+            </timeline>
+            <timeline id="13" name="DarkPBLeftUpperLeg">
+                <key id="0" spin="0">
+                    <object folder="0" file="14" x="2.499675" y="0.897239" pivot_x="0.485371" pivot_y="0.760856" angle="87.878904"/>
+                </key>
+            </timeline>
+            <timeline id="14" name="DarkPBLeftUpperLegHalo">
+                <key id="0" spin="0">
+                    <object folder="0" file="15" x="3.884421" y="1.191017" pivot_x="0.485371" pivot_y="0.75447" angle="87.878904"/>
+                </key>
+            </timeline>
+            <timeline id="15" name="DarkPBLeftLowerLeg">
+                <key id="0" spin="0">
+                    <object folder="0" file="16" x="0.03381" y="0.011572" pivot_x="0.492947" pivot_y="0.803793" angle="91.646514"/>
+                </key>
+            </timeline>
+            <timeline id="16" name="DarkPBLeftFoot">
+                <key id="0" spin="0">
+                    <object folder="0" file="17" x="-0.507246" y="-0.430412" pivot_x="0.260845" pivot_y="0.443205" angle="2.489553"/>
+                </key>
+            </timeline>
+            <timeline id="17" name="DarkPBLeftFootHalo">
+                <key id="0" spin="0">
+                    <object folder="0" file="18" x="0.153338" y="-1.051391" pivot_x="0.238598" pivot_y="0.402637" angle="2.489553"/>
+                </key>
+            </timeline>
+            <timeline id="18" obj="0" name="Torso" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="-0.068937" y="66.790602" angle="89.670718"/>
+                </key>
+            </timeline>
+            <timeline id="19" obj="1" name="LeftUpperArm" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="47.534986" y="20.527705" angle="150.072845"/>
+                </key>
+            </timeline>
+            <timeline id="20" obj="2" name="LeftLowerArm" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="54.123851" y="-0.45508" angle="47.497897"/>
+                </key>
+            </timeline>
+            <timeline id="21" obj="3" name="RightUpperArm" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="49.968728" y="-24.676446" angle="198.433045"/>
+                </key>
+            </timeline>
+            <timeline id="22" obj="4" name="RightLowerArm" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="48.977078" y="-0.459205" angle="123.324985"/>
+                </key>
+            </timeline>
+            <timeline id="23" obj="5" name="LeftUpperLeg" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="-0.230315" y="11.880518" angle="182.450379"/>
+                </key>
+            </timeline>
+            <timeline id="24" obj="6" name="LeftLowerLeg" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="35.504462" y="-0.283149" angle="337.3447"/>
+                </key>
+            </timeline>
+            <timeline id="25" obj="7" name="LeftFoot" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="29.243045" y="-0.492971" angle="107.342577"/>
+                </key>
+            </timeline>
+            <timeline id="26" obj="8" name="RightUpperLeg" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="-0.961864" y="-12.136912" angle="208.117052"/>
+                </key>
+            </timeline>
+            <timeline id="27" obj="9" name="RightLowerLeg" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="35.386671" y="-0.38267" angle="316.054566"/>
+                </key>
+            </timeline>
+            <timeline id="28" obj="10" name="RightFoot" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="31.91789" y="-0.862481" angle="103.404922"/>
+                </key>
+            </timeline>
+            <timeline id="29" obj="11" name="Head" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="50.308553" y="-8.152481" angle="0.329282"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="1" name="DarkPBIdle" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <bone_ref id="0" timeline="18" key="0"/>
+                    <bone_ref id="1" parent="0" timeline="19" key="0"/>
+                    <bone_ref id="2" parent="1" timeline="20" key="0"/>
+                    <bone_ref id="3" parent="0" timeline="23" key="0"/>
+                    <bone_ref id="4" parent="3" timeline="24" key="0"/>
+                    <bone_ref id="5" parent="4" timeline="25" key="0"/>
+                    <bone_ref id="6" parent="0" timeline="26" key="0"/>
+                    <bone_ref id="7" parent="6" timeline="27" key="0"/>
+                    <bone_ref id="8" parent="7" timeline="28" key="0"/>
+                    <bone_ref id="9" parent="0" timeline="21" key="0"/>
+                    <bone_ref id="10" parent="9" timeline="22" key="0"/>
+                    <bone_ref id="11" parent="0" timeline="29" key="0"/>
+                    <object_ref id="0" parent="10" timeline="6" key="0" z_index="0"/>
+                    <object_ref id="1" parent="9" timeline="5" key="0" z_index="1"/>
+                    <object_ref id="2" parent="10" timeline="7" key="0" z_index="2"/>
+                    <object_ref id="3" parent="5" timeline="17" key="0" z_index="3"/>
+                    <object_ref id="4" parent="8" timeline="12" key="0" z_index="4"/>
+                    <object_ref id="5" parent="6" timeline="9" key="0" z_index="5"/>
+                    <object_ref id="6" parent="3" timeline="14" key="0" z_index="6"/>
+                    <object_ref id="7" parent="0" timeline="1" key="0" z_index="7"/>
+                    <object_ref id="8" parent="7" timeline="10" key="0" z_index="8"/>
+                    <object_ref id="9" parent="4" timeline="15" key="0" z_index="9"/>
+                    <object_ref id="10" parent="8" timeline="11" key="0" z_index="10"/>
+                    <object_ref id="11" parent="5" timeline="16" key="0" z_index="11"/>
+                    <object_ref id="12" parent="6" timeline="8" key="0" z_index="12"/>
+                    <object_ref id="13" parent="3" timeline="13" key="0" z_index="13"/>
+                    <object_ref id="14" parent="2" timeline="3" key="0" z_index="14"/>
+                    <object_ref id="15" parent="1" timeline="2" key="0" z_index="15"/>
+                    <object_ref id="16" parent="2" timeline="4" key="0" z_index="16"/>
+                    <object_ref id="17" parent="11" timeline="0" key="0" z_index="17"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="DarkPBHead">
+                <key id="0" spin="0">
+                    <object folder="0" file="1" x="-3.47269" y="3.683023" pivot_x="0.49619" pivot_y="0.19456" angle="269.751769"/>
+                </key>
+            </timeline>
+            <timeline id="1" name="DarkPBTorso">
+                <key id="0" spin="0">
+                    <object folder="0" file="2" x="4.008239" y="-1.309612" pivot_x="0.472414" pivot_y="0.223491" angle="270.329282"/>
+                </key>
+            </timeline>
+            <timeline id="2" name="DarkPBLeftUpperArm">
+                <key id="0" spin="0">
+                    <object folder="0" file="3" x="-0.018115" y="0.976815" pivot_x="0.516685" pivot_y="0.841609" angle="88.665261"/>
+                </key>
+            </timeline>
+            <timeline id="3" name="DarkPBLeftLowerArmHalo">
+                <key id="0" spin="0">
+                    <object folder="0" file="4" x="0.994143" y="1.550754" pivot_x="0.433413" pivot_y="0.824911" angle="88.464309"/>
+                </key>
+            </timeline>
+            <timeline id="4" name="DarkPBLeftLowerArm">
+                <key id="0" spin="0">
+                    <object folder="0" file="5" x="-0.140115" y="0.122407" pivot_x="0.409631" pivot_y="0.854637" angle="89.768567"/>
+                </key>
+            </timeline>
+            <timeline id="5" name="DarkPBRightUpperArm">
+                <key id="0" spin="0">
+                    <object folder="0" file="6" x="0.239733" y="0.039168" pivot_x="0.52321" pivot_y="0.820642" angle="90.55233"/>
+                </key>
+            </timeline>
+            <timeline id="6" name="DarkPBRightLowerArmHalo">
+                <key id="0" spin="0">
+                    <object folder="0" file="7" x="-0.370152" y="-0.14343" pivot_x="0.568593" pivot_y="0.855624" angle="92.355638"/>
+                </key>
+            </timeline>
+            <timeline id="7" name="DarkPBRightLowerArm">
+                <key id="0" spin="0">
+                    <object folder="0" file="8" x="0.083586" y="-0.396171" pivot_x="0.532866" pivot_y="0.858454" angle="91.470933"/>
+                </key>
+            </timeline>
+            <timeline id="8" name="DarkPBRightUpperLeg">
+                <key id="0" spin="0">
+                    <object folder="0" file="9" x="0.438711" y="0.338588" pivot_x="0.494438" pivot_y="0.783294" angle="89.171915"/>
+                </key>
+            </timeline>
+            <timeline id="9" name="DarkPBRightUpperLegHalo">
+                <key id="0" spin="0">
+                    <object folder="0" file="10" x="2.303879" y="0.294463" pivot_x="0.499287" pivot_y="0.770714" angle="89.182501"/>
+                </key>
+            </timeline>
+            <timeline id="10" name="DarkPBRightLowerLeg">
+                <key id="0" spin="0">
+                    <object folder="0" file="11" x="1.331795" y="0.005542" pivot_x="0.492947" pivot_y="0.817586" angle="87.381758"/>
+                </key>
+            </timeline>
+            <timeline id="11" name="DarkPBRightFoot">
+                <key id="0" spin="0">
+                    <object folder="0" file="13" x="1.688067" y="-0.239555" pivot_x="0.252694" pivot_y="0.422921" angle="358.742083"/>
+                </key>
+            </timeline>
+            <timeline id="12" name="DarkPBRightFootHalo">
+                <key id="0" spin="0">
+                    <object folder="0" file="12" x="-6.876282" y="9.031274" angle="358.742083"/>
+                </key>
+            </timeline>
+            <timeline id="13" name="DarkPBLeftUpperLeg">
+                <key id="0" spin="0">
+                    <object folder="0" file="14" x="2.499675" y="0.897239" pivot_x="0.485371" pivot_y="0.760856" angle="87.878904"/>
+                </key>
+            </timeline>
+            <timeline id="14" name="DarkPBLeftUpperLegHalo">
+                <key id="0" spin="0">
+                    <object folder="0" file="15" x="3.884421" y="1.191017" pivot_x="0.485371" pivot_y="0.75447" angle="87.878904"/>
+                </key>
+            </timeline>
+            <timeline id="15" name="DarkPBLeftLowerLeg">
+                <key id="0" spin="0">
+                    <object folder="0" file="16" x="0.03381" y="0.011572" pivot_x="0.492947" pivot_y="0.803793" angle="91.646514"/>
+                </key>
+            </timeline>
+            <timeline id="16" name="DarkPBLeftFoot">
+                <key id="0" spin="0">
+                    <object folder="0" file="17" x="-0.507246" y="-0.430412" pivot_x="0.260845" pivot_y="0.443205" angle="2.489553"/>
+                </key>
+            </timeline>
+            <timeline id="17" name="DarkPBLeftFootHalo">
+                <key id="0" spin="0">
+                    <object folder="0" file="18" x="0.153338" y="-1.051391" pivot_x="0.238598" pivot_y="0.402637" angle="2.489553"/>
+                </key>
+            </timeline>
+            <timeline id="18" obj="0" name="Torso" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="-0.068937" y="66.790602" angle="89.670718"/>
+                </key>
+            </timeline>
+            <timeline id="19" obj="1" name="LeftUpperArm" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="47.534986" y="20.527705" angle="150.072845"/>
+                </key>
+            </timeline>
+            <timeline id="20" obj="2" name="LeftLowerArm" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="54.123851" y="-0.45508" angle="47.497897"/>
+                </key>
+            </timeline>
+            <timeline id="21" obj="3" name="RightUpperArm" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="49.968728" y="-24.676446" angle="198.433045"/>
+                </key>
+            </timeline>
+            <timeline id="22" obj="4" name="RightLowerArm" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="48.977078" y="-0.459205" angle="123.324985"/>
+                </key>
+            </timeline>
+            <timeline id="23" obj="5" name="LeftUpperLeg" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="-0.230315" y="11.880518" angle="182.450379"/>
+                </key>
+            </timeline>
+            <timeline id="24" obj="6" name="LeftLowerLeg" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="35.504462" y="-0.283149" angle="337.3447"/>
+                </key>
+            </timeline>
+            <timeline id="25" obj="7" name="LeftFoot" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="29.243045" y="-0.492971" angle="107.342577"/>
+                </key>
+            </timeline>
+            <timeline id="26" obj="8" name="RightUpperLeg" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="-0.961864" y="-12.136912" angle="208.117052"/>
+                </key>
+            </timeline>
+            <timeline id="27" obj="9" name="RightLowerLeg" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="35.386671" y="-0.38267" angle="316.054566"/>
+                </key>
+            </timeline>
+            <timeline id="28" obj="10" name="RightFoot" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="31.91789" y="-0.862481" angle="103.404922"/>
+                </key>
+            </timeline>
+            <timeline id="29" obj="11" name="Head" object_type="bone">
+                <key id="0" spin="0">
+                    <bone x="50.308553" y="-8.152481" angle="0.329282"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>

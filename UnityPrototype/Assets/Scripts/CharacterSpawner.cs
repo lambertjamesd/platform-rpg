@@ -8,6 +8,8 @@ using UnityEditor;
 public class CharacterSpawner : MonoBehaviour {
 	public Player playerInstance;
 	public int team;
+	public int playerIndex;
+	public float healthAmount = 1.0f;
 
 	public void Awake () {
 		FightSetup fightSetup = Object.FindObjectOfType<FightSetup>();
@@ -28,8 +30,16 @@ public class CharacterSpawner : MonoBehaviour {
 
 			Player newPlayer = (Player)Instantiate(playerInstance, transform.position, transform.rotation);
 			newPlayer.Team = team;
+			newPlayer.PlayerIndex = playerIndex;
 			newPlayer.transform.parent = transform.parent;
 			manager.AddPlayer(newPlayer);
+
+			Damageable damageable = newPlayer.gameObject.GetComponent<Damageable>();
+
+			if (damageable != null)
+			{
+				damageable.startingHealth = healthAmount;
+			}
 
 			// Re-enable the instantiated player
 			newPlayer.gameObject.SetActive(wasActive);

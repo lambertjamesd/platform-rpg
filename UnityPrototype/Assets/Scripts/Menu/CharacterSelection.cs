@@ -35,7 +35,7 @@ public class CharacterSelection : MonoBehaviour {
 
 	public void Start()
 	{
-		rowCount = (roster.players.Count + columnCount - 1) % columnCount;
+		rowCount = (roster.players.Count + columnCount - 1) / columnCount;
 
 		for (int index = 0; index < roster.players.Count; ++index)
 		{

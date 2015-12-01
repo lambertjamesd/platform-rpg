@@ -366,6 +366,11 @@ public class VoxelMapEditor : Editor
 			UnityEngine.Object prefabTarget = prefabSaveTarget.objectReferenceValue;
 			if (prefabTarget != null)
 			{
+				if (GUILayout.Button(new GUIContent("Unlink Baked Prefab")))
+				{
+					prefabSaveTarget.objectReferenceValue = null;
+				}
+
 				EditorGUILayout.SelectableLabel("Filename: " + GetPrefabPath(prefabTarget));
 			}
 

@@ -226,10 +226,8 @@ public class DelayGameObjectEffect : EffectGameObject, IDelayEffect, IFixedUpdat
 		{
 			Destroy(gameObject);
 		}
-		else
-		{
-			delayCommon.RewindToState(value);
-		}
+
+		delayCommon.RewindToState(value);
 	}
 	
 	public TimeManager GetTimeManager()

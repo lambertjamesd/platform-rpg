@@ -70,10 +70,17 @@ public class SelfDestructTimed : MonoBehaviour, ISelfDestruct, IFixedUpdate, ITi
 	
 	public object GetCurrentState()
 	{
-		return new object[]{
-			currentTime,
-			currentAnimation
-		};
+		if (addedToUpdateManager)
+		{
+			return new object[]{
+				currentTime,
+				currentAnimation
+			};
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	public void RewindToState(object state)

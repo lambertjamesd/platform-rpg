@@ -6,6 +6,7 @@ public class PlayerState
 {
 	private Vector3 position;
 	private Vector3 velocity;
+	private float forwardX;
 	private float health;
 	private InputRecording input;
 	private object animationState;
@@ -16,6 +17,7 @@ public class PlayerState
 
 	public PlayerState(Vector3 position, 
 	                   Vector3 velocity, 
+	                   float forwardX,
 	                   float health, 
 	                   InputRecording input, 
 	                   object animationState, 
@@ -26,6 +28,7 @@ public class PlayerState
 	{
 		this.position = position;
 		this.velocity = velocity;
+		this.forwardX = forwardX;
 		this.health = health;
 		this.input = input;
 		this.animationState = animationState;
@@ -48,6 +51,14 @@ public class PlayerState
 		get
 		{
 			return velocity;
+		}
+	}
+
+	public float ForwardX
+	{
+		get
+		{
+			return forwardX;
 		}
 	}
 
@@ -162,6 +173,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	public RootedState rootedState;
 
 	private int team;
+	private int playerIndex;
 	private int turnOrder;
 	
 	[Multiline]
@@ -317,6 +329,11 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 				childRenderer.material.color = TeamColors.GetColor(team);
 			}*/
 		}
+	}
+
+	public int PlayerIndex
+	{
+		get; set;
 	}
 
 	public static int GetTurnOrder(GameObject source)
@@ -535,6 +552,19 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		this.RemoveFromUpdateManager(updateManager);
 	}
 
+	public Vector3 Forward
+	{
+		get
+		{
+			return spellCaster.Forward;
+		}
+
+		set
+		{
+			spellCaster.Forward = value.x > 0.0f ? Vector3.right : Vector3.left;
+		}
+	}
+
 	public void FixedUpdateTick(float timestep)
 	{
 		inputSource.FrameStart(currentInputState);
@@ -559,15 +589,11 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 			visualAnimator.SetFloat("Speed", Mathf.Abs(velocity.x) * 4.0f);
 			visualAnimator.SetFloat("YVelocity", velocity.y / Mathf.Abs(visualScale.y));
 
-			if (velocity.x > 0.0f)
+			if (velocity.x != 0.0f)
 			{
-				visualScale.x = Mathf.Abs(visualScale.x);
-				spellCaster.Forward = Vector3.right;
-			}
-			else if (velocity.x < 0.0f)
-			{
-				visualScale.x = -Mathf.Abs(visualScale.x);
-				spellCaster.Forward = Vector3.left;
+				Forward = velocity;
+
+				visualScale.x = (velocity.x > 0.0f) ? Mathf.Abs(visualScale.x) : -Mathf.Abs(visualScale.x);
 			}
 
 			visual.transform.localScale = visualScale;
@@ -644,6 +670,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 			object animationState = animatorStateSaver == null ? null : animatorStateSaver.GetCurrentState();
 			lastState = new PlayerState(transform.position, 
 			                            velocity, 
+			                            Forward.x,
 			                            damageable.CurrentHealth, 
 			                            null, 
 			                            animationState, 
@@ -673,6 +700,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 
 			transform.position = lastState.Position;
 			velocity = lastState.Velocity;
+			Forward = new Vector3(lastState.ForwardX, 0.0f);
 
 			damageable.CurrentHealth = lastState.Health;
 

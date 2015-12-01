@@ -23,6 +23,7 @@ public class Damageable : MonoBehaviour, ITimeTravelable {
 
 	public List<Shield> shields = new List<Shield>();
 	public float maxHealth = 100.0f;
+	public float startingHealth = 1.0f;
 	private float currentHealth;
 	private TimeManager timeManager;
 
@@ -32,7 +33,7 @@ public class Damageable : MonoBehaviour, ITimeTravelable {
 
 	// Use this for initialization
 	void Awake () {
-		currentHealth = maxHealth;
+		currentHealth = maxHealth * startingHealth;
 		timeManager = gameObject.GetComponentWithAncestors<TimeManager>();
 		timeManager.AddTimeTraveler(this);
 	}
