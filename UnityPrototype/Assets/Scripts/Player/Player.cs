@@ -565,6 +565,11 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		}
 	}
 
+	public void Update()
+	{
+		VisualAnimator.speed = updateManager.SpeedModifierForTarget(this);
+	}
+
 	public void FixedUpdateTick(float timestep)
 	{
 		inputSource.FrameStart(currentInputState);
@@ -586,7 +591,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 			Vector3 visualScale = visual.transform.localScale;
 
 			visualAnimator.SetBool("Grounded", IsGrounded);
-			visualAnimator.SetFloat("Speed", Mathf.Abs(velocity.x) * 4.0f);
+			visualAnimator.SetFloat("Speed", Mathf.Max(Mathf.Abs(velocity.x), 0.05f));
 			visualAnimator.SetFloat("YVelocity", velocity.y / Mathf.Abs(visualScale.y));
 
 			if (velocity.x != 0.0f)

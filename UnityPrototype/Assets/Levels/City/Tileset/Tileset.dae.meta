@@ -25,6 +25,12 @@ ModelImporter:
     100034: Pipe4
     100036: PipeCap
     100038: PipeCorner
+    100040: BrickCorner
+    100042: BrickHorizontal
+    100044: BrickSolid
+    100046: BrickVertical
+    100048: DarkBackground
+    100050: WoodPillar
     400000: BarrierCenter
     400002: BarrierCorner
     400004: BarrierLeftCap
@@ -45,6 +51,12 @@ ModelImporter:
     400034: Pipe4
     400036: PipeCap
     400038: PipeCorner
+    400040: BrickCorner
+    400042: BrickHorizontal
+    400044: BrickSolid
+    400046: BrickVertical
+    400048: DarkBackground
+    400050: WoodPillar
     2300000: BarrierCenter
     2300002: BarrierCorner
     2300004: BarrierLeftCap
@@ -62,6 +74,12 @@ ModelImporter:
     2300028: Pipe4
     2300030: PipeCap
     2300032: PipeCorner
+    2300034: BrickCorner
+    2300036: BrickHorizontal
+    2300038: BrickSolid
+    2300040: BrickVertical
+    2300042: DarkBackground
+    2300044: WoodPillar
     3300000: BarrierCenter
     3300002: BarrierCorner
     3300004: BarrierLeftCap
@@ -79,6 +97,12 @@ ModelImporter:
     3300028: Pipe4
     3300030: PipeCap
     3300032: PipeCorner
+    3300034: BrickCorner
+    3300036: BrickHorizontal
+    3300038: BrickSolid
+    3300040: BrickVertical
+    3300042: DarkBackground
+    3300044: WoodPillar
     4300000: InteriorTileBackground
     4300002: BarrierCenter
     4300004: BarrierLeftCap
@@ -96,6 +120,12 @@ ModelImporter:
     4300028: PipeCorner
     4300030: PipeCap
     4300032: Pipe4
+    4300034: DarkBackground
+    4300036: WoodPillar
+    4300038: BrickCorner
+    4300040: BrickSolid
+    4300042: BrickHorizontal
+    4300044: BrickVertical
     9500000: //RootNode
   materials:
     importMaterials: 1

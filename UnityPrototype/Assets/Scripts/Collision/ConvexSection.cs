@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class ConvexSection {
+	private bool[] isBorder;
 	[SerializeField]
 	private Vector2[] points;
 	private Vector2[] normals;
@@ -71,11 +72,33 @@ public class ConvexSection {
 		private ConvexSection adjacent;
 	}
 
+	public void MarkBorder(BoundingBox levelBB)
+	{
+		for (int i = 0; i < points.Length; ++i)
+		{
+			if (Mathf.Abs(points[i].x - levelBB.min.x) < 0.1f)
+			{
+				isBorder[i] = true;
+				boundingBox.min.x = float.NegativeInfinity;
+			}
+			if (Mathf.Abs(points[i].x - levelBB.max.x) < 0.1f)
+			{
+				isBorder[i] = true;
+				boundingBox.max.x = float.PositiveInfinity;
+			}
+			if (Mathf.Abs(points[i].y - levelBB.min.y) < 0.1f)
+			{
+				isBorder[i] = true;
+				boundingBox.min.y = float.NegativeInfinity;
+			}
+		}
+	}
+
 	
 	public void ReconnectSections(ConcaveCollider collider)
 	{
 		RecalcNormals();
-		RecalcBoundingBox();
+		isBorder = new bool[points.Length];
 
 		if (connectionSerialData != null)
 		{
@@ -113,7 +136,7 @@ public class ConvexSection {
 		return connections[index] == null ? -1 : connectionSerialData[index].adjacentIndex;
 	}
 	
-	private void RecalcBoundingBox()
+	public void RecalcBoundingBox()
 	{
 		boundingBox.min = points[0];
 		boundingBox.max = points[0];
@@ -174,6 +197,8 @@ public class ConvexSection {
 			}
 			
 			RecalcNormals();
+
+			isBorder = new bool[points.Length];
 		}
 	}
 	
@@ -193,6 +218,11 @@ public class ConvexSection {
 	public Vector2 GetNormal(int index)
 	{
 		return normals[index % points.Length];
+	}
+
+	public bool IsBorder(int index)
+	{
+		return isBorder[index % points.Length];
 	}
 	
 	private int GetIndex(Vector2 point)
@@ -259,25 +289,31 @@ public class ConvexSection {
 		
 		for (int i = 0; i < points.Length; ++i)
 		{
-			OverlapShape.Overlap lineOverlap = shape.LineOverlap(points[i], GetPoint(i + 1), normals[i]);
-			
-			if (lineOverlap.distance <= 0.0f)
+			if (!IsBorder(i + 1))
 			{
-				return false;
-			}
-			
-			Vector2 pointToCheck = GetPoint(i + 1);
-			
-			OverlapShape.Overlap pointOverlap = shape.PointOverlap(pointToCheck);
-			
-			Vector2 nextNormal = normals[(i + 1) % points.Length];
-			
-			if (Vector2.Dot(normals[i], nextNormal) < 0.99f &&
-			    Vector2.Dot(normals[i], pointOverlap.normal) > 0.0f && 
-			    Vector2.Dot(pointOverlap.normal, nextNormal) > 0.0f &&
-			    pointOverlap.distance <= 0.0f)
-			{
-				return false;
+				if (!IsBorder(i))
+				{
+					OverlapShape.Overlap lineOverlap = shape.LineOverlap(points[i], GetPoint(i + 1), normals[i]);
+					
+					if (lineOverlap.distance <= 0.0f)
+					{
+						return false;
+					}
+				}
+				
+				Vector2 pointToCheck = GetPoint(i + 1);
+				
+				OverlapShape.Overlap pointOverlap = shape.PointOverlap(pointToCheck);
+				
+				Vector2 nextNormal = normals[(i + 1) % points.Length];
+				
+				if (Vector2.Dot(normals[i], nextNormal) < 0.99f &&
+				    Vector2.Dot(normals[i], pointOverlap.normal) > 0.0f && 
+				    Vector2.Dot(pointOverlap.normal, nextNormal) > 0.0f &&
+				    pointOverlap.distance <= 0.0f)
+				{
+					return false;
+				}
 			}
 		}
 		
@@ -350,12 +386,14 @@ public class ConvexSection {
 		
 		for (int i = 0; i < points.Length; ++i)
 		{
+			bool aIsBorder = isBorder[i];
+			bool bIsBorder = IsBorder(i + 1);
 			Vector2 a = points[i];
 			Vector2 b = GetPoint(i + 1);
 			Vector2 edge = b - a;
 			OverlapShape.Overlap lineOverlap = shape.LineOverlap(a, b, normals[i]);
 			
-			if (lineOverlap.distance > 0.0f)
+			if (lineOverlap.distance > 0.0f && (!aIsBorder || !bIsBorder))
 			{
 				if (HasAdjacentSection(i))
 				{
@@ -393,7 +431,7 @@ public class ConvexSection {
 				
 				float lerpValue = Vector2.Dot(lineOverlap.contactPoint - a, edge) / edge.sqrMagnitude;
 				
-				if (lerpValue >= 0.0f && lerpValue <= 1.0f)
+				if ((lerpValue >= 0.0f || aIsBorder) && (lerpValue <= 1.0f || bIsBorder))
 				{
 					if (lineOverlap.distance < result.distance)
 					{
@@ -453,6 +491,10 @@ public class ConvexSection {
 						transform.TransformPoint(new Vector3(midpoint.x, midpoint.y, 0.0f)), 
 						transform.TransformPoint(new Vector3(otherMidpoint.x, otherMidpoint.y, 0.0f)), Color.green * 0.5f);
 				}
+			}
+			else if (IsBorder(i) && IsBorder(i + 1))
+			{
+				color = Color.green;
 			}
 			
 			Debug.DrawLine(transA, transB, color);

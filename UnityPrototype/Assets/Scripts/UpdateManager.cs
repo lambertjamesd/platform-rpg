@@ -48,6 +48,7 @@ public class UpdateManager : MonoBehaviour {
 
 	public float fixedFrameRate = 120.0f;
 	public bool useUnityFixedUpdate = true;
+	private float globalTimeModifier = 1.0f;
 	private float fixedTimestep = 1.0f / 120.0f;
 
 	private List<IFixedUpdate> updateList = new List<IFixedUpdate>();
@@ -66,17 +67,24 @@ public class UpdateManager : MonoBehaviour {
 		fixedTimestep = 1.0f / fixedFrameRate;
 	}
 
-	private void UpdateForTarget(IFixedUpdate target, float dt)
+	public float SpeedModifierForTarget(IFixedUpdate target)
 	{
+		float result = globalTimeModifier;
+
 		if (speedModifiers.ContainsKey(target))
 		{
 			foreach (UpdateSpeedModifier modifier in speedModifiers[target])
 			{
-				dt *= modifier.TimeScalar;
+				result *= modifier.TimeScalar;
 			}
 		}
 
-		target.FixedUpdateTick(dt);
+		return result;
+	}
+
+	private void UpdateForTarget(IFixedUpdate target, float dt)
+	{
+		target.FixedUpdateTick(dt * SpeedModifierForTarget(target));
 	}
 
 	private void FixedUpdateInternal(float timestep)

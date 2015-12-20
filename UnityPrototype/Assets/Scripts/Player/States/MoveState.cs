@@ -51,7 +51,7 @@ public class MoveState : MonoBehaviour, IState {
 		{
 			stateMachine.SetNextState("FreeFall");
 		}
-		else if (player.CurrentInputState.JumpButtonDown)
+		else if (player.CurrentInputState.BufferedJumpButtonDown(JumpState.JumpBufferTime))
 		{
 			player.JumpNormal = player.FloorNormal;
 			stateMachine.SetNextState("Jump");

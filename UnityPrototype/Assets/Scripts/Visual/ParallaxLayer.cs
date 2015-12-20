@@ -45,7 +45,7 @@ public class ParallaxLayer : MonoBehaviour {
 
 		float texUnitsInWorld = (topRightWorld.x - bottomLeftWorld.x) / worldHeight;
 		float uvWidth = texUnitsInWorld * imageSize.y / imageSize.x;
-		material.mainTextureOffset = new Vector2(uvWidth * moveRatio.x * layerPosition.x / (topRightWorld.x - bottomLeftWorld.x), 0);
+		material.mainTextureOffset = new Vector2(uvWidth * (1.0f - moveRatio.x) * layerPosition.x / (topRightWorld.x - bottomLeftWorld.x), 0);
 		material.mainTextureScale = new Vector2(uvWidth * 0.5f, 1.0f);
 	}
 }

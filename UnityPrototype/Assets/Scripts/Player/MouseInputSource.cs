@@ -29,7 +29,7 @@ public class MouseInputSource : IInputSource
 		Vector3 aimDirection = (mousePosition.GetPoint(distance) - playerPosition).normalized;
 		bool[] fireButtons = new bool[]{Input.GetButton("Fire0"), Input.GetButton("Fire1"), Input.GetButton("Fire2")};
 
-		currentState = new InputState(previousState, Input.GetAxis("Horizontal"), Input.GetButton("Jump"), fireButtons, aimDirection);
+		currentState = new InputState(previousState, Input.GetAxis("Horizontal"), Input.GetButton("Jump"), fireButtons, aimDirection, Time.time);
 	}
 
 	public InputState State

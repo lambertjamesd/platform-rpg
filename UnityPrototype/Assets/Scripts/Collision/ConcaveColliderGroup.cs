@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 
 [System.Serializable]
-public class ConcaveColliderGroup {
+public class ConcaveColliderGroup : ISerializationCallbackReceiver {
 	[SerializeField]
 	private ConcaveCollider[] colliders;
+	private bool isSetup = false;
 	
 	private static readonly int maxIterations = 10;
 	
 	public ConcaveColliderGroup(ConcaveCollider[] colliders)
 	{
 		this.colliders = colliders;
+		ExtendBorders();
 	}
 	
 	public void DebugDraw(Transform transform, bool showInteralEdges, Color edgeColor)
@@ -59,6 +61,48 @@ public class ConcaveColliderGroup {
 		{
 			return colliders.Length;
 		}
+	}
+	
+	public void OnBeforeSerialize()
+	{
+		
+	}
+	
+	public void OnAfterDeserialize()
+	{
+		if (!isSetup)
+		{
+			ReconnectSections();
+			ExtendBorders();
+		}
+	}
+
+	public void ReconnectSections()
+	{
+		foreach (ConcaveCollider collider in colliders)
+		{
+			collider.ReconnectSections();
+		}
+	}
+
+	public void ExtendBorders()
+	{
+		if (colliders.Length > 0)
+		{
+			BoundingBox bb = colliders[0].BB;
+
+			foreach (ConcaveCollider collider in colliders)
+			{
+				bb = bb.Union(collider.BB);
+			}
+
+			foreach (ConcaveCollider collider in colliders)
+			{
+				collider.ExtendBorders(bb);
+			}
+		}
+
+		isSetup = true;
 	}
 	
 	public List<ShapeOutline> GetOutline()

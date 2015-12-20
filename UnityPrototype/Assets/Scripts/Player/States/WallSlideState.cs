@@ -42,7 +42,7 @@ public class WallSlideState : MonoBehaviour, IState {
 			stickTimer = player.Settings.wallStickTime;
 		}
 
-		if (player.CurrentInputState.JumpButtonDown)
+		if (player.CurrentInputState.BufferedJumpButtonDown(JumpState.JumpBufferTime))
 		{
 			player.JumpNormal = (player.WallNormal * 0.6f + Vector3.up * 0.85f);
 			stateMachine.SetNextState("Jump");

@@ -18,6 +18,7 @@ public class InputState
 	private bool jumpButton;
 	private bool[] fireButtons;
 	private Vector3 aimDirection;
+	private float timestamp;
 
 	public InputState(InputState previousState)
 	{
@@ -26,20 +27,22 @@ public class InputState
 		this.jumpButton = false;
 		this.fireButtons = new bool[0];
 		this.aimDirection = Vector3.zero;
+		this.timestamp = 0.0f;
 	}
 	
-	public InputState(InputState previousState, float horizontalControl, bool jumpButton, bool[] fireButtons, Vector3 aimDirection)
+	public InputState(InputState previousState, float horizontalControl, bool jumpButton, bool[] fireButtons, Vector3 aimDirection, float timestamp)
 	{
 		this.previousState = previousState;
 		this.horizontalControl = horizontalControl;
 		this.jumpButton = jumpButton;
 		this.fireButtons = fireButtons;
 		this.aimDirection = aimDirection;
+		this.timestamp = timestamp;
 	}
 
 	public InputState WithNewAim(float newHorizontalControl, Vector3 newAimDirection)
 	{
-		return new InputState(previousState, newHorizontalControl, jumpButton, fireButtons, newAimDirection);
+		return new InputState(previousState, newHorizontalControl, jumpButton, fireButtons, newAimDirection, timestamp);
 	}
 
 	public float HorizontalControl
@@ -71,6 +74,24 @@ public class InputState
 				return jumpButton && !previousState.jumpButton;
 			}
 		}
+	}
+
+	public bool BufferedJumpButtonDown(float timeBuffer)
+	{
+		InputState currentState = this;
+		float startTime = timestamp;
+
+		while (currentState != null && startTime - currentState.timestamp <= timeBuffer)
+		{
+			if (currentState.JumpButtonDown)
+			{
+				return true;
+			}
+
+			currentState = currentState.previousState;
+		}
+
+		return false;
 	}
 
 	public bool FireButton(int index)
@@ -119,6 +140,13 @@ public class InputState
 
 	public static InputState Deserialize(SimpleJSON.JSONNode source, InputState prev)
 	{
+		float timestamp = source["timestamp"].AsFloat;
+
+		if (timestamp == 0.0f && prev != null)
+		{
+			timestamp = prev.timestamp + 1.0f;
+		}
+
 		return new InputState(prev, 
 			source["hc"].AsFloat,
 			source["jump"].AsBool,
@@ -127,7 +155,8 @@ public class InputState
 				source["x"].AsFloat,
 				source["y"].AsFloat,
 				source["z"].AsFloat
-			)
+			),
+		    timestamp
 		 );
 	}
 
@@ -145,6 +174,7 @@ public class InputState
 		result.Add("x", new SimpleJSON.JSONData(aimDirection.x)); 
 		result.Add("y", new SimpleJSON.JSONData(aimDirection.y));
 		result.Add("z", new SimpleJSON.JSONData(aimDirection.z));
+		result.Add("timestamp", new SimpleJSON.JSONData(timestamp));
 		return result;
 	}
 }

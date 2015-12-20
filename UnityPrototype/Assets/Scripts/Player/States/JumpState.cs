@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class JumpState : MonoBehaviour, IState {
+
+	public static float JumpBufferTime = 0.15f;
 	
 	private Player player;
 	private float jumpControlTime = 0.0f;
