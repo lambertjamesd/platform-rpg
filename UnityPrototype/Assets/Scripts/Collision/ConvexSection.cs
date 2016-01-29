@@ -13,7 +13,6 @@ public class ConvexSection {
 	private ConnectionSerialData[] connectionSerialData;
 	
 	private BoundingBox boundingBox;
-	private bool initialized = false;
 	
 	private enum JointType
 	{

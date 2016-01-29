@@ -25,7 +25,7 @@ public class PlayerHUD : MonoBehaviour {
 
 	private Vector2 spellDescriptionPosition;
 
-	private IInputSource controllerInputSource = new ControllerInputSource();
+	private IInputSource controllerInputSource = new ControllerInputSource(Camera.main.transform);
 
 	GUIStyle centeredStyle;
 

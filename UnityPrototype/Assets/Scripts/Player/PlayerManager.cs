@@ -42,11 +42,6 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 	private int currentTurn = -1;
 	private int numberPlayersStarted = 0;
 
-
-	public float freeCameraSpeed = 20.0f;
-	private Transform freeCameraFollow;
-	private bool isFreeCamera;
-	private bool isSelectingPlayer;
 	private int currentSelection;
 	private float lastHorizontal;
 
@@ -59,6 +54,14 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		if (playerHUD != null)
 		{
 			playerHUD.CurrentPlayer = CurrentPlayer;
+		}
+	}
+
+	public bool IsRunning
+	{
+		get
+		{
+			return !updateManager.Paused;
 		}
 	}
 	
@@ -106,7 +109,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		}
 	}
 
-	private void SelectNextPlayer()
+	public void SelectNextPlayer()
 	{
 		if (!AllPlayersHaveGone)
 		{
@@ -119,7 +122,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		UpdateHUD();
 	}
 	
-	private void SelectPrevPlayer()
+	public void SelectPrevPlayer()
 	{
 		if (!AllPlayersHaveGone)
 		{
@@ -137,19 +140,27 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		UpdateHUD();
 	}
 
-	private void StartSelectedPlayer()
+	public void StartSelectedPlayer()
 	{
 		players[currentSelection].StartTurn(numberPlayersStarted);
 		players[currentSelection].StartRecording();
+		DeterminismDebug.GetSingleton().StartRecording(players[currentSelection].gameObject);
 		hasPlayerGone[currentSelection] = true;
 		updateManager.Paused = false;
 
-		isSelectingPlayer = false;
 		remainingTime = turnLength;
 
 		if (playerHUD != null)
 		{
 			playerHUD.showSpellDescriptions = false;
+		}
+	}
+
+	public bool IsPaused
+	{
+		get
+		{
+			return updateManager.Paused;
 		}
 	}
 
@@ -220,13 +231,17 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		
 		timeManager.TakeSnapshot();
 		timeManager.CleanUpSnapshots(1, timeManager.SnapshotCount - 1);
+
+		DeterminismDebug.GetSingleton().Reset();
 	}
 
-	private void StartTurn()
+	private void PauseGameplay()
 	{
 		updateManager.Paused = true;
-		isSelectingPlayer = true;
-		
+	}
+
+	public void StartTurn()
+	{
 		if (AllPlayersHaveGone)
 		{
 			ChangeTeams();
@@ -240,6 +255,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 		{
 			++numberPlayersStarted;
 			timeManager.Rewind();
+			DeterminismDebug.GetSingleton().Rewind();
 		}
 		
 		SelectNextPlayer();
@@ -266,8 +282,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 			}
 
 			updateManager.Paused = true;
-
-			StartTurn();
+			PauseGameplay();
 
 			stateMachine = new StateMachine((string stateName) => {
 				switch (stateName)
@@ -275,18 +290,24 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 				case "Start":
 					if (textState == null)
 					{
-						return new IdleState();
+						return new PlayerManChoosePlayerState("WaitForCharacter", cameraAI, this, fontRenderer);
 					}
 					else
 					{
 						textState.text = "TEAM " + (currentTurn + 1) + " START";
 						textState.color = TeamColors.GetColor(currentTurn);
-						textState.nextState = "WaitForTurn";
+						textState.nextState = "ChoosePlayer";
 						return textState;
 					}
 				case "WaitForTurn":
 					waitTurnState.nextState = "Start";
 					return waitTurnState;
+				case "ChoosePlayer":
+					return new PlayerManChoosePlayerState("WaitForCharacter", cameraAI, this, fontRenderer);
+				case "WaitForCharacter":
+					return new PlayerManWaitForCharacter("ChoosePlayer", this, fontRenderer);
+				case "FreeCamera":
+					return new PlayerManFreeCamera("ChoosePlayer", cameraAI, fontRenderer);
 				}
 				return null;
 			});
@@ -313,100 +334,15 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 
 	public void Update()
 	{
-		if (mode == PlayerManagerMode.Fight || mode == PlayerManagerMode.RecordPreview)
+		if (stateMachine != null)
 		{
-			if (isFreeCamera)
-			{
-				if (Input.GetButtonDown("FreeCamera"))
-				{
-					isFreeCamera = false;
-					cameraAI.FollowTarget = players[currentSelection].transform;
-				}
-				else
-				{
-					freeCameraFollow.transform.position += freeCameraSpeed * Time.deltaTime * (
-						cameraAI.transform.up * Input.GetAxis("Vertical") +
-						cameraAI.transform.right * Input.GetAxis("Horizontal")
-						);
-
-					if (fontRenderer != null)
-					{
-						fontRenderer.renderScale = 0.5f;
-						fontRenderer.DrawTextScreen(new Vector3(0.5f, 0.25f, 0.5f), "PRESS LEFT CTRL TO RETURN", CustomFontRenderer.CenterAlign);
-					}
-				}
-			}
-			else if (isSelectingPlayer)
-			{
-				cameraAI.FollowTarget = CurrentPlayer.transform;
-
-				if (Input.GetButtonDown("FreeCamera"))
-				{
-					isFreeCamera = true;
-
-					if (freeCameraFollow == null)
-					{
-						GameObject target = new GameObject();
-						freeCameraFollow = target.transform;
-					}
-
-					freeCameraFollow.transform.position = players[currentSelection].transform.position;
-					cameraAI.FollowTarget = freeCameraFollow.transform;
-				}
-				else
-				{
-					float horizontal = Input.GetAxis("Horizontal");
-
-					if (Input.GetButtonDown("Prev") || lastHorizontal > -0.5f && horizontal <= -0.5f)
-					{
-						SelectPrevPlayer();
-					}
-					
-					if (Input.GetButtonDown("Next") || lastHorizontal < 0.5f && horizontal >= 0.5f)
-					{
-						SelectNextPlayer();
-					}
-
-					if (selectionCursor != null)
-					{
-						selectionCursor.position = players[currentSelection].transform.position;
-					}
-					
-					if (Input.GetButtonDown("Select"))
-					{
-						if (selectionCursor != null)
-						{
-							selectionCursor.transform.position = new Vector3(10000.0f, 0.0f, 0.0f);
-						}
-
-						StartSelectedPlayer();
-					}
-
-					if (fontRenderer != null)
-					{
-						fontRenderer.renderScale = 0.5f;
-						fontRenderer.DrawTextScreen(new Vector3(0.5f, 0.25f, 0.5f), "PRESS LEFT CTRL FOR FREE CAMERA", CustomFontRenderer.CenterAlign);
-					}
-
-					lastHorizontal = horizontal;
-				}
-			}
-			else
-			{
-				if (fontRenderer != null)
-				{
-					fontRenderer.renderScale = 1.0f;
-					fontRenderer.DrawTextScreen(new Vector3(0.75f, 0.25f, 0.5f), remainingTime.ToString("0.0"), CustomFontRenderer.CenterAlign);
-				}
-			}
-
 			stateMachine.Update(Time.deltaTime);
 		}
 	}
 
 	public void FixedUpdateTick(float dt)
 	{
-		if (!isSelectingPlayer && (mode == PlayerManagerMode.Fight || mode == PlayerManagerMode.RecordPreview))
+		if (IsRunning && (mode == PlayerManagerMode.Fight || mode == PlayerManagerMode.RecordPreview))
 		{
 			if (remainingTime > 0.0f)
 			{
@@ -428,7 +364,7 @@ public class PlayerManager : MonoBehaviour, IFixedUpdate {
 				}
 				else
 				{
-					StartTurn();
+					PauseGameplay();
 				}
 			}
 		}

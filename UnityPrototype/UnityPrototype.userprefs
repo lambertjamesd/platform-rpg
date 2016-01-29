@@ -1,10 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Collision\ConvexSection.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Collision\Raycasting.cs">
     <Files>
-      <File FileName="Assets\Scripts\Collision\ConvexSection.cs" Line="427" Column="7" />
-      <File FileName="Assets\Scripts\Collision\ConcaveCollider.cs" Line="108" Column="39" />
-      <File FileName="Assets\Scripts\Collision\ConcaveColliderGroup.cs" Line="33" Column="4" />
+      <File FileName="Assets\Scripts\Tests\RaycastVisualDebug.cs" Line="22" Column="1" />
+      <File FileName="Assets\Scripts\Tests\ShapeVisualDebug.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Tests\BoundingBoxVisualDebug.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Collision\Raycasting.cs" Line="345" Column="40" />
+      <File FileName="Assets\Scripts\Collision\BoundingBox.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Collision\Vector2Helper.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Collision\Shapes\BoundingBoxShape.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Collision\Shapes\LineListShape.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Collision\Shapes\ICollisionShape.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Collision\ConvexSection.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Tests\LinelistVisualDebug.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

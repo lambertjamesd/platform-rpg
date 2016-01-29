@@ -26,13 +26,17 @@ public class HealthBar : MonoBehaviour {
 	public Vector2 shardGraviy = new Vector2(0.0f, -10.0f);
 	public Vector2 shardSize = new Vector2(32.0f, 20.0f);
 
+	private float healthTickVelocity = 100.0f;
+	private float healthTickDelay = 0.5f;
+
 	private GameObject spriteObject;
 
 	private Material materialCopy;
-	private Vector3 localHealthbarAnchor;
 
 	private Damageable damageSource;
 	private float previousHealth;
+	private float currentDamagePos;
+	private float damageTime;
 
 	private List<HealthShard> healthShards = new List<HealthShard>();
 
@@ -46,22 +50,20 @@ public class HealthBar : MonoBehaviour {
 		materialCopy.SetFloat("_MaxHealth", maxHealth);
 		materialCopy.SetFloat("_CurrentHealth", currentHealth);
 		materialCopy.SetFloat("_ShieldHealth", shieldHealth);
-		materialCopy.SetFloat("_PreviousHealth", shieldHealth);
+		materialCopy.SetFloat("_PreviousHealth", Mathf.Max(currentDamagePos, shieldHealth));
 	}
 
 	public void Start()
 	{
 		damageSource = GetComponent<Damageable>();
 		previousHealth = damageSource.CurrentHealth;
+		currentDamagePos = previousHealth;
 		materialCopy = new Material(healthbarMaterial);
 
 		materialCopy.SetColor("_Color", TeamColors.GetColor(Player.LayerToTeam(gameObject.layer)));
 		materialCopy.SetColor("_ShieldColor", shieldColor);
 		materialCopy.SetColor("_DamageColor", damageColor);
 		materialCopy.SetColor("_BackgroundColor", backgroundColor);
-
-		Bounds playerBounds = GUIHelper.ObjectBoundingBox(gameObject);
-		localHealthbarAnchor = transform.InverseTransformPoint(Vector3.Scale(playerBounds.min, new Vector3(0.5f, 0.0f, 0.5f)) + Vector3.Scale(playerBounds.max, new Vector3(0.5f, 1.0f, 0.5f)));
 
 		UpdateMaterial();
 
@@ -83,8 +85,23 @@ public class HealthBar : MonoBehaviour {
 		float deltaHealth = currentHealth - previousHealth;
 		previousHealth = currentHealth;
 
+		if (currentDamagePos > currentHealth && damageTime < Time.time)
+		{
+			currentDamagePos -= Time.deltaTime * healthTickVelocity;
+
+			if (currentDamagePos <= currentHealth)
+			{
+				currentDamagePos = currentHealth;
+			}
+		}
+
 		if (deltaHealth != 0)
 		{
+			if (damageTime < Time.time)
+			{
+				damageTime = Time.time + healthTickDelay;
+			}
+
 			HealthShard shard = new HealthShard();
 
 			shard.amount = Mathf.Abs(deltaHealth);
@@ -121,8 +138,13 @@ public class HealthBar : MonoBehaviour {
 	{
 		Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + worldOffset);
 
-		Vector3 bottomLeft = screenPos - new Vector3(screenSize.x, screenSize.y, 0.0f) * 0.5f;
-		Vector3 topRight = screenPos + new Vector3(screenSize.x, screenSize.y, 0.0f) * 0.5f;
+		screenPos.x = Mathf.Round(screenPos.x) + 0.5f;
+		screenPos.y = Mathf.Round(screenPos.y);
+
+		Vector3 halfScreenSize = new Vector3(Mathf.Round(screenSize.x * 0.5f), Mathf.Round(screenSize.y * 0.5f));
+
+		Vector3 bottomLeft = screenPos - halfScreenSize;
+		Vector3 topRight = screenPos + halfScreenSize;
 
 		Vector3 targetPos = transform.position;
 		Vector3 targetForward = spriteObject.transform.forward;

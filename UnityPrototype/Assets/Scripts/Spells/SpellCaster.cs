@@ -403,6 +403,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 			if (minPriority <= 0)
 			{
+				Debug.Log("Fired spell " + spells[spellIndex].name);
 				spellStates[spellIndex].Instance.TriggerEvent("fire", propertySource);
 			}
 			

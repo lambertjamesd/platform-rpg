@@ -20,6 +20,8 @@ public class InputState
 	private Vector3 aimDirection;
 	private float timestamp;
 
+	private Vector3 positionCheck;
+
 	public InputState(InputState previousState)
 	{
 		this.previousState = previousState;
@@ -28,9 +30,10 @@ public class InputState
 		this.fireButtons = new bool[0];
 		this.aimDirection = Vector3.zero;
 		this.timestamp = 0.0f;
+		this.positionCheck = Vector3.zero;
 	}
 	
-	public InputState(InputState previousState, float horizontalControl, bool jumpButton, bool[] fireButtons, Vector3 aimDirection, float timestamp)
+	public InputState(InputState previousState, float horizontalControl, bool jumpButton, bool[] fireButtons, Vector3 aimDirection, float timestamp, Vector3 positionCheck)
 	{
 		this.previousState = previousState;
 		this.horizontalControl = horizontalControl;
@@ -38,11 +41,12 @@ public class InputState
 		this.fireButtons = fireButtons;
 		this.aimDirection = aimDirection;
 		this.timestamp = timestamp;
+		this.positionCheck = positionCheck;
 	}
 
 	public InputState WithNewAim(float newHorizontalControl, Vector3 newAimDirection)
 	{
-		return new InputState(previousState, newHorizontalControl, jumpButton, fireButtons, newAimDirection, timestamp);
+		return new InputState(previousState, newHorizontalControl, jumpButton, fireButtons, newAimDirection, timestamp, positionCheck);
 	}
 
 	public float HorizontalControl
@@ -81,7 +85,7 @@ public class InputState
 		InputState currentState = this;
 		float startTime = timestamp;
 
-		while (currentState != null && startTime - currentState.timestamp <= timeBuffer)
+		while (currentState != null && startTime - currentState.timestamp <= timeBuffer && currentState.timestamp != 0.0f)
 		{
 			if (currentState.JumpButtonDown)
 			{
@@ -138,6 +142,14 @@ public class InputState
 		}
 	}
 
+	public Vector3 PositionCheck
+	{
+		get
+		{
+			return positionCheck;
+		}
+	}
+
 	public static InputState Deserialize(SimpleJSON.JSONNode source, InputState prev)
 	{
 		float timestamp = source["timestamp"].AsFloat;
@@ -156,7 +168,12 @@ public class InputState
 				source["y"].AsFloat,
 				source["z"].AsFloat
 			),
-		    timestamp
+		    timestamp,
+		    new Vector3(
+				source["px"].AsFloat,
+				source["py"].AsFloat,
+				source["pz"].AsFloat
+			)
 		 );
 	}
 
@@ -175,9 +192,13 @@ public class InputState
 		result.Add("y", new SimpleJSON.JSONData(aimDirection.y));
 		result.Add("z", new SimpleJSON.JSONData(aimDirection.z));
 		result.Add("timestamp", new SimpleJSON.JSONData(timestamp));
+		result.Add("px", new SimpleJSON.JSONData(positionCheck.x));
+		result.Add("py", new SimpleJSON.JSONData(positionCheck.y));
+		result.Add("pz", new SimpleJSON.JSONData(positionCheck.z));
 		return result;
 	}
 }
+
 
 public interface IInputSource
 {

@@ -104,11 +104,24 @@ public class UpdateManager : MonoBehaviour {
 		loopIndex = -1;
 	}
 
+	private static float lastTimestep = 0.0f;
+
 	public void FixedUpdate()
 	{
+		// just checking my assumptions
+		if (lastTimestep == 0.0f)
+		{
+			lastTimestep = Time.fixedDeltaTime;
+		} 
+		else if (lastTimestep != Time.fixedDeltaTime)
+		{
+			Debug.LogError("Unity is being an idiot");
+		}
+
+
 		if (!paused && useUnityFixedUpdate)
 		{
-			FixedUpdateInternal(Time.deltaTime);
+			FixedUpdateInternal(Time.fixedDeltaTime);
 		}
 	}
 	

@@ -68,7 +68,7 @@ public class CharacterSelection : MonoBehaviour {
 
 		}
 		
-		SelectFirst();
+		StartNextTurn();
 	}
 
 	public void Update()
@@ -182,6 +182,14 @@ public class CharacterSelection : MonoBehaviour {
 		SetSelectedTile(selectedRow, selectedCol);
 	}
 
+	private void StartNextTurn()
+	{
+		SelectFirst();
+		CharacterSelectionTile nextTile = GetNextSelection();
+		nextTile.Disabled = false;
+		nextTile.Selected = true;
+	}
+
 	private void SelectFirst()
 	{
 		for (int i = 0; i < roster.players.Count; ++i)
@@ -239,28 +247,36 @@ public class CharacterSelection : MonoBehaviour {
 		}
 	}
 
-	private void ChooseSelectedTile()
+	private CharacterSelectionTile GetNextSelection()
 	{
 		int team = CurrentSelectingTeam(currentTeamSelection);
-
 		List<CharacterSelectionTile> teamRoster = team == 0 ? teamASelection : teamBSelection;
-
+		
 		for (int i = 0; i < teamRoster.Count; ++i)
 		{
-			if (teamRoster[i].Disabled)
+			if (teamRoster[i].DisplayedCharacter == null)
 			{
-				teamRoster[i].Disabled = false;
-				teamRoster[i].DisplayedCharacter = currentSelection.DisplayedCharacter;
-				currentSelection.Disabled = true;
-				break;
+				return teamRoster[i];
 			}
 		}
+
+		return null;
+	}
+
+	private void ChooseSelectedTile()
+	{
+		CharacterSelectionTile nextTile = GetNextSelection();
+
+		nextTile.Selected = false;
+		nextTile.Disabled = false;
+		nextTile.DisplayedCharacter = currentSelection.DisplayedCharacter;
+		currentSelection.Disabled = true;
 
 		++currentTeamSelection;
 
 		if (currentTeamSelection != teamSize * 2)
 		{
-			SelectFirst();
+			StartNextTurn();
 		}
 		else
 		{

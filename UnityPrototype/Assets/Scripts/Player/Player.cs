@@ -416,7 +416,21 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 				
 		isGrounded = false;
 		isWallSliding = false;
+		
+		DeterminismDebug.GetSingleton().Log(gameObject, transform.position.x);
+		DeterminismDebug.GetSingleton().Log(gameObject, transform.position.y);
+		DeterminismDebug.GetSingleton().Log(gameObject, velocity.x);
+		DeterminismDebug.GetSingleton().Log(gameObject, velocity.y);
+		DeterminismDebug.GetSingleton().Log(gameObject, amount.x);
+		DeterminismDebug.GetSingleton().Log(gameObject, amount.y);
+		DeterminismDebug.GetSingleton().Log(gameObject, amount.z);
 		characterController.Move(amount);
+		DeterminismDebug.GetSingleton().Log(gameObject, transform.position.x);
+		DeterminismDebug.GetSingleton().Log(gameObject, transform.position.y);
+		DeterminismDebug.GetSingleton().Log(gameObject, velocity.x);
+		DeterminismDebug.GetSingleton().Log(gameObject, velocity.y);
+		DeterminismDebug.GetSingleton().Log(gameObject, isGrounded.ToString());
+		DeterminismDebug.GetSingleton().Log(gameObject, isWallSliding.ToString());
 	}
 
 	public PlayerSettings Settings
@@ -506,7 +520,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		EnsureInitialized();
 
 		lastState.InputRecord = new InputRecording();
-		inputSource = new RecordInputSource(lastState.InputRecord, new ControllerInputSource());
+		inputSource = new RecordInputSource(lastState.InputRecord, new ControllerInputSource(transform));
 	}
 
 	public void BecomeIdle()
@@ -575,6 +589,13 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		inputSource.FrameStart(currentInputState);
 		currentInputState = inputSource.State;
 
+		DeterminismDebug.GetSingleton().Log(gameObject, transform.position.x);
+		DeterminismDebug.GetSingleton().Log(gameObject, transform.position.y);
+		DeterminismDebug.GetSingleton().Log(gameObject, transform.position.z);
+		DeterminismDebug.GetSingleton().Log(gameObject, velocity.x);
+		DeterminismDebug.GetSingleton().Log(gameObject, velocity.y);
+		DeterminismDebug.GetSingleton().Log(gameObject, velocity.z);
+
 		Vector2 direction = new Vector2(currentInputState.AimDirection.x, currentInputState.AimDirection.y);
 
 		foreach (InputScrambler scrambler in inputScramblers)
@@ -629,6 +650,10 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 
 	void OnControllerColliderHit(ControllerColliderHit hit)
 	{
+		DeterminismDebug.GetSingleton().Log(gameObject, hit.normal.x);
+		DeterminismDebug.GetSingleton().Log(gameObject, hit.normal.y);
+		DeterminismDebug.GetSingleton().Log(gameObject, hit.normal.z);
+
 		if (Vector3.Dot(velocity, hit.normal) < 0.0f)
 		{
 			ApplyFallingDamage(new Vector2(velocity.x, velocity.y), new Vector2(hit.normal.x, hit.normal.y));
@@ -656,7 +681,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 			lastState.InputRecord = recording;
 		}
 
-		inputSource = new ReplayInputSource(recording);
+		inputSource = new ReplayInputSource(recording, null);
 	}
 
 	public InputRecording LastRecording
@@ -720,7 +745,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 			}
 			else
 			{
-				inputSource = new ReplayInputSource(lastState.InputRecord);
+				inputSource = new ReplayInputSource(lastState.InputRecord, transform);
 			}
 
 			if (animatorStateSaver != null)

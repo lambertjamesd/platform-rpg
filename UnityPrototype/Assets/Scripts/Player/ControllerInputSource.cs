@@ -4,12 +4,13 @@ using System.Collections;
 public class ControllerInputSource : IInputSource
 {
 	private InputState currentState = null;
+	private Transform positionCheckTransform;
 
 	private static readonly float DEAD_ZONE = 0.1f;
 	
-	public ControllerInputSource()
+	public ControllerInputSource(Transform playerTransform)
 	{
-
+		this.positionCheckTransform = playerTransform;
 	}
 	
 	public void FrameStart(InputState previousState)
@@ -25,7 +26,7 @@ public class ControllerInputSource : IInputSource
 		}
 
 		bool[] fireButtons = new bool[]{Input.GetButton("Fire0"), Input.GetButton("Fire1"), Input.GetButton("Fire2")};
-		currentState = new InputState(previousState, aimDirection.x, Input.GetButton("Jump"), fireButtons, aimDirection, Time.time);
+		currentState = new InputState(previousState, aimDirection.x, Input.GetButton("Jump"), fireButtons, aimDirection, Time.time, positionCheckTransform.localPosition);
 	}
 	
 	public InputState State
