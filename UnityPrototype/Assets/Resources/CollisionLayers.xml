@@ -27,6 +27,20 @@
 		</description>
 	</function>
 	
+	<function name="WeaponLayerMask" namespace="collision">
+		<return-type>bitMask</return-type>
+		<parameter>
+			<name>layer</name>
+			<type>int</type>
+			<description>
+				The layer of the character
+			</description>
+		</parameter>
+		<description>
+			Turns a layer number into a bitmask that collides with ally weapons
+		</description>
+	</function>
+	
 	<function name="CharacterLayerMask" namespace="collision">
 		<return-type>bitMask</return-type>
 		<description>
@@ -67,6 +81,11 @@
 			<name>debugDraw</name>
 			<type>bool</type>
 			<description>Debug draw the raycast</description>
+		</parameter>
+		<parameter>
+			<name>spacialIndex</name>
+			<type>Any</type>
+			<description>The spacial index to check</description>
 		</parameter>
 	</function>
 </effect-settings>

@@ -723,5 +723,31 @@ Called if the teleport failed
 			Stores a single value at a time
 		</description>
 	</effect>
+	
+	<input-configuration name="get-context-value-in">
+		<parameter>
+			<name>name</name>
+			<type>string</type>
+			<description>
+				The name of the value to retrieve
+			</description>
+		</parameter>
+	</input-configuration>
+	
+	<output-configuration name="get-context-value-out">
+		<parameter>
+			<name>value</name>
+			<type>Any</type>
+			<description>
+				The value retrieved from the context
+			</description>
+		</parameter>
+	</output-configuration>
+	
+	<effect class="GetContextValue" alias="get-context-value" namespace="spell" input="get-context-value-in" output="get-context-value-out">
+		<description>
+			Stores a single value at a time
+		</description>
+	</effect>
 
 </effect-settings>

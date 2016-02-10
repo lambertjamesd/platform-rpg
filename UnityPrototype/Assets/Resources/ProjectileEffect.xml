@@ -5,7 +5,14 @@
 			<name>collideWith</name>
 			<type>bitMask</type>
 			<description>
-				The layers the projectiile collides with
+				The layers that others objects collide with
+			</description>
+		</parameter>
+		<parameter>
+			<name>moveCollideWith</name>
+			<type>bitMask</type>
+			<description>
+				The layers the projectiile collides with when moving
 			</description>
 		</parameter>
 		<parameter>

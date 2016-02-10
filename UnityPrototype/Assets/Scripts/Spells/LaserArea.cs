@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class LaserArea : AreaEffect, IFixedUpdate {
 
@@ -54,11 +56,11 @@ public class LaserArea : AreaEffect, IFixedUpdate {
 		maxRange = instance.GetValue<float>("maxRange", defaultMaxRange);
 		lastDistance = maxRange;
 
-		Ray ray = new Ray(transform.position, transform.TransformDirection(Vector3.up));
-		RaycastHit hitInfo;
-		if (Physics.SphereCast(ray, blockRadius, out hitInfo, maxRange, blockLayers))
+		Ray2D ray = new Ray2D(transform.position, transform.TransformDirection(Vector3.up));
+		ShapeRaycastHit hitInfo = index.Spherecast(ray, blockRadius, maxRange, -1, blockLayers);
+		if (hitInfo != null)
 		{
-			lastDistance = hitInfo.distance;
+			lastDistance = hitInfo.Distance;
 		}
 
 		if (visualizer != null)
@@ -66,16 +68,11 @@ public class LaserArea : AreaEffect, IFixedUpdate {
 			visualizer.SetInnerLength(lastDistance);
 		}
 
-		RaycastHit[] hits = Physics.SphereCastAll(ray, areaRadius, lastDistance, areaLayers);
-
-		Collider[] colliderList = new Collider[hits.Length];
-
-		for (int i = 0; i < hits.Length; ++i)
-		{
-			colliderList[i] = hits[i].collider;
-		}
-
-		UpdateContainedColliders(colliderList, dt);
+		IEnumerable<ICollisionShape> hits = index.SpherecastMulti(ray, areaRadius, lastDistance, -1, areaLayers)
+			.Select(x => x.Shape)
+			.Concat(index.CircleOverlap(ray.origin, areaRadius, areaLayers, -1));
+	
+		UpdateContainedShapes(hits, dt);
 	}
 
 	public override IEffectPropertySource PropertySource

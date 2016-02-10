@@ -58,6 +58,11 @@
 			<type>Vector3</type>
 			<description>The direction the caster if facing</description>
 		</parameter>
+		<parameter>
+			<name>team</name>
+			<type>int</type>
+			<description>the team the caster is one</description>
+		</parameter>
 		<event name="on-fire" parent="caster-fire">
 			<description>
 				Called whenever the player releases the cast button

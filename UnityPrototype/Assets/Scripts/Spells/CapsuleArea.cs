@@ -11,6 +11,7 @@ public class CapsuleArea : AreaEffect, IFixedUpdate {
 	private Vector3 up;
 	private float halfOffset;
 	private float radius;
+	private float innerHeight;
 	private int collideWith;
 	private bool lockRotation;
 	private Vector3 lastPosition;
@@ -99,6 +100,8 @@ public class CapsuleArea : AreaEffect, IFixedUpdate {
 
 		halfOffset = Mathf.Max(0.0f, height * 0.5f - radius);
 
+		innerHeight = Mathf.Max(0.0f,height - radius * 2.0f);
+
 		updateManager = instance.GetContextValue<UpdateManager>("updateManager", null);
 		AddToUpdate();
 
@@ -125,38 +128,31 @@ public class CapsuleArea : AreaEffect, IFixedUpdate {
 
 	public void FixedUpdateTick (float dt) {
 		Vector3 worldCenter = transform.TransformPoint(center);
-		Vector3 worldUp = lockRotation ? up : transform.TransformDirection(up);
 
-		Vector3 a = worldCenter + worldUp * halfOffset;
-		Vector3 b = worldCenter - worldUp * halfOffset;
+		Vector2 moveAmount = worldCenter - lastPosition;
 
-		Vector3 moveAmount = worldCenter - lastPosition;
+		HashSet<ICollisionShape> overlappingColliders = new HashSet<ICollisionShape>();
 
-		HashSet<Collider> overlappingColliders = new HashSet<Collider>();
+		CapsuleShape capsuleShape = new CapsuleShape(radius, innerHeight);
+		capsuleShape.Center = worldCenter;
+		capsuleShape.CollisionLayers = collideWith;
 
-		overlappingColliders.UnionWith(Physics.OverlapSphere(a, radius, collideWith));
+		overlappingColliders.UnionWith(index.OverlapShape(capsuleShape));
 
-		if (a != b)
+		if (moveAmount != Vector2.zero)
 		{
-			// capsule has height
-			RaycastHit[] castHits = Physics.SphereCastAll(new Ray(a, b - a), radius, (b - a).magnitude, collideWith);
-			overlappingColliders.UnionWith(castHits.Select(castHit => castHit.collider).ToArray());
+			Vector2 rayDir = moveAmount.normalized;
 
-			if (moveAmount != Vector3.zero)
-			{
-				// capsule has moved
-				RaycastHit[] capsuleHits = Physics.CapsuleCastAll(a, b, radius, -moveAmount, moveAmount.magnitude, collideWith);
-				overlappingColliders.UnionWith(capsuleHits.Select(castHit => castHit.collider).ToArray());
-			}
-		}
-		else if (moveAmount != Vector3.zero)
-		{
-			// sphere has moved
-			RaycastHit[] castHits = Physics.SphereCastAll(new Ray(a, -moveAmount), radius, moveAmount.magnitude, collideWith);
-			overlappingColliders.UnionWith(castHits.Select(castHit => castHit.collider).ToArray());
+			overlappingColliders.UnionWith(index.CapsulecastMulti(
+				new Ray2D(worldCenter, rayDir),
+				radius, innerHeight,
+				Vector2.Dot(rayDir, moveAmount),
+				-1,
+				collideWith
+			).Select(x => x.Shape));
 		}
 		
-		UpdateContainedColliders(overlappingColliders.ToArray(), dt);
+		UpdateContainedShapes(overlappingColliders.ToArray(), dt);
 
 		lastPosition = worldCenter;
 	}

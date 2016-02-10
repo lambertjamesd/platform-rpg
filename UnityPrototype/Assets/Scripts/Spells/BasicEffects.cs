@@ -187,13 +187,15 @@ public class DelayGameObjectEffect : EffectGameObject, IDelayEffect, IFixedUpdat
 
 		float radius = instance.GetValue<float>("radius", 0.0f);
 
-		if (gameObject.GetComponent<Collider>() == null && radius > 0.0f)
+		if (gameObject.GetComponent<CustomCollider>() == null && radius > 0.0f)
 		{
-			CapsuleCollider capsule = gameObject.GetOrAddComponent<CapsuleCollider>();
+			CustomCapsule capsule = gameObject.GetOrAddComponent<CustomCapsule>();
 
 			capsule.radius = radius;
-			capsule.height = instance.GetValue<float>("height", 0.0f);
-			capsule.center = instance.GetValue<Vector3>("center", Vector3.zero);
+			capsule.innerHeight = Mathf.Max(0.0f, instance.GetValue<float>("height", 0.0f) - radius * 2.0f);
+			capsule.offset = instance.GetValue<Vector3>("center", Vector3.zero);
+			capsule.collisionLayers = instance.GetValue<int>("collideWith", -1);
+			capsule.AddToIndex(instance.GetContextValue<SpacialIndex>("spacialIndex", null));
 		}
 	}
 
@@ -641,6 +643,8 @@ public class SetPositionEffect : EffectObject {
 			GameObject parent = instance.GetValue<GameObject>("parent", target.GetParent());
 			target.transform.parent = parent ? parent.transform : null;
 			target.transform.position = instance.GetValue<Vector3>("position", target.transform.position);
+			MoveSignal.CheckParent(target);
+			MoveSignal.Moved(target);
 		}
 	}
 }

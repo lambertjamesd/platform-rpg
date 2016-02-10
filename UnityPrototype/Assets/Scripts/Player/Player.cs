@@ -198,7 +198,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	private IInputSource inputSource;
 
 	private StateMachine stateMachine;
-	private CharacterController characterController;
+	private CustomCharacterController characterController;
 	private SpellCaster spellCaster;
 	private Damageable damageable;
 	private Vector3 velocity;
@@ -323,6 +323,11 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 			team = value;
 			gameObject.layer = firstTeamLayer + team * layerOffsetPerTeam;
 
+			if (characterController != null)
+			{
+				characterController.collisionLayers = CollisionLayers.AllyLayers(team);
+				characterController.UpdateProperties();
+			}
 			/*SpriteRenderer[] renderers = gameObject.GetComponentsInChildren<SpriteRenderer>(renderer);
 			foreach (Renderer childRenderer in renderers)
 			{
@@ -412,11 +417,9 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 
 	public void Move(Vector3 amount)
 	{
-		amount.z = 0.0f;
-				
 		isGrounded = false;
 		isWallSliding = false;
-		
+
 		DeterminismDebug.GetSingleton().Log(gameObject, transform.position.x);
 		DeterminismDebug.GetSingleton().Log(gameObject, transform.position.y);
 		DeterminismDebug.GetSingleton().Log(gameObject, velocity.x);
@@ -424,7 +427,7 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		DeterminismDebug.GetSingleton().Log(gameObject, amount.x);
 		DeterminismDebug.GetSingleton().Log(gameObject, amount.y);
 		DeterminismDebug.GetSingleton().Log(gameObject, amount.z);
-		characterController.Move(amount);
+		characterController.Move(new Vector2(amount.x, amount.y));
 		DeterminismDebug.GetSingleton().Log(gameObject, transform.position.x);
 		DeterminismDebug.GetSingleton().Log(gameObject, transform.position.y);
 		DeterminismDebug.GetSingleton().Log(gameObject, velocity.x);
@@ -461,12 +464,16 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 	{
 		if (characterController == null)
 		{
-			characterController = GetComponent<CharacterController>();
+			characterController = GetComponent<CustomCharacterController>();
 			spellCaster = GetComponent<SpellCaster>();
 			damageable = GetComponent<Damageable>();
 			floorUpTolerance = Mathf.Cos(characterController.slopeLimit * Mathf.Deg2Rad);
 			overlapCorrecter = gameObject.GetComponentWithAncestors<TilemapOverlapCorrecter>();
 			stats = gameObject.GetComponent<PlayerStats>();
+			characterController.AddToIndex(overlapCorrecter.GetSpacialIndex());
+			characterController.collisionLayers = CollisionLayers.AllyLayers(team);
+			characterController.moveCollisionLayers = CollisionLayers.ObstacleLayers;
+			characterController.UpdateProperties();
 
 			if (visual != null)
 			{
@@ -648,30 +655,35 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 		}
 	}
 
-	void OnControllerColliderHit(ControllerColliderHit hit)
+	private void HandleHit(Vector3 normal)
 	{
-		DeterminismDebug.GetSingleton().Log(gameObject, hit.normal.x);
-		DeterminismDebug.GetSingleton().Log(gameObject, hit.normal.y);
-		DeterminismDebug.GetSingleton().Log(gameObject, hit.normal.z);
-
-		if (Vector3.Dot(velocity, hit.normal) < 0.0f)
+		DeterminismDebug.GetSingleton().Log(gameObject, normal.x);
+		DeterminismDebug.GetSingleton().Log(gameObject, normal.y);
+		DeterminismDebug.GetSingleton().Log(gameObject, normal.z);
+		
+		if (Vector3.Dot(velocity, normal) < 0.0f)
 		{
-			ApplyFallingDamage(new Vector2(velocity.x, velocity.y), new Vector2(hit.normal.x, hit.normal.y));
-
-			velocity = velocity - Vector3.Project(velocity, hit.normal);
+			ApplyFallingDamage(new Vector2(velocity.x, velocity.y), new Vector2(normal.x, normal.y));
+			
+			velocity = velocity - Vector3.Project(velocity, normal);
 			velocity.z = 0.0f;
 		}
-
-		if (Vector3.Dot(hit.normal, Vector3.up) > floorUpTolerance)
+		
+		if (Vector3.Dot(normal, Vector3.up) > floorUpTolerance)
 		{
-			floorNormal = hit.normal;
+			floorNormal = normal;
 			isGrounded = true;
 		}
-		else if (Mathf.Abs(Vector3.Dot (hit.normal, Vector3.right)) > settings.CosWallAngleTolerance)
+		else if (Mathf.Abs(Vector3.Dot (normal, Vector3.right)) > settings.CosWallAngleTolerance)
 		{
-			wallNormal = hit.normal;
+			wallNormal = normal;
 			isWallSliding = true;
 		}
+	}
+
+	void OnCustomControllerHit(ShapeRaycastHit hit)
+	{
+		HandleHit(new Vector3(hit.Normal.x, hit.Normal.y));
 	}
 
 	public void Playback(InputRecording recording)
@@ -760,6 +772,8 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 			currentInputState = lastState.CurrentInputState;
 
 			inputScramblers = new List<InputScrambler>(lastState.InputScramblers);
+
+			characterController.UpdateIndex();
 		}
 	}
 
@@ -788,8 +802,13 @@ public class Player : MonoBehaviour, IFixedUpdate, ITimeTravelable, ITeleportabl
 
 	public bool TeleportTo(Vector3 position)
 	{
-		Vector3 offsetAmount = transform.TransformDirection(characterController.center);
-		Vector3 teleportedPosition = overlapCorrecter.CorrectCapsuleOverlap(position + offsetAmount, Vector3.up, characterController.height, characterController.radius);
+		Vector3 offsetAmount = transform.TransformDirection(new Vector3(characterController.offset.x, characterController.offset.y));
+		Vector3 teleportedPosition = overlapCorrecter.CorrectCapsuleOverlap(
+			position + offsetAmount, 
+			Vector3.up, 
+			characterController.innerHeight + characterController.radius * 2.0f, 
+			characterController.radius
+		);
 		transform.position = teleportedPosition - offsetAmount;
 		return true;
 	}

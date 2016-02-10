@@ -69,7 +69,7 @@ public struct BoundingBox {
 	public Vector2 Lerp(Vector2 input)
 	{
 		return new Vector3(
-			Mathf.Lerp(min.x, max.y, input.x),
+			Mathf.Lerp(min.x, max.x, input.x),
 			Mathf.Lerp(min.y, max.y, input.y)
 		);
 	}
@@ -92,5 +92,21 @@ public struct BoundingBox {
 			(direction.x == 0.0f) ? (min.x + max.x) * 0.5f : (direction.x < 0.0f) ? min.x : max.x,
 			(direction.y == 0.0f) ? (min.y + max.y) * 0.5f : (direction.y < 0.0f) ? min.y : max.y
 		);
+	}
+
+	public Vector2 NearestPoint(Vector2 input)
+	{
+		return new Vector2(
+			Mathf.Clamp(input.x, min.x, max.x),
+			Mathf.Clamp(input.y, min.y, max.y)
+		);
+	}
+
+	public Vector2 Size
+	{
+		get
+		{
+			return max - min;
+		}
 	}
 }

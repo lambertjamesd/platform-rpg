@@ -244,6 +244,8 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 			{
 			case "forward":
 				return forward;
+			case "team":
+				return Player.LayerToTeam(gameObject.layer);
 			}
 			
 			return gameObjectPropertySource.GetObject(name);
@@ -258,6 +260,8 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 
 		Dictionary<string, object> context = new Dictionary<string, object>();
 
+		TilemapOverlapCorrecter overlapCorrector = gameObject.GetComponentWithAncestors<TilemapOverlapCorrecter>();
+
 		context["parentGameObject"] = gameObject.GetParent();
 		context["updateManager"] = gameObject.GetComponentWithAncestors<UpdateManager>();
 		context["timeManager"] = timeManager;
@@ -265,6 +269,7 @@ public class SpellCaster : MonoBehaviour, ITimeTravelable {
 		context["casterTeam"] = Player.LayerToTeam(gameObject.layer);
 		context["gameObject"] = gameObject;
 		context["caster"] = this;
+		context["spacialIndex"] = overlapCorrector.GetSpacialIndex();
 
 		for (int i = 0; i < spells.Length; ++i)
 		{

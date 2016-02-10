@@ -1,4 +1,4 @@
-﻿//#define ENABLE_DETERMINSIM_DEBUG
+﻿#define ENABLE_DETERMINSIM_DEBUG
 
 using UnityEngine;
 using System.Collections;

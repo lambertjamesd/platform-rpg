@@ -47,6 +47,7 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 	private bool firstColliderOnly = false;
 	private bool noCollideRepeat = false;
 	private TimeManager timeManager;
+	protected SpacialIndex index;
 
 	private Dictionary<GameObject, List<IOnExitDelegate>> exitListeners = new Dictionary<GameObject, List<IOnExitDelegate>>();
 
@@ -96,6 +97,8 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 
 		timeManager = instance.GetContextValue<TimeManager>("timeManager", null);
 		timeManager.AddTimeTraveler(this);
+
+		index = instance.GetContextValue<SpacialIndex>("spacialIndex", null);
 	}
 
 	private void ExitEvent(GameObject target, float deltaTime)
@@ -128,39 +131,38 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 			return gameObjectSource.GetObject(propertyName);
 		});
 	}
+
 	
-	protected void UpdateContainedColliders(Collider[] colliders, float deltaTime) {
-
-
-		foreach (Collider collider in colliders)
+	private void UpdateContainedGameObjects(GameObject[] gameObjects, float deltaTime) {
+		foreach (GameObject gameObject in gameObjects)
 		{
-			bool notFirstCollider = firstColliderOnly && alreadyCollided.Count > 0 && !alreadyCollided.Contains(collider.gameObject);
-			bool alreadyEntered = noCollideRepeat && alreadyCollided.Contains(collider.gameObject) && !enclosedObjects.Contains(collider.gameObject);
-
+			bool notFirstCollider = firstColliderOnly && alreadyCollided.Count > 0 && !alreadyCollided.Contains(gameObject);
+			bool alreadyEntered = noCollideRepeat && alreadyCollided.Contains(gameObject) && !enclosedObjects.Contains(gameObject);
+			
 			if (notFirstCollider || alreadyEntered)
 			{
 				continue;
 			}
-
-			if (!enclosedObjects.Contains(collider.gameObject))
+			
+			if (!enclosedObjects.Contains(gameObject))
 			{
-				enclosedObjects.Add(collider.gameObject);
-				alreadyCollided.Add(collider.gameObject);
-				Instance.TriggerEvent("enter", EventPropertySource(collider.gameObject, deltaTime, this));
+				enclosedObjects.Add(gameObject);
+				alreadyCollided.Add(gameObject);
+				Instance.TriggerEvent("enter", EventPropertySource(gameObject, deltaTime, this));
 			}
 			else
 			{
-				Instance.TriggerEvent("stay", EventPropertySource(collider.gameObject, deltaTime, this));
+				Instance.TriggerEvent("stay", EventPropertySource(gameObject, deltaTime, this));
 			}
-
+			
 			if (firstColliderOnly)
 			{
 				break;
 			}
 		}
-
-		enclosedObjects.RemoveWhere(delegate(GameObject gameObject) { 
-			if (Array.Find<Collider>(colliders, collider => collider.gameObject == gameObject) == null)
+		
+		enclosedObjects.RemoveWhere(delegate(GameObject existingObject) { 
+			if (Array.Find<GameObject>(gameObjects, gameObject => gameObject == existingObject) == null)
 			{
 				ExitEvent(gameObject, deltaTime);
 				return true;
@@ -170,6 +172,15 @@ public class AreaEffect : EffectGameObject, ITimeTravelable {
 				return false;
 			}
 		});
+	}
+	
+	protected void UpdateContainedColliders(Collider[] colliders, float deltaTime) {
+		UpdateContainedGameObjects(colliders.Select(x => x.gameObject).ToArray(), deltaTime);
+	}
+	
+	
+	protected void UpdateContainedShapes(IEnumerable<ICollisionShape> colliders, float deltaTime) {
+		UpdateContainedGameObjects(colliders.Select(x => x.ConnectedTo).Where(x => x != null).ToArray(), deltaTime);
 	}
 
 	public static Dictionary<GameObject,List<IOnExitDelegate>> DuplicateListeners(Dictionary<GameObject,List<IOnExitDelegate>> source)

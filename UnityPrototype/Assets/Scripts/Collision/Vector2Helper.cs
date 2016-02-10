@@ -3,6 +3,11 @@ using UnityEngine;
 
 public static class Vector2Helper
 {
+	public static Vector2 ProjectOnto(Vector2 vector, Vector2 normal)
+	{
+		return normal * (Vector2.Dot(vector, normal) / normal.sqrMagnitude);
+	}
+
 	public static Vector2 Rotate90(Vector2 input)
 	{
 		return new Vector2(-input.y, input.x);

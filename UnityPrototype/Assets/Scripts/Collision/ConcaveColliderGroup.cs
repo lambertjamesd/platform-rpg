@@ -8,6 +8,7 @@ public class ConcaveColliderGroup : ISerializationCallbackReceiver {
 	[SerializeField]
 	private ConcaveCollider[] colliders;
 	private bool isSetup = false;
+	private BoundingBox boundingBox;
 	
 	private static readonly int maxIterations = 10;
 	
@@ -100,6 +101,8 @@ public class ConcaveColliderGroup : ISerializationCallbackReceiver {
 			{
 				collider.ExtendBorders(bb);
 			}
+
+			boundingBox = bb;
 		}
 
 		isSetup = true;
@@ -108,5 +111,25 @@ public class ConcaveColliderGroup : ISerializationCallbackReceiver {
 	public List<ShapeOutline> GetOutline()
 	{
 		return colliders.Select(collider => collider.GetOutline()).ToList();
+	}
+
+	public BoundingBox BoundingBox
+	{
+		get
+		{
+			return boundingBox;
+		}
+	}
+	
+	public List<LineListShape> BuildShapes()
+	{
+		List<LineListShape> output = new List<LineListShape>();
+
+		foreach (ConcaveCollider collider in colliders)
+		{
+			collider.BuildShapes(output);
+		}
+
+		return output;
 	}
 }

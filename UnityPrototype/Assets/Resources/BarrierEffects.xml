@@ -5,13 +5,49 @@
 			<type>Vector3</type>
 			<description>the size of the barrier</description>
 		</parameter>
+		<parameter>
+			<name>offset</name>
+			<type>Vector3</type>
+			<description>the amount to offset the center by</description>
+		</parameter>
+		<parameter>
+			<name>collideWith</name>
+			<type>bitMask</type>
+			<description>The layers that this obstacle blocks</description>
+		</parameter>
 	</input-configuration>
 	<output-configuration name="rect-wall-out" parent="game-object-out">
 	</output-configuration>
 	
-	<effect class="RectangleBarrier" alias="rect-wall" namespace="barrier" input="rect-wall-in" output="rect-wall-out">
+	<effect class="BoxObstacle" alias="rect-wall" namespace="barrier" input="rect-wall-in" output="rect-wall-out">
 		<description>
 			Creates a rectangular barrier that cannot be passed through
+		</description>
+	</effect>
+	
+	<input-configuration name="circle-barrier-in" parent="game-object-in">
+		<parameter>
+			<name>radius</name>
+			<type>float</type>
+			<description>the radius of the barrier</description>
+		</parameter>
+		<parameter>
+			<name>offset</name>
+			<type>Vector3</type>
+			<description>the amount to offset the center by</description>
+		</parameter>
+		<parameter>
+			<name>collideWith</name>
+			<type>bitMask</type>
+			<description>The layers that this obstacle blocks</description>
+		</parameter>
+	</input-configuration>
+	<output-configuration name="circle-barrier-out" parent="game-object-out">
+	</output-configuration>
+	
+	<effect class="CircleObstacle" alias="circle-barrier" namespace="barrier" input="circle-barrier-in" output="circle-barrier-out">
+		<description>
+			Creates a circular barrier that cannot be passed through
 		</description>
 	</effect>
 </effect-settings>

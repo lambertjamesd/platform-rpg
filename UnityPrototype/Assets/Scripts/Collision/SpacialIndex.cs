@@ -140,7 +140,7 @@ public class SpacialIndexNode
 		{
 			--chain.totalContained;
 
-			if (chain.totalContained <= SpacialIndex.MAX_CHILDREN)
+			if (chain.totalContained <= SpacialIndex.MIN_CHILDREN_SPLIT)
 			{
 				Combine();
 			}
@@ -183,69 +183,91 @@ public class SpacialIndexNode
 		}
 	}
 	
-	public void Raycast(SpacialIndex.RaycastDelegate caster, BoundingBox startBB, SpacialIndex.RaycastState state)
+	public void Raycast(SpacialIndex.RaycastDelegate caster, BoundingBox startBB, SpacialIndex.RaycastState state, int collisionGroup, int collisionLayers)
 	{
 		foreach (ICollisionShape shape in shapes)
 		{
-			SimpleRaycastHit maybeHit = caster(shape);
-
-			if (maybeHit != null)
+			if (CollisionShape.Collides(shape, collisionGroup, collisionLayers))
 			{
-				state.Update(new ShapeRaycastHit(shape, maybeHit));
+				SimpleRaycastHit maybeHit = caster(shape);
+
+				if (maybeHit != null)
+				{
+					state.Update(new ShapeRaycastHit(shape, maybeHit));
+				}
 			}
 		}
 
-		foreach (SpacialIndexNode child in childrenNodes)
+		if (childrenNodes != null)
 		{
-			if (child.boundary.Overlaps(startBB))
+			foreach (SpacialIndexNode child in childrenNodes)
 			{
-				child.Raycast(caster, startBB, state);
+				if (child.boundary.Overlaps(startBB))
+				{
+					child.Raycast(caster, startBB, state, collisionGroup, collisionLayers);
+				}
 			}
-		}
 
-		childrenNodes
-			.Select(
-				child => {
-					if (child.boundary.Overlaps(startBB))
-					{
-						// if the bb overlaps, this child has already been handled
-						return null;
-					}
-					else
-					{
-						SimpleRaycastHit childHit = caster(child.boundaryShape);
-
-						if (childHit != null && childHit.Distance <= state.nearestDistance)
+			childrenNodes
+				.Select(
+					child => {
+						if (child.boundary.Overlaps(startBB))
 						{
-							return new ChildDistance(child, childHit.Distance);
+							// if the bb overlaps, this child has already been handled
+							return null;
 						}
 						else
 						{
-							return null;
+							SimpleRaycastHit childHit = caster(child.boundaryShape);
+
+							if (childHit != null && childHit.Distance <= state.nearestDistance)
+							{
+								return new ChildDistance(child, childHit.Distance);
+							}
+							else
+							{
+								return null;
+							}
 						}
 					}
-				}
-			)
-			.Where(x => x != null)
-			.OrderBy( a => a.distance)
-			.SkipWhile( child => {
-				if (child.distance <= state.nearestDistance)
-				{
-					child.node.Raycast(caster, startBB, state);
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			});
+				)
+				.Where(x => x != null)
+				.OrderBy( a => a.distance)
+				.SkipWhile( child => {
+					if (child.distance <= state.nearestDistance)
+					{
+						child.node.Raycast(caster, startBB, state, collisionGroup, collisionLayers);
+						return true;
+					}
+					else
+					{
+						return false;
+					}
+				});
+		}
+	}
+	
+	public void DrawGizmos()
+	{
+		Vector2 center = boundary.Lerp(new Vector2(0.5f, 0.5f));
+		Vector2 size = boundary.Size;
+		Gizmos.DrawWireCube(new Vector3(center.x, center.y), new Vector3(size.x, size.y, 1.0f));
+
+		if (childrenNodes != null)
+		{
+			foreach (SpacialIndexNode child in childrenNodes)
+			{
+				child.DrawGizmos();
+			}
+		}
 	}
 }
 
 public class SpacialIndex
 {
 	public static readonly int MAX_DEPTH = 6;
-	public static readonly int MAX_CHILDREN = 20;
+	public static readonly int MAX_CHILDREN = 10;
+	public static readonly int MIN_CHILDREN_SPLIT = 5;
 
 	private BoundingBox boundary;
 	private SpacialIndexNode rootNode;
@@ -262,7 +284,7 @@ public class SpacialIndex
 		SpacialIndexNode lastNode = shapeMapping.ContainsKey(shape) ? shapeMapping[shape] : null;
 		SpacialIndexNode nextNode = rootNode.Insert(shape, shapeBB, lastNode);
 
-		if (lastNode != nextNode)
+		if (lastNode != nextNode && lastNode != null)
 		{
 			lastNode.Remove(shape);
 		}
@@ -283,40 +305,87 @@ public class SpacialIndex
 	{
 		rootNode.CollideBB(bb, callback);
 	}
+	
+	public List<ICollisionShape> OverlapShape(ICollisionShape shape)
+	{
+		List<ICollisionShape> result = new List<ICollisionShape>();
+		
+		CollideBB(shape.GetBoundingBox(), x => {
+			if (CollisionShape.Collides(x, shape.CollisionGroup, shape.CollisionLayers) &&
+			    x.Overlap(shape) != null) {
+				result.Add(x);
+			}
+		});
+		
+		return result;
+	}
+
+	public List<ICollisionShape> CircleOverlap(Vector2 center, float radius, int collisionLayers, int collisionGroup)
+	{
+		CircleShape circle = new CircleShape(radius);
+		circle.Center = center;
+		circle.CollisionLayers = collisionLayers;
+		circle.CollisionGroup = collisionGroup;
+
+		return OverlapShape(circle);
+	}
 
 	public class RaycastState
 	{
 		public ShapeRaycastHit nearestHit;
 		public float nearestDistance;
+		private bool multi;
+		private List<ShapeRaycastHit> allHits;
 		
-		public RaycastState(float maxDistance)
+		public RaycastState(float maxDistance, bool multi)
 		{
 			nearestHit = null;
 			nearestDistance = maxDistance;
+			this.multi = multi;
+
+			if (multi)
+			{
+				allHits = new List<ShapeRaycastHit>();
+			}
 		}
 
 		public void Update(ShapeRaycastHit hit)
 		{
 			if (hit.Distance <= nearestDistance)
 			{
-				// this handles the case where the distances are
-				// equal while still being deterministic
-				nearestHit = ShapeRaycastHit.NearestHit(nearestHit, hit);
-				nearestDistance = nearestHit.Distance;
+				if (multi)
+				{
+					allHits.Add(hit);
+				}
+				else
+				{
+					// this handles the case where the distances are
+					// equal while still being deterministic
+					nearestHit = ShapeRaycastHit.NearestHit(nearestHit, hit);
+					nearestDistance = nearestHit.Distance;
+				}
+			}
+		}
+
+		public IEnumerable<ShapeRaycastHit> AllHits
+		{
+			get
+			{
+				return allHits;
 			}
 		}
 	}
 
 	public delegate SimpleRaycastHit RaycastDelegate(ICollisionShape shape);
 
-	public ShapeRaycastHit Raycast(RaycastDelegate caster, BoundingBox startBB, float maxDistance = float.PositiveInfinity)
+	public RaycastState Raycast(RaycastDelegate caster, BoundingBox startBB, float maxDistance = float.PositiveInfinity, int collisionGroup = -1, int collisionLayers = ~0, bool multi = false)
 	{
-		RaycastState state = new RaycastState(maxDistance);
-		rootNode.Raycast(caster, startBB, state);
-		return state.nearestHit;
+		RaycastState state = new RaycastState(maxDistance, multi);
+		rootNode.Raycast(caster, startBB, state, collisionGroup, collisionLayers);
+		return state;
 	}
 
-	public ShapeRaycastHit Raycast(Ray2D ray, float maxDistance = float.PositiveInfinity)
+	private RaycastState RaycastInteral(Ray2D ray, float maxDistance = float.PositiveInfinity, int collisionGroup = -1, int collisionLayers = ~0, bool multi = false)
 	{
 		return Raycast(
 			shape => shape.Raycast(ray), 
@@ -324,11 +393,14 @@ public class SpacialIndex
 				ray.origin - Vector2.one * Raycasting.ERROR_TOLERANCE, 
 				ray.origin + Vector2.one * Raycasting.ERROR_TOLERANCE
 			),
-			maxDistance
+			maxDistance,
+			collisionGroup,
+			collisionLayers,
+			multi
 		);
 	}
 
-	public ShapeRaycastHit Spherecast(Ray2D ray, float radius, float maxDistance = float.PositiveInfinity)
+	private RaycastState SpherecastInternal(Ray2D ray, float radius, float maxDistance = float.PositiveInfinity, int collisionGroup = -1, int collisionLayers = ~0, bool multi = false)
 	{
 		return Raycast(
 			shape => shape.Spherecast(ray, radius),
@@ -336,11 +408,14 @@ public class SpacialIndex
 				ray.origin - Vector2.one * (Raycasting.ERROR_TOLERANCE + radius),
 				ray.origin + Vector2.one * (Raycasting.ERROR_TOLERANCE + radius)
 			),
-			maxDistance
+			maxDistance,
+			collisionGroup,
+			collisionLayers,
+			multi
 		);
 	}
 
-	public ShapeRaycastHit Capsulecast(Ray2D ray, float radius, float innerHeight, float maxDistance = float.PositiveInfinity)
+	private RaycastState CapsulecastInternal(Ray2D ray, float radius, float innerHeight, float maxDistance = float.PositiveInfinity, int collisionGroup = -1, int collisionLayers = ~0, bool multi = false)
 	{
 		Vector2 halfSize = new Vector2(radius + Raycasting.ERROR_TOLERANCE, radius + Raycasting.ERROR_TOLERANCE + innerHeight * 0.5f);
 
@@ -350,7 +425,45 @@ public class SpacialIndex
 				ray.origin - halfSize,
 				ray.origin + halfSize
 			),
-			maxDistance
+			maxDistance,
+			collisionGroup,
+			collisionLayers,
+			multi
 		);
+	}
+
+	public ShapeRaycastHit Raycast(Ray2D ray, float maxDistance = float.PositiveInfinity, int collisionGroup = -1, int collisionLayers = ~0)
+	{
+		return RaycastInteral(ray, maxDistance, collisionGroup, collisionLayers, false).nearestHit;
+	}
+
+	public ShapeRaycastHit Spherecast(Ray2D ray, float radius, float maxDistance = float.PositiveInfinity, int collisionGroup = -1, int collisionLayers = ~0)
+	{
+		return SpherecastInternal(ray, radius, maxDistance, collisionGroup, collisionLayers, false).nearestHit;
+	}
+	
+	public ShapeRaycastHit Capsulecast(Ray2D ray, float radius, float innerHeight, float maxDistance = float.PositiveInfinity, int collisionGroup = -1, int collisionLayers = ~0)
+	{
+		return CapsulecastInternal(ray, radius, innerHeight, maxDistance, collisionGroup, collisionLayers, false).nearestHit;
+	}
+	
+	public IEnumerable<ShapeRaycastHit> RaycastMulti(Ray2D ray, float maxDistance = float.PositiveInfinity, int collisionGroup = -1, int collisionLayers = ~0)
+	{
+		return RaycastInteral(ray, maxDistance, collisionGroup, collisionLayers, true).AllHits;
+	}
+	
+	public IEnumerable<ShapeRaycastHit> SpherecastMulti(Ray2D ray, float radius, float maxDistance = float.PositiveInfinity, int collisionGroup = -1, int collisionLayers = ~0)
+	{
+		return SpherecastInternal(ray, radius, maxDistance, collisionGroup, collisionLayers, true).AllHits;
+	}
+	
+	public IEnumerable<ShapeRaycastHit> CapsulecastMulti(Ray2D ray, float radius, float innerHeight, float maxDistance = float.PositiveInfinity, int collisionGroup = -1, int collisionLayers = ~0)
+	{
+		return CapsulecastInternal(ray, radius, innerHeight, maxDistance, collisionGroup, collisionLayers, true).AllHits;
+	}
+
+	public void DrawGizmos()
+	{
+		rootNode.DrawGizmos();
 	}
 }

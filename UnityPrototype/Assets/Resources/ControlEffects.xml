@@ -60,6 +60,13 @@ if you only need only duration set frames to 0
 				The center of the collider
 			</description>
 		</parameter>
+		<parameter>
+			<name>collideWith</name>
+			<type>bitMask</type>
+			<description>
+				What the time object collides with
+			</description>
+		</parameter>
 	</input-configuration>
 	
 	<output-configuration name="delay-object-out" parent="game-object-out">

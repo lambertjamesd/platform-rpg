@@ -4,6 +4,7 @@ public class LinelistVisualDebug : ShapeVisualDebug
 {
 	public Vector2[] relativePoints = null;
 	public bool closed = false;
+	public bool noendpoint = false;
 	
 	public override ICollisionShape GetShape ()
 	{
@@ -18,7 +19,7 @@ public class LinelistVisualDebug : ShapeVisualDebug
 				worldPoint[i] = relativePoints[i] + offset;
 			}
 			
-			return new LineListShape(worldPoint, closed);
+			return new LineListShape(worldPoint, closed, noendpoint);
 		}
 		else
 		{

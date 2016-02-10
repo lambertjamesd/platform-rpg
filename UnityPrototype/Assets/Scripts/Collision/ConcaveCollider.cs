@@ -188,4 +188,12 @@ public class ConcaveCollider {
 
 		return new ShapeOutline(result);
 	}
+	
+	public void BuildShapes(List<LineListShape> output)
+	{
+		foreach (ConvexSection section in sections)
+		{
+			section.BuildShapes(output);
+		}
+	}
 }

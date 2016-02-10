@@ -1,12 +1,13 @@
 using UnityEngine;
 
-class LineListShape : ICollisionShape
+public class LineListShape : ICollisionShape
 {
 	private BoundingBox boundingBox;
 	private Vector2[] points;
 	private Vector2[] normals;
+	private bool noendpoint;
 
-	public LineListShape(Vector2[] points, bool closed)
+	public LineListShape(Vector2[] points, bool closed, bool noendpoint)
 	{
 		this.points = points;
 		normals = new Vector2[closed ? points.Length : (points.Length - 1)];
@@ -18,6 +19,10 @@ class LineListShape : ICollisionShape
 		}
 
 		boundingBox = new BoundingBox(points);
+
+		this.noendpoint = noendpoint;
+		CollisionGroup = -1;
+		CollisionLayers = ~0;
 	}
 
 	public BoundingBox GetBoundingBox()
@@ -32,11 +37,35 @@ class LineListShape : ICollisionShape
 
 	public SimpleRaycastHit Spherecast(Ray2D ray, float radius)
 	{
-		return Raycasting.SpherecastLineList(ray, radius, points, normals);
+		return Raycasting.SpherecastLineList(ray, radius, points, normals, noendpoint);
 	}
 
 	public SimpleRaycastHit CapsuleCast(Ray2D ray, float radius, float innerHeight)
 	{
-		return Raycasting.CapsulecastLineList(ray, radius, innerHeight, points, normals);
+		return Raycasting.CapsulecastLineList(ray, radius, innerHeight, points, normals, noendpoint);
 	}
+	
+	public SimpleOverlap Overlap(ICollisionShape other)
+	{
+		return null;
+	}
+	
+	public SimpleOverlap OverlapCircle(CircleShape circle)
+	{
+		return null;
+	}
+	
+	public SimpleOverlap OverlapCapsule(CapsuleShape capsule)
+	{
+		return null;
+	}
+
+	public SimpleOverlap OverlapBoundingBox(BoundingBox bb)
+	{
+		return null;
+	}
+	
+	public int CollisionGroup { get; set; }
+	public int CollisionLayers { get; set; }
+	public GameObject ConnectedTo { get; set; }
 }

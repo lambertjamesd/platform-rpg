@@ -179,7 +179,38 @@ public static class Raycasting
 
 	public static SimpleRaycastHit CapsulecastLineSegment(Ray2D ray, float radius, float innerHeight, Vector2 a, Vector2 b, Vector2 normal)
 	{
-		Vector2 castOrigin = ray.origin + ((normal.y > 0.0f) ? -Vector2.up * innerHeight * 0.5f : Vector2.up * innerHeight * 0.5f);
+		Vector2 castOrigin;
+
+		if (normal.y != 0.0f)
+		{
+			castOrigin = ray.origin + ((normal.y > 0.0f) ? -Vector2.up * innerHeight * 0.5f : Vector2.up * innerHeight * 0.5f);
+		}
+		else
+		{
+			if (ray.direction.x * normal.x >= 0.0f)
+			{
+				return null;
+			}
+			else
+			{
+				float distance = ((a.x - Mathf.Sign(ray.direction.x) * radius) - ray.origin.x) / ray.direction.x;
+				float yPos = ray.origin.y + distance * ray.direction.y;
+				float minY = Mathf.Min(a.y, b.y);
+				float maxY = Mathf.Max(a.y, b.y);
+
+				float actualY = Mathf.Clamp(yPos, minY,  maxY);
+
+				if (Mathf.Abs(actualY - yPos) < innerHeight * 0.5f && distance >= 0.0f)
+				{
+					return new SimpleRaycastHit(new Vector2(a.x, actualY), normal, distance);
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}
+
 		return SpherecastLineSegment(new Ray2D(castOrigin, ray.direction), radius, a, b, normal);
 	}
 
@@ -259,11 +290,12 @@ public static class Raycasting
 		{
 			Vector2 a = bb.CornerInDirection(Vector2Helper.RotateWithVector(ray.direction, new Vector2(-1, 1)));
 			Vector2 b = bb.CornerInDirection(Vector2Helper.RotateWithVector(ray.direction, new Vector2(-1, -1)));
-			return RaycastLineSegment(
+			return SpherecastLineSegment(
 				ray, 
+				radius,
 				a,
 				b,
-				new Vector2(Mathf.Sign(ray.direction.x), Mathf.Sign(ray.direction.y))
+				Vector2Helper.OrdinalDirection(-ray.direction)
 				) ??
 				SpherecastPoint(ray, radius, a) ??
 				SpherecastPoint(ray, radius, b);
@@ -313,67 +345,77 @@ public static class Raycasting
 	private delegate SimpleRaycastHit CastPoint(Vector2 point);
 	private delegate SimpleRaycastHit CastLine(Vector2 a, Vector2 b, Vector2 normal);
 
-	private static SimpleRaycastHit CastLineList(CastPoint castPoint, CastLine castLine, Vector2[] points, Vector2[] normals)
+	private static SimpleRaycastHit CastLineList(CastPoint castPoint, CastLine castLine, Vector2[] points, Vector2[] normals, bool noendpoints)
 	{
 		SimpleRaycastHit result = null;
 		
 		for (int i = 0; i < normals.Length; ++i)
 		{
 			result = SimpleRaycastHit.NearestHit(result, castLine(points[i], points[(i + 1) % points.Length], normals[i]));
-			
-			SimpleRaycastHit pointHit = castPoint(points[i]);
-			SimpleRaycastHit pointFiltered = SimpleRaycastHit.FilterByNormal(pointHit, normals[i]);
-			
-			if (i > 0)
-			{
-				pointFiltered = SimpleRaycastHit.FilterByNormal(pointHit, normals[i - 1]) ?? pointFiltered;
 
-				if (pointFiltered != null && Vector2.Dot(Vector2Helper.Rotate90(normals[i - 1]), pointFiltered.Normal) >= -Raycasting.DOT_ERROR_TOLERANCE)
+			if (!noendpoints || i > 0)
+			{
+				SimpleRaycastHit pointHit = castPoint(points[i]);
+				SimpleRaycastHit pointFiltered = SimpleRaycastHit.FilterByNormal(pointHit, normals[i]);
+				
+				if (i > 0 || points.Length == normals.Length)
+				{
+					int prevIndex = (i == 0) ? normals.Length - 1 : i - 1;
+
+					pointFiltered = SimpleRaycastHit.FilterByNormal(pointHit, normals[prevIndex]) ?? pointFiltered;
+
+					if (pointFiltered != null && Vector2.Dot(Vector2Helper.Rotate90(normals[prevIndex]), pointFiltered.Normal) >= -Raycasting.DOT_ERROR_TOLERANCE)
+					{
+						pointFiltered = null;
+					}
+				}
+
+				if (pointFiltered != null && Vector2.Dot(Vector2Helper.Rotate90(normals[i]), pointFiltered.Normal) <= Raycasting.DOT_ERROR_TOLERANCE)
 				{
 					pointFiltered = null;
 				}
+				
+				result = SimpleRaycastHit.NearestHit(result, pointFiltered);
 			}
-
-			if (pointFiltered != null && Vector2.Dot(Vector2Helper.Rotate90(normals[i]), pointFiltered.Normal) <= Raycasting.DOT_ERROR_TOLERANCE)
-			{
-				pointFiltered = null;
-			}
-			
-			result = SimpleRaycastHit.NearestHit(result, pointFiltered);
 		}
-		
-		result = SimpleRaycastHit.NearestHit(
-			result, 
-			
-			SimpleRaycastHit.FilterByNormal(
+
+		if (!noendpoints && points.Length != normals.Length)
+		{
+			result = SimpleRaycastHit.NearestHit(
+				result, 
+				
 				SimpleRaycastHit.FilterByNormal(
-					castPoint(points[normals.Length % points.Length]), 
-					normals[normals.Length - 1]
-				),
-				Vector2Helper.Rotate90(-normals[normals.Length - 1])
-			)
-		);
-		
+					SimpleRaycastHit.FilterByNormal(
+						castPoint(points[normals.Length % points.Length]), 
+						normals[normals.Length - 1]
+					),
+					Vector2Helper.Rotate90(-normals[normals.Length - 1])
+				)
+			);
+		}
+
 		return result;
 	}
 
-	public static SimpleRaycastHit SpherecastLineList(Ray2D ray, float radius, Vector2[] points, Vector2[] normals)
+	public static SimpleRaycastHit SpherecastLineList(Ray2D ray, float radius, Vector2[] points, Vector2[] normals, bool noendpoints)
 	{
 		return CastLineList(
 			x => SpherecastPoint(ray, radius, x),
 			(a, b, normal) => SpherecastLineSegment(ray, radius, a, b, normal),
 			points,
-			normals
+			normals,
+			noendpoints
 		);
 	}
 	
-	public static SimpleRaycastHit CapsulecastLineList(Ray2D ray, float radius, float innerHeight, Vector2[] points, Vector2[] normals)
+	public static SimpleRaycastHit CapsulecastLineList(Ray2D ray, float radius, float innerHeight, Vector2[] points, Vector2[] normals, bool noendpoints)
 	{
 		return CastLineList(
 			x => CapsulecastPoint(ray, radius, innerHeight, x),
 			(a, b, normal) => CapsulecastLineSegment(ray, radius, innerHeight, a, b, normal),
 			points,
-			normals
+			normals,
+			noendpoints
 		);
 	}
 }

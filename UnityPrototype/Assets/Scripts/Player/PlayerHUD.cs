@@ -25,12 +25,13 @@ public class PlayerHUD : MonoBehaviour {
 
 	private Vector2 spellDescriptionPosition;
 
-	private IInputSource controllerInputSource = new ControllerInputSource(Camera.main.transform);
+	private IInputSource controllerInputSource;
 
 	GUIStyle centeredStyle;
 
 	public void Start()
 	{
+		controllerInputSource = new ControllerInputSource(Camera.main.transform);
 		whitePixel = new Texture2D(1, 1);
 		whitePixel.SetPixel(0, 0, Color.white);
 		whitePixel.Apply();

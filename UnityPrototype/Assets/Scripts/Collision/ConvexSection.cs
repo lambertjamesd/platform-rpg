@@ -250,6 +250,35 @@ public class ConvexSection {
 			otherSection.connectionSerialData[otherIndex].adjacentIndex = index;
 		}
 	}
+
+	private Vector2 GetNextPoint(int index)
+	{
+		index = index % points.Length;
+		int nextIndex = (index + 1) % points.Length;
+
+		if (HasAdjacentSection(index))
+		{
+			return connections[index].Adjacent.GetNextPoint(connectionSerialData[index].adjacentIndex + 1);
+		}
+		else
+		{
+			return points[nextIndex];
+		}
+	}
+	
+	private Vector2 GetPrevPoint(int index)
+	{
+		int prevIndex = (index + points.Length - 1) % points.Length;
+		
+		if (HasAdjacentSection(prevIndex))
+		{
+			return connections[prevIndex].Adjacent.GetPrevPoint(connectionSerialData[prevIndex].adjacentIndex);
+		}
+		else
+		{
+			return points[prevIndex];
+		}
+	}
 	
 	private Vector2 GetNextNormal(int index)
 	{
@@ -462,6 +491,57 @@ public class ConvexSection {
 		get
 		{
 			return boundingBox;
+		}
+	}
+
+	public void BuildShapes(List<LineListShape> output)
+	{
+		List<Vector2> firstPointList = new List<Vector2>();
+		List<Vector2> currentPointList = firstPointList;
+
+		for (int i = 0; i < points.Length; ++i)
+		{
+			Vector2 prevPoint = GetPrevPoint(i);
+			Vector2 nextPoint = GetNextPoint(i);
+
+			bool prevMatches = GetPoint(i + points.Length - 1) == prevPoint;
+			bool nextMatches = GetPoint(i + 1) == nextPoint;
+
+			if (!prevMatches)
+			{
+				currentPointList.Add(prevPoint);
+			}
+
+			if (prevMatches || nextMatches)
+			{
+				currentPointList.Add(points[i]);
+			}
+
+			if (!nextMatches)
+			{
+				currentPointList.Add(nextPoint);
+
+				if (currentPointList != firstPointList && currentPointList.Count > 2)
+				{
+					output.Add(new LineListShape(currentPointList.ToArray(), false, true));
+				}
+
+				currentPointList = new List<Vector2>();
+			}
+		}
+
+		if (firstPointList == currentPointList)
+		{
+			output.Add(new LineListShape(firstPointList.ToArray(), true, false));
+		}
+		else
+		{
+			currentPointList.AddRange(firstPointList);
+
+			if (currentPointList.Count > 2)
+			{
+				output.Add(new LineListShape(currentPointList.ToArray(), false, true));
+			}
 		}
 	}
 	

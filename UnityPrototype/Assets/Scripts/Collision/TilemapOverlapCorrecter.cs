@@ -485,9 +485,10 @@ public class MeshOutlineGenerator
 public class TilemapOverlapCorrecter : MonoBehaviour {
 
 	public Mesh meshToOutline;
-	public bool debugDrawInternalEdges = false;
+	public bool debugDrawInternalEdges;
 	[SerializeField]
 	private ConcaveColliderGroup colliderGroup;
+	private SpacialIndex spacialIndex;
 
 	public List<CharacterSize> pathingNetworkSizes = new List<CharacterSize>();
 
@@ -496,10 +497,18 @@ public class TilemapOverlapCorrecter : MonoBehaviour {
 
 	private Ray pickerRay;
 
-	public bool debugDrawPathing = false;
+	public bool debugDrawPathing;
 
-	void Start () {
+	void Awake () {
+		if (colliderGroup != null)
+		{
+			spacialIndex = new SpacialIndex(colliderGroup.BoundingBox);
 
+			foreach (LineListShape shape in colliderGroup.BuildShapes())
+			{
+				spacialIndex.IndexShape(shape);
+			}
+		}
 	}
 
 	public void Rebuild()
@@ -611,5 +620,19 @@ public class TilemapOverlapCorrecter : MonoBehaviour {
 		}
 		
 		return transform.TransformPoint(localPoint);
+	}
+
+	public SpacialIndex GetSpacialIndex()
+	{
+		return spacialIndex;
+	}
+
+	public void OnDrawGizmos()
+	{
+		if (spacialIndex != null)
+		{
+			Gizmos.color = Color.cyan;
+			spacialIndex.DrawGizmos();
+		}
 	}
 }

@@ -59,7 +59,6 @@ public class CircleAreaEffect : AreaEffect, IFixedUpdate {
 	}
 
 	public void FixedUpdateTick(float dt) {
-		Collider[] colliders = Physics.OverlapSphere(transform.position, radius, collideWith);
-		UpdateContainedColliders(colliders, dt);
+		UpdateContainedShapes(index.CircleOverlap(transform.position, radius, collideWith, -1), dt);
 	}
 }
